@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
+import InsertChartIcon from '@material-ui/icons/InsertChart';
+import DeviceHubIcon from '@material-ui/icons/DeviceHub';
+import MoneyIcon from '@material-ui/icons/Money';
+import GroupIcon from '@material-ui/icons/Group';
 
 import { Profile, SidebarNav, UpgradePlan } from './components';
 
@@ -44,44 +44,44 @@ const Sidebar = props => {
 
   const pages = [
     {
-      title: 'Dashboard',
+      title: 'Рабочий стол',
       href: '/dashboard',
       icon: <DashboardIcon />
     },
     {
-      title: 'Users',
-      href: '/users',
-      icon: <PeopleIcon />
+      title: 'Отчеты',
+      href: '/report', 
+      icon: <InsertChartIcon />
     },
     {
-      title: 'Products',
-      href: '/products',
-      icon: <ShoppingBasketIcon />
-    },
-    {
-      title: 'Authentication',
-      href: '/sign-in',
-      icon: <LockOpenIcon />
-    },
-    {
-      title: 'Typography',
+      title: 'Финансы',
       href: '/typography',
-      icon: <TextFieldsIcon />
+      icon: <MoneyIcon />
     },
     {
-      title: 'Icons',
-      href: '/icons',
-      icon: <ImageIcon />
+      title: 'Персонал',
+      href: '/users',
+      icon: <GroupIcon />
     },
     {
-      title: 'Account',
+      title: 'CRM',
+      href: '/products',
+      icon: <DeviceHubIcon />
+    },
+    {
+      title: 'Аккаунт',
       href: '/account',
       icon: <AccountBoxIcon />
     },
     {
-      title: 'Settings',
+      title: 'Настройки',
       href: '/settings',
       icon: <SettingsIcon />
+    },
+    {
+      title: 'Выйти',
+      href: '/sign-in',
+      icon: <LockOpenIcon />
     }
   ];
 

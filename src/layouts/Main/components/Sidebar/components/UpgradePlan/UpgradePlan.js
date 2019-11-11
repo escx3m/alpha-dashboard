@@ -37,7 +37,7 @@ const UpgradePlan = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
-      <div className={classes.media}>
+      {/* <div className={classes.media}>
         <img
           alt="Upgrade to PRO"
           src="/images/undraw_resume_folder_2_arse.svg"
@@ -49,7 +49,7 @@ const UpgradePlan = props => {
           gutterBottom
           variant="h6"
         >
-          Upgrade to PRO
+          Upgrade to PRO11
         </Typography>
         <Typography
           align="center"
@@ -67,7 +67,7 @@ const UpgradePlan = props => {
         >
           Upgrade
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };

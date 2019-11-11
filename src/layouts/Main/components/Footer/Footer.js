@@ -21,13 +21,13 @@ const Footer = props => {
       className={clsx(classes.root, className)}
     >
       <Typography variant="body1">
-        &copy;{' '}
+      {' Copyright '} &copy; 
         <Link
           component="a"
-          href="https://devias.io/"
+          href="https://alphatour.ru/"
           target="_blank"
         >
-          Devias IO
+          Альфа-Тур
         </Link>
         . 2019
       </Typography>
