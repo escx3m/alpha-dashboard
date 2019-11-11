@@ -17,6 +17,9 @@ const useStyles = makeStyles(theme => ({
   },
   signOutButton: {
     marginLeft: theme.spacing(1)
+  },
+  imgLogo: {
+    width: '40px',
   }
 }));
 
@@ -34,9 +37,9 @@ const Topbar = props => {
     >
       <Toolbar>
         <RouterLink to="/">
-          <img
+          <img className={classes.imgLogo}
             alt="Logo"
-            src="/images/logos/logo--white.svg"
+            src="/images/logos/alphatour.png"
           />
         </RouterLink>
         <div className={classes.flexGrow} />
