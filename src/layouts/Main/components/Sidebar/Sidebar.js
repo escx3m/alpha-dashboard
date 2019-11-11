@@ -55,7 +55,7 @@ const Sidebar = props => {
     },
     {
       title: 'Финансы',
-      href: '/typography',
+      href: '/finance',
       icon: <MoneyIcon />
     },
     {

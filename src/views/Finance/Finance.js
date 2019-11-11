@@ -5,13 +5,11 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Typography,
   IconButton,
   Paper
 } from '@material-ui/core';
 
 import CachedIcon from '@material-ui/icons/Cached';
-import { textAlign } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
   //  "@global": {
@@ -37,22 +35,37 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     fontSize: '42px',
     textAlign: 'center',
+    padding: '24px',
   },
-  profit1: {
+  profitSmall: {
     background: 'rgb(244,249,253)',
     width: '100%',
     fontSize: '36px',
     textAlign: 'center',
+    padding: '12px',
   },
   paper: {
     background: 'rgb(244,249,253)',
     textAlign: 'center',
     padding: '24px',
   },
-  paper1: {
+  paperSmall: {
     background: 'rgb(244,249,253)',
     textAlign: 'center',
     padding: '12px',
+  },
+  allBlockPay: {
+    marginTop: '50px',
+  },
+  cityBlockPay: {
+    marginTop: '50px',
+  },
+  p1: {
+    fontSize: '24px',
+  },
+  p2: {
+    marginTop: '20px',
+    fontSize:'20px',
   },
 }));
 
@@ -73,17 +86,17 @@ const Report = () => {
             }
           />
           <CardContent>
-            <Grid className={classes.profit}><p style={{ padding: '24px' }}>1 433 523 Р</p></Grid>
-            <div style={{ marginTop: '50px' }}>
+            <Grid className={classes.profit}>1 433 523 Р</Grid>
+            <div className={classes.allBlockPay}>
               <Grid container spacing={5}>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper}><p style={{ fontSize: '24px' }}>Наличные</p> <p style={{ marginTop: '20px',fontSize:'20px' }}>695 321</p></Paper>
+                  <Paper className={classes.paper}><p className={classes.p1}>Наличные</p> <p className={classes.p2}>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper}><p style={{ fontSize: '24px' }}>Безналичный</p> <p style={{ marginTop: '20px',fontSize:'20px' }}>695 321</p></Paper>
+                  <Paper className={classes.paper}><p className={classes.p1}>Безналичный</p> <p className={classes.p2}>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper}><p style={{ fontSize: '24px' }}>Возврат</p> <p style={{ marginTop: '20px',fontSize:'20px' }}>695 321</p></Paper>
+                  <Paper className={classes.paper}><p className={classes.p1}>Возврат</p> <p className={classes.p2}>695 321</p></Paper>
                 </Grid>
               </Grid>
             </div>
@@ -104,17 +117,17 @@ const Report = () => {
             }
           />
           <CardContent>
-            <Grid className={classes.profit1}><p>1 433 523 Р</p></Grid>
-            <div style={{ marginTop: '25px' }}>
+            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
+            <div className={classes.cityBlockPay}>
               <Grid container spacing={5}>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Наличные</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Безнал</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Возврат</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
                 </Grid>
               </Grid>
             </div>
@@ -132,17 +145,17 @@ const Report = () => {
             }
           />
           <CardContent>
-            <Grid className={classes.profit1}><p>1 433 523 Р</p></Grid>
-            <div style={{ marginTop: '25px' }}>
+            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
+            <div className={classes.cityBlockPay}>
               <Grid container spacing={5}>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Наличные</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Безнал</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Возврат</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
                 </Grid>
               </Grid>
             </div>
@@ -160,17 +173,17 @@ const Report = () => {
             }
           />
           <CardContent>
-            <Grid className={classes.profit1}><p>1 433 523 Р</p></Grid>
-            <div style={{ marginTop: '25px' }}>
+            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
+            <div className={classes.cityBlockPay}>
               <Grid container spacing={5}>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Наличные</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Безнал</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Возврат</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
                 </Grid>
               </Grid>
             </div>
@@ -192,17 +205,17 @@ const Report = () => {
             }
           />
           <CardContent>
-            <Grid className={classes.profit1}><p>1 433 523 Р</p></Grid>
-            <div style={{ marginTop: '25px' }}>
+            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
+            <div className={classes.cityBlockPay}>
               <Grid container spacing={5}>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Наличные</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Безнал</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Возврат</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
                 </Grid>
               </Grid>
             </div>
@@ -220,17 +233,17 @@ const Report = () => {
             }
           />
           <CardContent>
-            <Grid className={classes.profit1}><p>1 433 523 Р</p></Grid>
-            <div style={{ marginTop: '25px' }}>
+            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
+            <div className={classes.cityBlockPay}>
               <Grid container spacing={5}>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Наличные</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Безнал</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Возврат</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
                 </Grid>
               </Grid>
             </div>
@@ -248,17 +261,17 @@ const Report = () => {
             }
           />
           <CardContent>
-            <Grid className={classes.profit1}><p>1 433 523 Р</p></Grid>
-            <div style={{ marginTop: '25px' }}>
+            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
+            <div className={classes.cityBlockPay}>
               <Grid container spacing={5}>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Наличные</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Безнал</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Возврат</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
                 </Grid>
               </Grid>
             </div>
@@ -280,17 +293,17 @@ const Report = () => {
             }
           />
           <CardContent>
-            <Grid className={classes.profit1}><p>1 433 523 Р</p></Grid>
-            <div style={{ marginTop: '25px' }}>
+            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
+            <div className={classes.cityBlockPay}>
               <Grid container spacing={5}>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Наличные</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Безнал</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Возврат</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
                 </Grid>
               </Grid>
             </div>
@@ -308,17 +321,17 @@ const Report = () => {
             }
           />
           <CardContent>
-            <Grid className={classes.profit1}><p>1 433 523 Р</p></Grid>
-            <div style={{ marginTop: '25px' }}>
+            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
+            <div className={classes.cityBlockPay}>
               <Grid container spacing={5}>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Наличные</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Безнал</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paper1}><p>Возврат</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
                 </Grid>
               </Grid>
             </div>

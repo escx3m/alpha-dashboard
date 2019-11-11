@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Typography,
   IconButton,
   Paper
 } from '@material-ui/core';
@@ -31,6 +30,20 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 400,
     width: '100%',
   },
+  headInfo: {
+    background: 'rgb(244,249,253)', 
+    width: '100%', 
+    padding: '12px',
+    fontSize: '20px',
+    marginLeft: '10px',
+  },
+  textSumm: {
+    float: 'right',
+    marginRight: '10px',
+  },
+  gridMarginTop: {
+   marginTop: '5px',
+  },
 }));
 
 const Report = () => {
@@ -51,9 +64,9 @@ const Report = () => {
                 }
               />
               <CardContent>
-                <Grid style={{ background: 'rgb(244,249,253)', width: '100%', padding: '12px' }}><text style={{ fontSize: '20px', marginLeft: '10px' }}>Рейсы</text><text style={{ fontSize: '20px', float: 'right', marginRight: '10px' }}>Количество</text></Grid>
+                <Grid className={classes.headInfo}>Рейсы<text className={classes.textSumm}>Количество</text></Grid>
                 <div >
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Элиста - Волгоград
         </Grid>
@@ -61,7 +74,7 @@ const Report = () => {
                       256
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Элиста - Астрахань
         </Grid>
@@ -69,7 +82,7 @@ const Report = () => {
                       250
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Элиста - Ростов-на-Дону
         </Grid>
@@ -77,7 +90,7 @@ const Report = () => {
                       230
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Ростов-на-Дону - Астрахань
         </Grid>
@@ -85,7 +98,7 @@ const Report = () => {
                       220
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Астрахань - Ростов-на-Дону
         </Grid>
@@ -93,7 +106,7 @@ const Report = () => {
                       220
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Волгоград - Элиста
         </Grid>
@@ -101,7 +114,7 @@ const Report = () => {
                       256
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Астрахань - Элиста
         </Grid>
@@ -109,7 +122,7 @@ const Report = () => {
                       250
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Ростов-на-Дону - Элиста
         </Grid>
@@ -133,9 +146,9 @@ const Report = () => {
               }
             />
             <CardContent>
-              <Grid style={{ background: 'rgb(244,249,253)', width: '100%', padding: '12px' }}><text style={{ fontSize: '20px', marginLeft: '10px' }}>Рейсы</text><text style={{ fontSize: '20px', float: 'right', marginRight: '10px' }}>Количество</text></Grid>
+            <Grid className={classes.headInfo}>Рейсы<text className={classes.textSumm}>Количество</text></Grid>
               <div >
-                <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                <Grid container spacing={1} className={classes.gridMarginTop}>
                   <Grid item xs={10}>
                     Элиста - Волгоград
         </Grid>
@@ -143,7 +156,7 @@ const Report = () => {
                     256
         </Grid>
                 </Grid>
-                <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                <Grid container spacing={1} className={classes.gridMarginTop}>
                   <Grid item xs={10}>
                     Элиста - Астрахань
         </Grid>
@@ -151,7 +164,7 @@ const Report = () => {
                     250
         </Grid>
                 </Grid>
-                <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                <Grid container spacing={1} className={classes.gridMarginTop}>
                   <Grid item xs={10}>
                     Элиста - Ростов-на-Дону
         </Grid>
@@ -159,7 +172,7 @@ const Report = () => {
                     230
         </Grid>
                 </Grid>
-                <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                <Grid container spacing={1} className={classes.gridMarginTop}>
                   <Grid item xs={10}>
                     Ростов-на-Дону - Астрахань
         </Grid>
@@ -167,7 +180,7 @@ const Report = () => {
                     220
         </Grid>
                 </Grid>
-                <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Астрахань - Ростов-на-Дону
         </Grid>
@@ -175,7 +188,7 @@ const Report = () => {
                       220
         </Grid>
                   </Grid>
-                <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                <Grid container spacing={1} className={classes.gridMarginTop}>
                   <Grid item xs={10}>
                     Волгоград - Элиста
         </Grid>
@@ -183,7 +196,7 @@ const Report = () => {
                     256
         </Grid>
                 </Grid>
-                <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                <Grid container spacing={1} className={classes.gridMarginTop}>
                   <Grid item xs={10}>
                     Астрахань - Элиста
         </Grid>
@@ -191,7 +204,7 @@ const Report = () => {
                     250
         </Grid>
                 </Grid>
-                <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                <Grid container spacing={1} className={classes.gridMarginTop}>
                   <Grid item xs={10}>
                     Ростов-на-Дону - Элиста
         </Grid>
@@ -215,9 +228,9 @@ const Report = () => {
                 }
               />
               <CardContent>
-                <Grid style={{ background: 'rgb(244,249,253)', width: '100%', padding: '12px' }}><text style={{ fontSize: '20px', marginLeft: '10px' }}>Рейсы</text><text style={{ fontSize: '20px', float: 'right', marginRight: '10px' }}>Количество</text></Grid>
+              <Grid className={classes.headInfo}>Рейсы<text className={classes.textSumm}>Количество</text></Grid>
                 <div >
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Элиста - Волгоград
         </Grid>
@@ -225,7 +238,7 @@ const Report = () => {
                       256
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Элиста - Астрахань
         </Grid>
@@ -233,7 +246,7 @@ const Report = () => {
                       250
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Элиста - Ростов-на-Дону
         </Grid>
@@ -241,7 +254,7 @@ const Report = () => {
                       230
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Ростов-на-Дону - Астрахань
         </Grid>
@@ -249,7 +262,7 @@ const Report = () => {
                       220
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Астрахань - Ростов-на-Дону
         </Grid>
@@ -257,7 +270,7 @@ const Report = () => {
                       220
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Волгоград - Элиста
         </Grid>
@@ -265,7 +278,7 @@ const Report = () => {
                       256
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Астрахань - Элиста
         </Grid>
@@ -273,7 +286,7 @@ const Report = () => {
                       250
         </Grid>
                   </Grid>
-                  <Grid container spacing={1} style={{ marginTop: '5px' }}>
+                  <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
                       Ростов-на-Дону - Элиста
         </Grid>
