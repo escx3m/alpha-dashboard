@@ -35,7 +35,9 @@ const useStyles = makeStyles(theme => ({
     width: '100%', 
     padding: '12px',
     fontSize: '20px',
-    marginLeft: '10px',
+  },
+  trip: {
+    marginLeft:'10px',
   },
   textSumm: {
     float: 'right',
@@ -64,7 +66,7 @@ const Report = () => {
                 }
               />
               <CardContent>
-                <Grid className={classes.headInfo}>Рейсы<text className={classes.textSumm}>Количество</text></Grid>
+                <Grid className={classes.headInfo}><text className={classes.trip}>Рейсы</text><text className={classes.textSumm}>Количество</text></Grid>
                 <div >
                   <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
@@ -146,7 +148,7 @@ const Report = () => {
               }
             />
             <CardContent>
-            <Grid className={classes.headInfo}>Рейсы<text className={classes.textSumm}>Количество</text></Grid>
+            <Grid className={classes.headInfo}><text className={classes.trip}>Рейсы</text><text className={classes.textSumm}>Количество</text></Grid>
               <div >
                 <Grid container spacing={1} className={classes.gridMarginTop}>
                   <Grid item xs={10}>
@@ -228,7 +230,7 @@ const Report = () => {
                 }
               />
               <CardContent>
-              <Grid className={classes.headInfo}>Рейсы<text className={classes.textSumm}>Количество</text></Grid>
+              <Grid className={classes.headInfo}><text className={classes.trip}>Рейсы</text><text className={classes.textSumm}>Количество</text></Grid>
                 <div >
                   <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
