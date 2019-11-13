@@ -9,7 +9,14 @@ import {
   Paper
 } from '@material-ui/core';
 
+
 import CachedIcon from '@material-ui/icons/Cached';
+import BasicDatePicker from '../DatePicker/pickdate';
+import YearPicker from '../DatePicker/pickyear';
+import MonthPicker from '../DatePicker/pickmonth';
+import PickWeek from '../DatePicker/pickweek';
+
+
 
 const useStyles = makeStyles(theme => ({
   //  "@global": {
@@ -31,20 +38,23 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
   },
   headInfo: {
-    background: 'rgb(244,249,253)', 
-    width: '100%', 
+    background: 'rgb(244,249,253)',
+    width: '100%',
     padding: '12px',
     fontSize: '20px',
   },
   trip: {
-    marginLeft:'10px',
+    marginLeft: '10px',
   },
   textSumm: {
     float: 'right',
     marginRight: '10px',
   },
   gridMarginTop: {
-   marginTop: '5px',
+    marginTop: '5px',
+  },
+  gridCardPas: {
+    marginTop: '50px',
   },
 }));
 
@@ -53,7 +63,22 @@ const Report = () => {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+<Grid container spacing={3}>
+<Grid item xs={3}>
+  <BasicDatePicker /> 
+</Grid>
+<Grid item xs={3}>
+  <PickWeek />
+</Grid>
+<Grid item xs={3}>
+  <MonthPicker />
+</Grid>
+<Grid item xs={3}>
+  <YearPicker />
+</Grid>
+</Grid>
+
+      <Grid container spacing={3} className={classes.gridCardPas}>
         <Grid item xs={4}>
           <Paper className={classes.paper}>
             <Card className={classes.card}>
@@ -148,7 +173,7 @@ const Report = () => {
               }
             />
             <CardContent>
-            <Grid className={classes.headInfo}><text className={classes.trip}>Рейсы</text><text className={classes.textSumm}>Количество</text></Grid>
+              <Grid className={classes.headInfo}><text className={classes.trip}>Рейсы</text><text className={classes.textSumm}>Количество</text></Grid>
               <div >
                 <Grid container spacing={1} className={classes.gridMarginTop}>
                   <Grid item xs={10}>
@@ -183,13 +208,13 @@ const Report = () => {
         </Grid>
                 </Grid>
                 <Grid container spacing={1} className={classes.gridMarginTop}>
-                    <Grid item xs={10}>
-                      Астрахань - Ростов-на-Дону
+                  <Grid item xs={10}>
+                    Астрахань - Ростов-на-Дону
         </Grid>
-                    <Grid item xs={2}>
-                      220
+                  <Grid item xs={2}>
+                    220
         </Grid>
-                  </Grid>
+                </Grid>
                 <Grid container spacing={1} className={classes.gridMarginTop}>
                   <Grid item xs={10}>
                     Волгоград - Элиста
@@ -230,7 +255,7 @@ const Report = () => {
                 }
               />
               <CardContent>
-              <Grid className={classes.headInfo}><text className={classes.trip}>Рейсы</text><text className={classes.textSumm}>Количество</text></Grid>
+                <Grid className={classes.headInfo}><text className={classes.trip}>Рейсы</text><text className={classes.textSumm}>Количество</text></Grid>
                 <div >
                   <Grid container spacing={1} className={classes.gridMarginTop}>
                     <Grid item xs={10}>
