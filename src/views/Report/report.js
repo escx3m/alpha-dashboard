@@ -6,17 +6,14 @@ import {
   CardContent,
   CardHeader,
   IconButton,
-  Paper
+  Paper,
+  Button
 } from '@material-ui/core';
 
 
 import CachedIcon from '@material-ui/icons/Cached';
-import BasicDatePicker from '../DatePicker/pickdate';
-import YearPicker from '../DatePicker/pickyear';
-import MonthPicker from '../DatePicker/pickmonth';
-import PickWeek from '../DatePicker/pickweek';
 
-
+import RangePickerANTD from '../DatePicker/rangepickerANTD';
 
 const useStyles = makeStyles(theme => ({
   //  "@global": {
@@ -56,6 +53,14 @@ const useStyles = makeStyles(theme => ({
   gridCardPas: {
     marginTop: '50px',
   },
+  btn: {
+    width: '150px',
+    height: '50px',
+    border: '1px solid #3f51b5',
+    background: 'white',
+    color:'black',
+    fontSize: '18px',
+  },
 }));
 
 const Report = () => {
@@ -63,18 +68,22 @@ const Report = () => {
 
   return (
     <div className={classes.root}>
+
 <Grid container spacing={3}>
-<Grid item xs={3}>
-  <BasicDatePicker /> 
+<Grid item xs={2}>
+<Button className={classes.btn}>Сегодня</Button>
 </Grid>
-<Grid item xs={3}>
-  <PickWeek />
+<Grid item xs={2}>
+<Button className={classes.btn}>Неделя</Button>
 </Grid>
-<Grid item xs={3}>
-  <MonthPicker />
+<Grid item xs={2}>
+<Button className={classes.btn}>Месяц</Button>
 </Grid>
-<Grid item xs={3}>
-  <YearPicker />
+<Grid item xs={2}>
+<Button className={classes.btn}>Год</Button>
+</Grid>
+<Grid item xs={4}>
+<RangePickerANTD />
 </Grid>
 </Grid>
 
@@ -87,7 +96,7 @@ const Report = () => {
                 action={
                   <IconButton aria-label="settings">
                     <CachedIcon />
-                  </IconButton>
+                  </IconButton> 
                 }
               />
               <CardContent>
