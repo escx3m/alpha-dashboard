@@ -7,7 +7,11 @@ import {
   CardHeader,
   IconButton,
   Paper,
-  Button
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem 
 } from '@material-ui/core';
 
 import CachedIcon from '@material-ui/icons/Cached';
@@ -39,27 +43,20 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     padding: '24px',
   },
-  profitSmall: {
+  profitTrip: {
     background: 'rgb(244,249,253)',
     width: '100%',
-    fontSize: '36px',
+    fontSize: '42px',
     textAlign: 'center',
-    padding: '12px',
+    padding: '24px',
+    marginTop: '50px'
   },
   paper: {
     background: 'rgb(244,249,253)',
     textAlign: 'center',
     padding: '24px',
   },
-  paperSmall: {
-    background: 'rgb(244,249,253)',
-    textAlign: 'center',
-    padding: '12px',
-  },
   allBlockPay: {
-    marginTop: '50px',
-  },
-  cityBlockPay: {
     marginTop: '50px',
   },
   p1: {
@@ -77,11 +74,25 @@ const useStyles = makeStyles(theme => ({
     color:'black',
     fontSize: '18px',
   },
+  formControl: {
+    margin: theme.spacing(1),
+    width: 300,
+  },
 }));
 
 const Report = () => {
   const classes = useStyles();
+  const [age, setAge] = React.useState('');
 
+  const inputLabel = React.useRef(null);
+  const [labelWidth, setLabelWidth] = React.useState(0);
+  React.useEffect(() => {
+    setLabelWidth(inputLabel.current.offsetWidth);
+  }, []);
+
+  const handleChange = event => {
+    setAge(event.target.value);
+  };
   return (
     <div>
     <div className={classes.root}>
@@ -102,7 +113,7 @@ const Report = () => {
 <RangePickerANTD />
 </Grid>
 </Grid>
-
+      
       <Grid style={{marginTop:'50px'}}>
         <Card className={classes.card}>
           <CardHeader
@@ -131,241 +142,85 @@ const Report = () => {
           </CardContent>
         </Card>
       </Grid>
-    </div>
-    <div className={classes.root}>
-    <Grid container spacing={3}>
-        <Grid item xs={4}>
-        <Card>
+
+      <Grid style={{marginTop:'50px'}}>
+        <Card className={classes.card}>
           <CardHeader
-            title="Элиста - Волгоград"
+            title="Прибыль по направлениям"
             action={
               <IconButton aria-label="settings">
                 <CachedIcon />
               </IconButton>
             }
           />
-          <CardContent>
-            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
-            <div className={classes.cityBlockPay}>
+          <CardContent style={{textAlign:'center'}}>
+          <div>
+          <Grid container spacing={3}>
+<Grid item xs={4}>
+<FormControl variant="outlined" className={classes.formControl} > 
+        <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
+          Откуда
+        </InputLabel>
+        <Select
+          labelId="demo-simple-select-outlined-label"
+          id="demo-simple-select-outlined"
+          value={age}
+          onChange={handleChange}
+          labelWidth={labelWidth}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={10}>Элиста</MenuItem>
+          <MenuItem value={20}>Волгоград</MenuItem>
+          <MenuItem value={30}>Ростов-на-Дону</MenuItem>
+          <MenuItem value={40}>Астрахань</MenuItem>
+        </Select>
+      </FormControl>
+</Grid>
+<Grid item xs={4}>
+<FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
+          Куда
+        </InputLabel>
+        <Select
+          labelId="demo-simple-select-outlined-label"
+          id="demo-simple-select-outlined"
+          value={age}
+          onChange={handleChange}
+          labelWidth={labelWidth}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={10}>Элиста</MenuItem>
+          <MenuItem value={20}>Волгоград</MenuItem>
+          <MenuItem value={30}>Ростов-на-Дону</MenuItem>
+          <MenuItem value={40}>Астрахань</MenuItem>
+        </Select>
+      </FormControl> 
+</Grid>
+<Grid item xs={4}>
+<RangePickerANTD />
+</Grid>
+</Grid>
+</div>
+            <Grid className={classes.profitTrip}>1 433 523 Р</Grid>
+            <div className={classes.allBlockPay}>
               <Grid container spacing={5}>
                 <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paper}><p className={classes.p1}>Наличные</p> <p className={classes.p2}>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paper}><p className={classes.p1}>Безналичный</p> <p className={classes.p2}>695 321</p></Paper>
                 </Grid>
                 <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
+                  <Paper className={classes.paper}><p className={classes.p1}>Возврат</p> <p className={classes.p2}>695 321</p></Paper>
                 </Grid>
               </Grid>
             </div>
           </CardContent>
         </Card>
-        </Grid>
-        <Grid item xs={4}>
-        <Card>
-          <CardHeader
-            title="Элиста - Астрахань"
-            action={
-              <IconButton aria-label="settings">
-                <CachedIcon />
-              </IconButton>
-            }
-          />
-          <CardContent>
-            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
-            <div className={classes.cityBlockPay}>
-              <Grid container spacing={5}>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
-                </Grid>
-              </Grid>
-            </div>
-          </CardContent>
-        </Card>
-        </Grid>
-        <Grid item xs={4}>
-        <Card>
-          <CardHeader
-            title="Элиста - Ростов-на-Дону"
-            action={
-              <IconButton aria-label="settings">
-                <CachedIcon />
-              </IconButton>
-            }
-          />
-          <CardContent>
-            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
-            <div className={classes.cityBlockPay}>
-              <Grid container spacing={5}>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
-                </Grid>
-              </Grid>
-            </div>
-          </CardContent>
-        </Card>
-        </Grid>
-      </Grid>
-    </div>
-    <div className={classes.root}>
-    <Grid container spacing={3}>
-        <Grid item xs={4}>
-        <Card>
-          <CardHeader
-            title="Волгоград - Элиста"
-            action={
-              <IconButton aria-label="settings">
-                <CachedIcon />
-              </IconButton>
-            }
-          />
-          <CardContent>
-            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
-            <div className={classes.cityBlockPay}>
-              <Grid container spacing={5}>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
-                </Grid>
-              </Grid>
-            </div>
-          </CardContent>
-        </Card>
-        </Grid>
-        <Grid item xs={4}>
-        <Card>
-          <CardHeader
-            title="Астрахань - Элиста"
-            action={
-              <IconButton aria-label="settings">
-                <CachedIcon />
-              </IconButton>
-            }
-          />
-          <CardContent>
-            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
-            <div className={classes.cityBlockPay}>
-              <Grid container spacing={5}>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
-                </Grid>
-              </Grid>
-            </div>
-          </CardContent>
-        </Card>
-        </Grid>
-        <Grid item xs={4}>
-        <Card>
-          <CardHeader
-            title="Ростов-на-Дону - Элиста"
-            action={
-              <IconButton aria-label="settings">
-                <CachedIcon />
-              </IconButton>
-            }
-          />
-          <CardContent>
-            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
-            <div className={classes.cityBlockPay}>
-              <Grid container spacing={5}>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
-                </Grid>
-              </Grid>
-            </div>
-          </CardContent>
-        </Card>
-        </Grid>
-      </Grid>
-    </div>
-    <div className={classes.root}>
-    <Grid container spacing={3}>
-        <Grid item xs={4}>
-        <Card>
-          <CardHeader
-            title="Ростов-на-Дону - Астрахань"
-            action={
-              <IconButton aria-label="settings">
-                <CachedIcon />
-              </IconButton>
-            }
-          />
-          <CardContent>
-            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
-            <div className={classes.cityBlockPay}>
-              <Grid container spacing={5}>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
-                </Grid>
-              </Grid>
-            </div>
-          </CardContent>
-        </Card>
-        </Grid>
-        <Grid item xs={4}>
-        <Card>
-          <CardHeader
-            title="Астрахань - Ростов-на-Дону"
-            action={
-              <IconButton aria-label="settings">
-                <CachedIcon />
-              </IconButton>
-            }
-          />
-          <CardContent>
-            <Grid className={classes.profitSmall}><p>1 433 523 Р</p></Grid>
-            <div className={classes.cityBlockPay}>
-              <Grid container spacing={5}>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Наличные</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Безнал</p> <p>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paperSmall}><p>Возврат</p> <p>695 321</p></Paper>
-                </Grid>
-              </Grid>
-            </div>
-          </CardContent>
-        </Card>
-        </Grid>
       </Grid>
     </div>
     </div>
