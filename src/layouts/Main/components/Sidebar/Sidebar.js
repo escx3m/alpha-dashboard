@@ -59,14 +59,14 @@ const Sidebar = props => {
       icon: <MoneyIcon />
     },
     {
+      title: 'Машинный мониторинг',
+      href: '/monitoringcar',
+      icon: <DeviceHubIcon />
+    },
+    {
       title: 'Персонал',
       href: '/users',
       icon: <GroupIcon />
-    },
-    {
-      title: 'CRM',
-      href: '/products',
-      icon: <DeviceHubIcon />
     },
     {
       title: 'Аккаунт',

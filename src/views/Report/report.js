@@ -9,10 +9,7 @@ import {
   Paper,
   Button
 } from '@material-ui/core';
-
-
 import CachedIcon from '@material-ui/icons/Cached';
-
 import RangePickerANTD from '../DatePicker/rangepickerANTD';
 
 const useStyles = makeStyles(theme => ({
