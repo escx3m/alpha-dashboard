@@ -12,7 +12,16 @@ import {
 import CachedIcon from '@material-ui/icons/Cached';
 import RangePickerANTD from '../DatePicker/rangepickerANTD';
 import axios from 'axios';
-import { startOfWeek, endOfWeek,startOfToday, endOfToday, startOfMonth, endOfMonth, startOfYear, endOfYear } from 'date-fns';
+import {
+  startOfWeek,
+  endOfWeek,
+  startOfToday,
+  endOfToday,
+  startOfMonth,
+  endOfMonth,
+  startOfYear,
+  endOfYear
+} from 'date-fns';
 import { makeJSDateObject } from '../../helpers/helpers';
 
 const useStyles = makeStyles(theme => ({
@@ -32,126 +41,135 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     maxWidth: 400,
-    width: '100%',
+    width: '100%'
   },
   headInfo: {
     background: 'rgb(244,249,253)',
     width: '100%',
     padding: '12px',
-    fontSize: '20px',
+    fontSize: '20px'
   },
   trip: {
-    marginLeft: '10px',
+    marginLeft: '10px'
   },
   spanSumm: {
     float: 'right',
-    marginRight: '10px',
+    marginRight: '10px'
   },
   gridMarginTop: {
-    marginTop: '5px',
+    marginTop: '5px'
   },
   gridCardPas: {
-    marginTop: '50px',
+    marginTop: '50px'
   },
   btn: {
     width: '150px',
     height: '50px',
     border: '1px solid #3f51b5',
     background: 'white',
-    color:'black',
-    fontSize: '18px',
-  },
+    color: 'black',
+    fontSize: '18px'
+  }
 }));
 
 const Report = () => {
   const citiesName = {
-    "10" : "Волгоград",
-    "23" : "Астрахань",
-    "52" : "Ессентуки",
-    "67" : "Кисловодск",
-    "72" : "Краснодар",
-    "90" : "Нальчик",
-    "119" : "Ростов-на-Дону",
-    "133" : "Сочи",
-    "134" : "Ставрополь",
-    "166" : "Элиста",
-    "1797" : "Минеральные Воды",
-    "8748" : "Зимовники",
-    "1042266" : "Ольгинка",
-    "1054308" : "Домодедово",
-    "1" : "Москва",
-    "53" : "Жуковский",
-    "818" : "Ялта",
-    "134" : "Ставрополь",
-    "1053557" : "Внуково",
-    "155" : "Химки",
-    "8963" : "Кетченеры",
-    "17472" : "Малые Дербеты",
-    "160" : "Грозный",
-    "3700" : "Волгодонск",
-    "1031804" : "Городовиковск",
-    "44" : "Геленджик",
-    "354" : "Анапа",
-    "1449" : "Буденновск",
-    "20320" : "Архипо-Осиповка",
-    "6356" : "Цаган-Аман",
-    "98" : "Новороссийск",
-    "3978" : "Цимлянск",
-    "17290" : "Витязево",
-    "103" : "Обнинск",
-    "133" : "Сочи",
-    "12895" : "Ики-Бурул",
-    "669" : "Железноводск",
-    "14209" : "Заветное",
-    "1079156" : "Дмитриадовка",
-    "7188" : "Судак",
-    "1042272" : "Пляхо",
-    "6310" : "Троицкое",
-    "1031866" : "Шин-Мер",
-    "3060" : "Ипатово",
-    "38" : "Владикавказ",
-    "139" : "Таганрог",
-    "143" : "Тольятти",
-    "355" : "Лагань",
-    "1261" : "Михайловск",
-    "669" : "Железноводск",
-    "21" : "Армавир",
-    "1014402" : "Дальний",
-    "40" : "Волжский",
-    "164" : "Шахты",
-    "1030609" : "Аушигер",
-    "62" : "Калуга",
+    '10': 'Волгоград',
+    '23': 'Астрахань',
+    '52': 'Ессентуки',
+    '67': 'Кисловодск',
+    '72': 'Краснодар',
+    '90': 'Нальчик',
+    '119': 'Ростов-на-Дону',
+    '133': 'Сочи',
+    '134': 'Ставрополь',
+    '166': 'Элиста',
+    '1797': 'Минеральные Воды',
+    '8748': 'Зимовники',
+    '1042266': 'Ольгинка',
+    '1054308': 'Домодедово',
+    '1': 'Москва',
+    '53': 'Жуковский',
+    '818': 'Ялта',
+    '134': 'Ставрополь',
+    '1053557': 'Внуково',
+    '155': 'Химки',
+    '8963': 'Кетченеры',
+    '17472': 'Малые Дербеты',
+    '160': 'Грозный',
+    '3700': 'Волгодонск',
+    '1031804': 'Городовиковск',
+    '44': 'Геленджик',
+    '354': 'Анапа',
+    '1449': 'Буденновск',
+    '20320': 'Архипо-Осиповка',
+    '6356': 'Цаган-Аман',
+    '98': 'Новороссийск',
+    '3978': 'Цимлянск',
+    '17290': 'Витязево',
+    '103': 'Обнинск',
+    '133': 'Сочи',
+    '12895': 'Ики-Бурул',
+    '669': 'Железноводск',
+    '14209': 'Заветное',
+    '1079156': 'Дмитриадовка',
+    '7188': 'Судак',
+    '1042272': 'Пляхо',
+    '6310': 'Троицкое',
+    '1031866': 'Шин-Мер',
+    '3060': 'Ипатово',
+    '38': 'Владикавказ',
+    '139': 'Таганрог',
+    '143': 'Тольятти',
+    '355': 'Лагань',
+    '1261': 'Михайловск',
+    '669': 'Железноводск',
+    '21': 'Армавир',
+    '1014402': 'Дальний',
+    '40': 'Волжский',
+    '164': 'Шахты',
+    '1030609': 'Аушигер',
+    '62': 'Калуга'
   };
   const classes = useStyles();
-  
-    const currentWeekStart = startOfWeek(makeJSDateObject(new Date()), { weekStartsOn: 1 });
-    const [selectedWeekStart, setSelectedWeekStart] = useState(currentWeekStart);
-    const [loading, setLoading] = useState(false);
-    const [uniqueRoutes, setUniqueRoutes] = useState([]);
-    const [allRoutes, setAllRoutes] = useState([]);
-    const start = currentWeekStart;
-    const end = endOfWeek(selectedWeekStart, { weekStartsOn: 1 });
-    const [startDay, setStartDay] = useState(startOfToday());
-    const [endDay, setEndDay] = useState(endOfToday());
-    const handleThisWeek = () => (setStartDay(start, setEndDay(end)));
-    const handleToday = () => (setStartDay(startOfToday(), setEndDay(endOfToday())));
-    const handleThisMonth = () => (setStartDay(startOfMonth(new Date())), setEndDay(endOfMonth(new Date())));
-    const handleThisYear = () => (setStartDay(startOfYear(new Date())), setEndDay(endOfYear(new Date())));
 
-    useEffect(() => {
-      setLoading(true);
-     axios.get('http://localhost:5000/api/routes', {
-      params: {
-        startWeek: startDay,
-        endWeek: endDay
-      }})
+  const currentWeekStart = startOfWeek(makeJSDateObject(new Date()), {
+    weekStartsOn: 1
+  });
+  const [selectedWeekStart, setSelectedWeekStart] = useState(currentWeekStart);
+  const [loading, setLoading] = useState(false);
+  const [uniqueRoutes, setUniqueRoutes] = useState([]);
+  const [allRoutes, setAllRoutes] = useState([]);
+  const start = currentWeekStart;
+  const end = endOfWeek(selectedWeekStart, { weekStartsOn: 1 });
+  const [startDay, setStartDay] = useState(startOfToday());
+  const [endDay, setEndDay] = useState(endOfToday());
+  const handleThisWeek = () => setStartDay(start, setEndDay(end));
+  const handleToday = () =>
+    setStartDay(startOfToday(), setEndDay(endOfToday()));
+  const handleThisMonth = () => (
+    setStartDay(startOfMonth(new Date())), setEndDay(endOfMonth(new Date()))
+  );
+  const handleThisYear = () => (
+    setStartDay(startOfYear(new Date())), setEndDay(endOfYear(new Date()))
+  );
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get('http://localhost:5000/api/routes', {
+        params: {
+          startWeek: startDay,
+          endWeek: endDay
+        }
+      })
       .then(res => {
         setLoading(false);
         const routes = res.data;
         console.log('data recieved');
         const uniqueRoutes = routes.reduce((acc, route) => {
           const way = `${route.fromCityId}-${route.toCityId}`;
-          if(way && !acc.includes(way)) {
+          if (way && !acc.includes(way)) {
             acc.push(way);
           }
           return acc;
@@ -164,29 +182,35 @@ const Report = () => {
         // });
         setUniqueRoutes(uniqueRoutes);
         setAllRoutes(routes);
-     });
-   
-    }, [startDay]);
+      });
+  }, [startDay]);
   return (
     <div className={classes.root}>
-
-<Grid container spacing={3}>
-<Grid item xs={2}>
-<Button onClick={handleToday} className={classes.btn}>Сегодня</Button> 
-</Grid>
-<Grid item xs={2}>
-<Button onClick={handleThisWeek} className={classes.btn}>Неделя</Button>
-</Grid>
-<Grid item xs={2}>
-<Button onClick={handleThisMonth} className={classes.btn}>Месяц</Button> 
-</Grid>
-<Grid item xs={2}>
-<Button onClick={handleThisYear} className={classes.btn}>Год</Button>
-</Grid>
-<Grid item xs={4}>
-<RangePickerANTD />
-</Grid>
-</Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={2}>
+          <Button onClick={handleToday} className={classes.btn}>
+            Сегодня
+          </Button>
+        </Grid>
+        <Grid item xs={2}>
+          <Button onClick={handleThisWeek} className={classes.btn}>
+            Неделя
+          </Button>
+        </Grid>
+        <Grid item xs={2}>
+          <Button onClick={handleThisMonth} className={classes.btn}>
+            Месяц
+          </Button>
+        </Grid>
+        <Grid item xs={2}>
+          <Button onClick={handleThisYear} className={classes.btn}>
+            Год
+          </Button>
+        </Grid>
+        <Grid item xs={4}>
+          <RangePickerANTD />
+        </Grid>
+      </Grid>
 
       <Grid container spacing={3} className={classes.gridCardPas}>
         <Grid item xs={4}>
@@ -197,67 +221,112 @@ const Report = () => {
                 action={
                   <IconButton aria-label="settings">
                     <CachedIcon />
-                  </IconButton> 
+                  </IconButton>
                 }
               />
               <CardContent>
-                <Grid className={classes.headInfo}><span className={classes.trip}>Рейсы</span><span className={classes.spanSumm}>Количество</span></Grid>
+                <Grid className={classes.headInfo}>
+                  <span className={classes.trip}>Рейсы</span>
+                  <span className={classes.spanSumm}>Количество</span>
+                </Grid>
                 <div>
-                  {uniqueRoutes.map((way, i) => { 
+                  {uniqueRoutes.map((way, i) => {
                     console.log(way);
                     const idCityFrom = Number(way.slice(0, way.indexOf('-')));
-                    const idCityTo = Number(way.slice(way.indexOf('-')+1));
-                    const passengersCount = allRoutes.filter((item, j) => item.fromCityId === idCityFrom && item.toCityId === idCityTo)
-                       .reduce((acc, route) => {
-                          const passengersStatus = 3;
-                          const passengersPresent = route.passengers.filter(passenger => passenger.state === passengersStatus).length;
-                          return acc + passengersPresent;
-                       }, 0);
-                      console.log('ssdfsdfsdfsdfs',passengersCount);
+                    const idCityTo = Number(way.slice(way.indexOf('-') + 1));
+                    const passengersCount = allRoutes
+                      .filter(
+                        (item, j) =>
+                          item.fromCityId === idCityFrom &&
+                          item.toCityId === idCityTo
+                      )
+                      .reduce((acc, route) => {
+                        const passengersStatus = 3;
+                        const passengersPresent = route.passengers.filter(
+                          passenger => passenger.state === passengersStatus
+                        ).length;
+                        return acc + passengersPresent;
+                      }, 0);
+                    console.log('ssdfsdfsdfsdfs', passengersCount);
                     return (
-                    <Grid container spacing={1} className={classes.gridMarginTop} key={i}>
-                      <Grid item xs={10}>{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
-                      <Grid item xs={2}>{passengersCount}</Grid>
-                    </Grid>
-                  )})}
+                      <Grid
+                        container
+                        spacing={1}
+                        className={classes.gridMarginTop}
+                        key={i}>
+                        <Grid
+                          item
+                          xs={
+                            10
+                          }>{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
+                        <Grid item xs={2}>
+                          {passengersCount}
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
           </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper className={classes.paper}><Card className={classes.card}>
-            <CardHeader
-              title="Количество записанных пассажиров"
-              action={
-                <IconButton aria-label="settings">
-                  <CachedIcon />
-                </IconButton>
-              }
-            />
-            <CardContent>
-              <Grid className={classes.headInfo}><span className={classes.trip}>Рейсы</span><span className={classes.spanSumm}>Количество</span></Grid>
-              <div>
-                  {uniqueRoutes.map((way, i) => { 
+          <Paper className={classes.paper}>
+            <Card className={classes.card}>
+              <CardHeader
+                title="Количество записанных пассажиров"
+                action={
+                  <IconButton aria-label="settings">
+                    <CachedIcon />
+                  </IconButton>
+                }
+              />
+              <CardContent>
+                <Grid className={classes.headInfo}>
+                  <span className={classes.trip}>Рейсы</span>
+                  <span className={classes.spanSumm}>Количество</span>
+                </Grid>
+                <div>
+                  {uniqueRoutes.map((way, i) => {
                     console.log(way);
                     const idCityFrom = Number(way.slice(0, way.indexOf('-')));
-                    const idCityTo = Number(way.slice(way.indexOf('-')+1));
-                    const passengersCount = allRoutes.filter((item, j) => item.fromCityId === idCityFrom && item.toCityId === idCityTo)
-                       .reduce((acc, route) => {
-                          // const passengersStatus = 3;
-                          const passengersPresent = route.passengers.filter(passenger => (passenger.state === 2 || passenger.state === 3)).length;
-                          return acc + passengersPresent;
-                       }, 0);
-                      console.log('кол-во',passengersCount);
+                    const idCityTo = Number(way.slice(way.indexOf('-') + 1));
+                    const passengersCount = allRoutes
+                      .filter(
+                        (item, j) =>
+                          item.fromCityId === idCityFrom &&
+                          item.toCityId === idCityTo
+                      )
+                      .reduce((acc, route) => {
+                        // const passengersStatus = 3;
+                        const passengersPresent = route.passengers.filter(
+                          passenger =>
+                            passenger.state === 2 || passenger.state === 3
+                        ).length;
+                        return acc + passengersPresent;
+                      }, 0);
+                    console.log('кол-во', passengersCount);
                     return (
-                    <Grid container spacing={1} className={classes.gridMarginTop} key={i}>
-                      <Grid item xs={10}>{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
-                      <Grid item xs={2}>{passengersCount}</Grid>
-                    </Grid>
-                  )})}
+                      <Grid
+                        container
+                        spacing={1}
+                        className={classes.gridMarginTop}
+                        key={i}>
+                        <Grid
+                          item
+                          xs={
+                            10
+                          }>{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
+                        <Grid item xs={2}>
+                          {passengersCount}
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
                 </div>
-            </CardContent>
-          </Card></Paper>
+              </CardContent>
+            </Card>
+          </Paper>
         </Grid>
         <Grid item xs={4}>
           <Paper className={classes.paper}>
@@ -271,25 +340,47 @@ const Report = () => {
                 }
               />
               <CardContent>
-                <Grid className={classes.headInfo}><span className={classes.trip}>Рейсы</span><span className={classes.spanSumm}>Количество</span></Grid>
+                <Grid className={classes.headInfo}>
+                  <span className={classes.trip}>Рейсы</span>
+                  <span className={classes.spanSumm}>Количество</span>
+                </Grid>
                 <div>
-                  {uniqueRoutes.map((way, i) => { 
+                  {uniqueRoutes.map((way, i) => {
                     console.log(way);
                     const idCityFrom = Number(way.slice(0, way.indexOf('-')));
-                    const idCityTo = Number(way.slice(way.indexOf('-')+1));
-                    const passengersCount = allRoutes.filter((item, j) => item.fromCityId === idCityFrom && item.toCityId === idCityTo)
-                       .reduce((acc, route) => {
-                          const onlineChannel = 13;
-                          const passengersPresent = route.passengers.filter(passenger => passenger.sales_channel_id === onlineChannel).length;
-                          return acc + passengersPresent;
-                       }, 0);
-                      console.log('ssdfsdfsdfsdfs',passengersCount);
+                    const idCityTo = Number(way.slice(way.indexOf('-') + 1));
+                    const passengersCount = allRoutes
+                      .filter(
+                        (item, j) =>
+                          item.fromCityId === idCityFrom &&
+                          item.toCityId === idCityTo
+                      )
+                      .reduce((acc, route) => {
+                        const onlineChannel = 13;
+                        const passengersPresent = route.passengers.filter(
+                          passenger =>
+                            passenger.sales_channel_id === onlineChannel
+                        ).length;
+                        return acc + passengersPresent;
+                      }, 0);
+                    console.log('ssdfsdfsdfsdfs', passengersCount);
                     return (
-                    <Grid container spacing={1} className={classes.gridMarginTop} key={i}>
-                      <Grid item xs={10}>{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
-                      <Grid item xs={2}>{passengersCount}</Grid>
-                    </Grid>
-                  )})}
+                      <Grid
+                        container
+                        spacing={1}
+                        className={classes.gridMarginTop}
+                        key={i}>
+                        <Grid
+                          item
+                          xs={
+                            10
+                          }>{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
+                        <Grid item xs={2}>
+                          {passengersCount}
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
