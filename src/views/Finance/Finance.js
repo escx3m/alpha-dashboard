@@ -72,6 +72,7 @@ function WeekFinance() {
           setCheckState={setCheckState}
         />
       </Grid>
+       
       <Grid className={classes.gridMargin} item xs={12}>
         <WeekFinanceTable 
           routes={routes} 

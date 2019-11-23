@@ -47,7 +47,6 @@ function TableHeader (props) {
   
   return (
     <Grid className={classes.gridMarginBot} container item direction="row" spacing={1} xs={12}>
-
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Дата</Card></Grid> 
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Авт, г/н</Card></Grid> 
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Схема</Card></Grid>

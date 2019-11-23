@@ -118,7 +118,7 @@ function TableContent (props) {
                     </Grid>
                     <Grid className={classes.gridBorder} item xs={1}>
                       <Card className={classes.cardInfo}>
-                        {carTitle}, {carNumber}
+                        {carTitle} {carNumber}
                       </Card>
                     </Grid>
                     <Grid className={classes.gridBorder} item xs={1}>
