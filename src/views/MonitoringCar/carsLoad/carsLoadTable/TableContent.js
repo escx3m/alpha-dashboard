@@ -8,11 +8,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 
 const useStyles = makeStyles(theme => ({
-  //  "@global": {
-  //   ".MuiTooltip-popper": {
-  //     color: 'black',
-  //   },
-  // },
   gridBorder: {
     border:'1px solid #969696'
   },

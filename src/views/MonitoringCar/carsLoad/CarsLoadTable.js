@@ -15,7 +15,7 @@ const CarsLoadTable = ({ cars, loading, selectedWeekStart, checkState }) => {
   const classes = useStyles();
   return (
   loading 
-  ? <CircularProgress className={classes.progress} style={{textAlign:'center'}} />
+  ? <CircularProgress className={classes.progress}/>
   : <Grid container direction="row">
       <Grid container item xs={12}>
         <TableHeader 

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import CarsLoadTable from './carsLoad/CarsLoadTable';
-// import CarsLoadHeader from './carsLoad/CarsLoadHeader';
 
 import CarsLoadTable from '../MonitoringCar/carsLoad/CarsLoadTable';
 import CarsLoadHeader from '../MonitoringCar/carsLoad/CarsLoadHeader';
@@ -13,17 +11,6 @@ import { makeJSDateObject } from '../../helpers/helpers';
 import { makeStyles } from '@material-ui/core/styles';
        
 const useStyles = makeStyles(theme => ({
-  //  "@global": {
-  //   ".mnoButton-button": {
-  //     backgroundColor: "#2196f3"
-  //   },
-  //   ".mnoButton-buttonDark": {
-  //     backgroundColor: "#880e4f"
-  //   },
-  //   ".mnoButton-buttonLight": {
-  //     backgroundColor: "#e1bee7"
-  //   }
-  // },
   gridMargin: {
     marginTop:'30px',
   }
