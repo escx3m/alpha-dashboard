@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
+import { Card, CardContent, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import GroupIcon from '@material-ui/icons/Group';
 
@@ -43,7 +43,12 @@ const useStyles = makeStyles(theme => ({
   differenceValue: {
     color: theme.palette.error.dark,
     marginRight: theme.spacing(1)
-  }
+  },
+  progress: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 }));
 
 
@@ -56,8 +61,10 @@ const ToPassenger = props => {
   const [allRoutes, setAllRoutes] = useState([]);
   const [startDay, setStartDay] = useState(startOfToday());
   const [endDay, setEndDay] = useState(endOfToday());
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get('http://localhost:5000/api/routes', {
         params: {
@@ -66,6 +73,7 @@ const ToPassenger = props => {
         }
       })
       .then(res => {
+        setLoading(false);
         const routes = res.data;
         const uniqueRoutes = routes.reduce((acc, route) => []);
         setAllRoutes(routes);
@@ -91,6 +99,11 @@ const ToPassenger = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
+      {loading ? (
+        <div className={classes.progress}>
+          <CircularProgress />
+        </div>
+      ) : (
       <CardContent>
         <Grid
           container
@@ -129,6 +142,7 @@ const ToPassenger = props => {
           </Typography>
         </div>
       </CardContent>
+      )}
     </Card>
   );
 };

@@ -9,7 +9,8 @@ import {
   CardContent,
   IconButton,
   Divider,
-  Typography
+  Typography,
+  CircularProgress
 } from '@material-ui/core';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import MoneyIcon from '@material-ui/icons/Money';
@@ -40,7 +41,13 @@ const useStyles = makeStyles(theme => ({
   },
   deviceIcon: {
     color: theme.palette.icon
-  }
+  },
+  progress: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop:'50px',
+  },
 }));
 
 
@@ -50,8 +57,10 @@ const OnlineOffline = props => {
   const [allRoutes, setAllRoutes] = useState([]);
   const [startDay, setStartDay] = useState(startOfToday());
   const [endDay, setEndDay] = useState(endOfToday());
+  const [loading, setLoading] = useState(false);
   
   useEffect(() => {
+    setLoading(true);
     axios
       .get('http://localhost:5000/api/routes', {
         params: {
@@ -59,8 +68,8 @@ const OnlineOffline = props => {
           endWeek: endDay
         }
       })
-      .then(
-        res => {
+      .then(res => {
+        setLoading(false);
         const routes = res.data;
         const uniqueRoutes = routes.reduce((acc, route) => {
           const way = `${route.fromCityId}-${route.toCityId}`;
@@ -167,6 +176,11 @@ const OnlineOffline = props => {
         title="Купившие онлайн ко всем пассажирам"
       />
       <Divider />
+      {loading ? (
+        <div className={classes.progress}>
+          <CircularProgress />
+        </div>
+      ) : (
       <CardContent>
         <div className={classes.chartContainer}>
           <Doughnut
@@ -192,6 +206,7 @@ const OnlineOffline = props => {
           ))}
         </div>
       </CardContent>
+      )}
     </Card>
   );
 };

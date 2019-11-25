@@ -14,22 +14,28 @@ const useStyles = makeStyles(theme => ({
 const CarsLoadTable = ({ cars, loading, selectedWeekStart, checkState }) => {
   const classes = useStyles();
   return (
-  loading 
-  ? <CircularProgress className={classes.progress}/>
-  : <Grid container direction="row">
-      <Grid container item xs={12}>
-        <TableHeader 
-          selectedWeekStart={selectedWeekStart}
-        />
+  loading ? (
+              <div className={classes.progress}>
+                <CircularProgress />
+              </div>
+            ) 
+  :
+    ( 
+      <Grid container direction="row">
+        <Grid container item xs={12}>
+          <TableHeader 
+            selectedWeekStart={selectedWeekStart}
+          />
+        </Grid>
+        <Grid container item xs={12}>
+          <TableContent 
+            cars={cars}
+            selectedWeekStart={selectedWeekStart}
+            checkState={checkState}
+          />
+        </Grid>
       </Grid>
-      <Grid container item xs={12}>
-        <TableContent 
-          cars={cars}
-          selectedWeekStart={selectedWeekStart}
-          checkState={checkState}
-        />
-      </Grid>
-    </Grid>
+    )
   )
   };
 

@@ -7,9 +7,7 @@ import {
   CardHeader,
   IconButton,
   Button,
-  CircularProgress,
-  Typography,
-  Avatar
+  CircularProgress
 } from '@material-ui/core';
 import CachedIcon from '@material-ui/icons/Cached';
 import RangePickerANTD from '../DatePicker/rangepickerANTD';

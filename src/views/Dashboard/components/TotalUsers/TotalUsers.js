@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
+import { Card, CardContent, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
 
@@ -43,7 +43,12 @@ const useStyles = makeStyles(theme => ({
   differenceValue: {
     color: theme.palette.success.dark,
     marginRight: theme.spacing(1)
-  }
+  },
+  progress: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 }));
 
 const TotalUsers = props => {
@@ -54,8 +59,10 @@ const TotalUsers = props => {
   const [allRoutes, setAllRoutes] = useState([]);
   const [startDay, setStartDay] = useState(startOfToday());
   const [endDay, setEndDay] = useState(endOfToday());
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get('http://localhost:5000/api/routes', {
         params: {
@@ -64,6 +71,7 @@ const TotalUsers = props => {
         }
       })
       .then(res => {
+        setLoading(false);
         const routes = res.data;
         const uniqueRoutes = routes.reduce((acc, route) => []);
         setAllRoutes(routes);
@@ -84,6 +92,11 @@ const TotalUsers = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
+      {loading ? (
+        <div className={classes.progress}>
+          <CircularProgress />
+        </div>
+      ) : (
       <CardContent>
         <Grid
           container
@@ -122,6 +135,7 @@ const TotalUsers = props => {
           </Typography>
         </div>
       </CardContent>
+      )}
     </Card>
   );
 };

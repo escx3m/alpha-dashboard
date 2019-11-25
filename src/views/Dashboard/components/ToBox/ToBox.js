@@ -8,7 +8,8 @@ import {
   Grid,
   Typography,
   Avatar,
-  LinearProgress
+  LinearProgress,
+  CircularProgress
 } from '@material-ui/core';
 import WorkIcon from '@material-ui/icons/Work';
 
@@ -39,9 +40,14 @@ const useStyles = makeStyles(theme => ({
     height: 32,
     width: 32
   },
-  progress: {
+  progressLinear: {
     marginTop: theme.spacing(3)
-  }
+  },
+  progress: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 }));
 
 const ToBox = props => {
@@ -52,8 +58,10 @@ const ToBox = props => {
   const [allRoutes, setAllRoutes] = useState([]);
   const [startDay, setStartDay] = useState(startOfToday());
   const [endDay, setEndDay] = useState(endOfToday());
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get('http://localhost:5000/api/routes', {
         params: {
@@ -62,6 +70,7 @@ const ToBox = props => {
         }
       })
       .then(res => {
+        setLoading(false);
         const routes = res.data;
         const uniqueRoutes = routes.reduce((acc, route) => []);
         setAllRoutes(routes);
@@ -83,6 +92,11 @@ const ToBox = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
+      {loading ? (
+        <div className={classes.progress}>
+          <CircularProgress />
+        </div>
+      ) : (
       <CardContent>
         <Grid
           container
@@ -106,11 +120,12 @@ const ToBox = props => {
           </Grid>
         </Grid>
         <LinearProgress
-          className={classes.progress}
+          className={classes.progressLinear}
           value={75.5}
           variant="determinate"
         />
       </CardContent>
+      )}
     </Card>
   );
 };
