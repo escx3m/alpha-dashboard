@@ -84,6 +84,7 @@ function TableContent (props) {
                 const carNumber = carRoutes[0].car.number;
                 const carOwner = carRoutes[0].car.owner;
                 const carDriver = carRoutes[0].driver;
+                
                 const human = 3; 
                 const payNot = 1;
                 const payCash = 4;
