@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TasksProgress = props => {
+const ToBox = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -115,8 +115,8 @@ const TasksProgress = props => {
   );
 };
 
-TasksProgress.propTypes = {
+ToBox.propTypes = {
   className: PropTypes.string
 };
 
-export default TasksProgress;
+export default ToBox;

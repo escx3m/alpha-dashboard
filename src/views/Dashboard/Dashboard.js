@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core';
 import {
   ToPassenger,
   TotalUsers,
-  TasksProgress,
+  ToBox,
   TotalProfit,
   LatestSales,
   OnlineOffline,
@@ -44,7 +44,7 @@ const Dashboard = () => {
           xl={3}
           xs={12}
         >
-          <TasksProgress />
+          <ToBox />
         </Grid>
         <Grid
           item

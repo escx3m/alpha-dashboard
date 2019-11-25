@@ -482,6 +482,73 @@ const Report = () => {
           </Grid>
 
           <Grid
+          className={classes.gridCardPas}
+          container
+          spacing={3}
+        >
+          <Grid
+            item
+            xs={4}
+          >
+            <Card className={classes.card}>
+              <CardHeader
+                action={
+                  <IconButton aria-label="settings">
+                    <CachedIcon />
+                  </IconButton>
+                }
+                title="Перевезено посылок"
+              />
+              <CardContent>
+                <Grid className={classes.headInfo}>
+                  <span className={classes.trip}>Рейсы</span>
+                  <span className={classes.spanSumm}>Количество</span>
+                </Grid>
+                <div>
+                  {uniqueRoutes.map((way, i) => {
+                    console.log(way);
+                    const idCityFrom = Number(way.slice(0, way.indexOf('-')));
+                    const idCityTo = Number(way.slice(way.indexOf('-') + 1));
+                    const passengersCount = allRoutes
+                      .filter(
+                        (item, j) =>
+                          item.fromCityId === idCityFrom &&
+                          item.toCityId === idCityTo
+                      )
+                      .reduce((acc, route) => {
+                        const passengersType = 2;
+                        const passengersPresent = route.passengers.filter(
+                          passenger => passenger.type === passengersType
+                        ).length;
+                        return acc + passengersPresent;
+                      }, 0);
+                    return (
+                      <Grid
+                        className={classes.gridMarginTop}
+                        container
+                        key={i}
+                        spacing={1}
+                      >
+                        <Grid
+                          item
+                          xs={
+                            10
+                          }
+                        >{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
+                        <Grid
+                          item
+                          xs={2}
+                        >
+                          {passengersCount}
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid
             item
             xs={4}
           >
@@ -546,6 +613,7 @@ const Report = () => {
               </CardContent>
             </Card>
           </Grid>
+        </Grid>
         </Grid>
       )}
     </div>
