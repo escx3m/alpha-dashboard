@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-
 import CarsLoadTable from '../MonitoringCar/carsLoad/CarsLoadTable';
 import CarsLoadHeader from '../MonitoringCar/carsLoad/CarsLoadHeader';
-
 import { Grid } from '@material-ui/core';
 import axios from 'axios';
-import { startOfWeek, endOfWeek, isSameDay } from 'date-fns';
+import { startOfWeek, endOfWeek } from 'date-fns';
 import { makeJSDateObject } from '../../helpers/helpers';
-                 
 import { makeStyles } from '@material-ui/core/styles';
        
 const useStyles = makeStyles(theme => ({

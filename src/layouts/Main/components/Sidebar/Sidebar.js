@@ -11,8 +11,7 @@ import InsertChartIcon from '@material-ui/icons/InsertChart';
 import DeviceHubIcon from '@material-ui/icons/DeviceHub';
 import MoneyIcon from '@material-ui/icons/Money';
 import GroupIcon from '@material-ui/icons/Group';
-
-import { Profile, SidebarNav, UpgradePlan } from './components';
+import { Profile, SidebarNav } from './components';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -103,7 +102,6 @@ const Sidebar = props => {
           className={classes.nav}
           pages={pages}
         />
-        <UpgradePlan />
       </div>
     </Drawer>
   );

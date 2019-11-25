@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { makeJSDateObject } from '../../../../helpers/helpers';
-import DateFnsUtils from '@date-io/date-fns';
 
 const useStyles = makeStyles(theme => ({
   card: {
