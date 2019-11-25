@@ -7,7 +7,9 @@ import {
   CardHeader,
   IconButton,
   Button,
-  CircularProgress
+  CircularProgress,
+  Typography,
+  Avatar
 } from '@material-ui/core';
 import CachedIcon from '@material-ui/icons/Cached';
 import RangePickerANTD from '../DatePicker/rangepickerANTD';
@@ -71,9 +73,21 @@ const useStyles = makeStyles(theme => ({
     fontSize: '18px'
   },
   progress: {
-  marginTop: '20px',
-  textAlign:'center',
+    marginTop: '20px',
+    textAlign: 'center'
   },
+  title: {
+    fontWeight: 700
+  },
+  avatar: {
+    backgroundColor: theme.palette.error.main,
+    height: 56,
+    width: 56
+  },
+  icon: {
+    height: 32,
+    width: 32
+  }
 }));
 
 const Report = () => {
@@ -130,7 +144,7 @@ const Report = () => {
     '1030609': 'Аушигер',
     '1031804': 'Городовиковск',
     '1053557': 'Внуково',
-    '1054308': 'Домодедово',
+    '1054308': 'Домодедово'
   };
   const classes = useStyles();
 
@@ -185,51 +199,106 @@ const Report = () => {
         setAllRoutes(routes);
       });
   }, [startDay]);
+  const passengersOnline = allRoutes.reduce((acc, route) => {
+    const onlineChannel = 13;
+    const passengersPresent = route.passengers.filter(
+      passenger => passenger.sales_channel_id === onlineChannel
+    ).length;
+    return acc + passengersPresent;
+  }, 0);
+
+  const passengersOffline = allRoutes.reduce((acc, route) => {
+    const onlineChannel = 13;
+    const passengersPresent = route.passengers.filter(
+      passenger => passenger.sales_channel_id !== onlineChannel && passenger.sales_channel_id !== undefined
+    ).length;
+    return acc + passengersPresent;
+  }, 0);
+
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={2}>
-          <Button onClick={handleToday} className={classes.btn}>
+      <Grid
+        container
+        spacing={3}
+      >
+        <Grid
+          item
+          xs={2}
+        >
+          <Button
+            className={classes.btn}
+            onClick={handleToday}
+          >
             Сегодня
           </Button>
         </Grid>
-        <Grid item xs={2}>
-          <Button onClick={handleThisWeek} className={classes.btn}>
+        <Grid
+          item
+          xs={2}
+        >
+          <Button
+            className={classes.btn}
+            onClick={handleThisWeek}
+          >
             Неделя
           </Button>
         </Grid>
-        <Grid item xs={2}>
-          <Button onClick={handleThisMonth} className={classes.btn}>
+        <Grid
+          item
+          xs={2}
+        >
+          <Button
+            className={classes.btn}
+            onClick={handleThisMonth}
+          >
             Месяц
           </Button>
         </Grid>
-        <Grid item xs={2}>
-          <Button onClick={handleThisYear} className={classes.btn}>
+        <Grid
+          item
+          xs={2}
+        >
+          <Button
+            className={classes.btn}
+            onClick={handleThisYear}
+          >
             Год
           </Button>
         </Grid>
-        <Grid item xs={4}>
+        <Grid
+          item
+          xs={4}
+        >
           <RangePickerANTD
-            startDay={startDay}
             endDay={endDay}
-            setStartDay={setStartDay}
             setEndDay={setEndDay}
+            setStartDay={setStartDay}
+            startDay={startDay}
           />
         </Grid>
       </Grid>
-      {loading 
-  ? <div className={classes.progress}><CircularProgress /></div>
-  :
-      <Grid container spacing={3} className={classes.gridCardPas}>
-        <Grid item xs={4}>
+      {loading ? (
+        <div className={classes.progress}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <Grid
+          className={classes.gridCardPas}
+          container
+          spacing={3}
+        >
+          <Grid
+            item
+            xs={4}
+          >
             <Card className={classes.card}>
               <CardHeader
-                title="Перевезено пассажиров"
                 action={
                   <IconButton aria-label="settings">
                     <CachedIcon />
                   </IconButton>
                 }
+                title="Перевезено пассажиров"
               />
               <CardContent>
                 <Grid className={classes.headInfo}>
@@ -249,24 +318,32 @@ const Report = () => {
                       )
                       .reduce((acc, route) => {
                         const passengersStatus = 3;
+                        const passengersType = 1;
                         const passengersPresent = route.passengers.filter(
                           passenger => passenger.state === passengersStatus
+                          &&
+                          passenger.type === passengersType
                         ).length;
                         return acc + passengersPresent;
                       }, 0);
                     console.log('ssdfsdfsdfsdfs', passengersCount);
                     return (
                       <Grid
-                        container
-                        spacing={1}
                         className={classes.gridMarginTop}
-                        key={i}>
+                        container
+                        key={i}
+                        spacing={1}
+                      >
                         <Grid
                           item
                           xs={
                             10
-                          }>{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
-                        <Grid item xs={2}>
+                          }
+                        >{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
+                        <Grid
+                          item
+                          xs={2}
+                        >
                           {passengersCount}
                         </Grid>
                       </Grid>
@@ -275,16 +352,19 @@ const Report = () => {
                 </div>
               </CardContent>
             </Card>
-        </Grid>
-        <Grid item xs={4}>
+          </Grid>
+          <Grid
+            item
+            xs={4}
+          >
             <Card className={classes.card}>
               <CardHeader
-                title="Количество записанных пассажиров"
                 action={
                   <IconButton aria-label="settings">
                     <CachedIcon />
                   </IconButton>
                 }
+                title="Количество записанных пассажиров"
               />
               <CardContent>
                 <Grid className={classes.headInfo}>
@@ -313,16 +393,21 @@ const Report = () => {
                     console.log('кол-во', passengersCount);
                     return (
                       <Grid
-                        container
-                        spacing={1}
                         className={classes.gridMarginTop}
-                        key={i}>
+                        container
+                        key={i}
+                        spacing={1}
+                      >
                         <Grid
                           item
                           xs={
                             10
-                          }>{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
-                        <Grid item xs={2}>
+                          }
+                        >{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
+                        <Grid
+                          item
+                          xs={2}
+                        >
                           {passengersCount}
                         </Grid>
                       </Grid>
@@ -331,16 +416,19 @@ const Report = () => {
                 </div>
               </CardContent>
             </Card>
-        </Grid>
-        <Grid item xs={4}>
+          </Grid>
+          <Grid
+            item
+            xs={4}
+          >
             <Card className={classes.card}>
               <CardHeader
-                title="Количество купивших онлайн"
                 action={
                   <IconButton aria-label="settings">
                     <CachedIcon />
                   </IconButton>
                 }
+                title="Количество купивших онлайн"
               />
               <CardContent>
                 <Grid className={classes.headInfo}>
@@ -369,16 +457,21 @@ const Report = () => {
                     console.log('ssdfsdfsdfsdfs', passengersCount);
                     return (
                       <Grid
-                        container
-                        spacing={1}
                         className={classes.gridMarginTop}
-                        key={i}>
+                        container
+                        key={i}
+                        spacing={1}
+                      >
                         <Grid
                           item
                           xs={
                             10
-                          }>{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
-                        <Grid item xs={2}>
+                          }
+                        >{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
+                        <Grid
+                          item
+                          xs={2}
+                        >
                           {passengersCount}
                         </Grid>
                       </Grid>
@@ -387,9 +480,75 @@ const Report = () => {
                 </div>
               </CardContent>
             </Card>
+          </Grid>
+
+          <Grid
+            item
+            xs={4}
+          >
+            <Card className={classes.card}>
+              <CardHeader
+                action={
+                  <IconButton aria-label="settings">
+                    <CachedIcon />
+                  </IconButton>
+                }
+                title="Купившие онлайн ко всем пассажирам"
+              />
+              <CardContent>
+                <Grid className={classes.headInfo}>
+                  <span className={classes.trip}>Тип оплаты</span>
+                  <span className={classes.spanSumm}>Количество</span>
+                </Grid>
+                <div>
+                  <Grid
+                    className={classes.gridMarginTop}
+                    container
+                    spacing={1}
+                  >
+                    <Grid
+                      item
+                      xs={10}
+                    >
+                      Онлайн
+                    </Grid>
+                    <Grid
+                      item
+                      xs={2}
+                    >
+                      {passengersOnline}
+                    </Grid>
+                    <Grid
+                      item
+                      xs={10}
+                    >
+                      Не онлайн
+                    </Grid>
+                    <Grid
+                      item
+                      xs={2}
+                    >
+                      {passengersOffline}
+                    </Grid>
+                    <Grid
+                      item
+                      xs={10}
+                    >
+                      Соотношение
+                    </Grid>
+                    <Grid
+                      item
+                      xs={2}
+                    >
+                      {Math.round (passengersOnline/(passengersOffline+passengersOnline)*100)}%
+                    </Grid>
+                  </Grid>
+                </div>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
-}
+      )}
     </div>
   );
 };

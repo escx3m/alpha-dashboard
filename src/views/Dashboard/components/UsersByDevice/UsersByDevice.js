@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -11,10 +11,21 @@ import {
   Divider,
   Typography
 } from '@material-ui/core';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import TabletMacIcon from '@material-ui/icons/TabletMac';
+import MoneyIcon from '@material-ui/icons/Money';
+import PaymentIcon from '@material-ui/icons/Payment';
+
+import axios from 'axios';
+import {
+  startOfWeek,
+  endOfWeek,
+  startOfToday,
+  endOfToday,
+  startOfMonth,
+  endOfMonth,
+  startOfYear,
+  endOfYear
+} from 'date-fns';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,7 +49,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
+
 const UsersByDevice = props => {
+  
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -47,7 +61,7 @@ const UsersByDevice = props => {
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
+        data: [63, 37],
         backgroundColor: [
           theme.palette.primary.main,
           theme.palette.error.main,
@@ -58,7 +72,8 @@ const UsersByDevice = props => {
         hoverBorderColor: theme.palette.white
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: ['Онлайн', 'Не онлайн']
+    // labels: ['Онлайн', 'Не онлайн', 'Mobile']
   };
 
   const options = {
@@ -85,23 +100,23 @@ const UsersByDevice = props => {
 
   const devices = [
     {
-      title: 'Desktop',
+      title: 'Онлайн',
       value: '63',
-      icon: <LaptopMacIcon />,
+      icon: <PaymentIcon />,
       color: theme.palette.primary.main
     },
     {
-      title: 'Tablet',
+      title: 'Не онлайн',
       value: '15',
-      icon: <TabletMacIcon />,
+      icon: <MoneyIcon />,
       color: theme.palette.error.main
     },
-    {
-      title: 'Mobile',
-      value: '23',
-      icon: <PhoneIphoneIcon />,
-      color: theme.palette.warning.main
-    }
+    // {
+    //   title: 'Mobile',
+    //   value: '23',
+    //   icon: <PhoneIphoneIcon />,
+    //   color: theme.palette.warning.main
+    // }
   ];
 
   return (
@@ -115,7 +130,7 @@ const UsersByDevice = props => {
             <RefreshIcon />
           </IconButton>
         }
-        title="Users By Device"
+        title="Купившие онлайн ко всем пассажирам"
       />
       <Divider />
       <CardContent>
