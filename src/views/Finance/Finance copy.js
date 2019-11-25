@@ -11,7 +11,7 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem 
+  MenuItem
 } from '@material-ui/core';
 
 import CachedIcon from '@material-ui/icons/Cached';
@@ -34,14 +34,14 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     maxWidth: 'auto',
-    width: '100%',
+    width: '100%'
   },
   profit: {
     background: 'rgb(244,249,253)',
     width: '100%',
     fontSize: '42px',
     textAlign: 'center',
-    padding: '24px',
+    padding: '24px'
   },
   profitTrip: {
     background: 'rgb(244,249,253)',
@@ -54,30 +54,30 @@ const useStyles = makeStyles(theme => ({
   paper: {
     background: 'rgb(244,249,253)',
     textAlign: 'center',
-    padding: '24px',
+    padding: '24px'
   },
   allBlockPay: {
-    marginTop: '50px',
+    marginTop: '50px'
   },
   p1: {
-    fontSize: '24px',
+    fontSize: '24px'
   },
   p2: {
     marginTop: '20px',
-    fontSize:'20px',
+    fontSize: '20px'
   },
   btn: {
     width: '150px',
     height: '50px',
     border: '1px solid #3f51b5',
     background: 'white',
-    color:'black',
-    fontSize: '18px',
+    color: 'black',
+    fontSize: '18px'
   },
   formControl: {
     margin: theme.spacing(1),
-    width: 300,
-  },
+    width: 300
+  }
 }));
 
 const Report = () => {
@@ -95,134 +95,158 @@ const Report = () => {
   };
   return (
     <div>
-    <div className={classes.root}>
-    <Grid container spacing={3}>
-<Grid item xs={2}>
-<Button className={classes.btn}>Сегодня</Button>
-</Grid>
-<Grid item xs={2}>
-<Button className={classes.btn}>Неделя</Button>
-</Grid>
-<Grid item xs={2}>
-<Button className={classes.btn}>Месяц</Button>
-</Grid>
-<Grid item xs={2}>
-<Button className={classes.btn}>Год</Button>
-</Grid>
-<Grid item xs={4}>
-<RangePickerANTD />
-</Grid>
-</Grid>
-      
-      <Grid style={{marginTop:'50px'}}>
-        <Card className={classes.card}>
-          <CardHeader
-            title="Прибыль по всем рейсам"
-            action={
-              <IconButton aria-label="settings">
-                <CachedIcon />
-              </IconButton>
-            }
-          />
-          <CardContent>
-            <Grid className={classes.profit}>1 433 523 Р</Grid>
-            <div className={classes.allBlockPay}>
-              <Grid container spacing={5}>
-                <Grid item xs={4}>
-                  <Paper className={classes.paper}><p className={classes.p1}>Наличные</p> <p className={classes.p2}>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paper}><p className={classes.p1}>Безналичный</p> <p className={classes.p2}>695 321</p></Paper>
-                </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paper}><p className={classes.p1}>Возврат</p> <p className={classes.p2}>695 321</p></Paper>
-                </Grid>
-              </Grid>
-            </div>
-          </CardContent>
-        </Card>
-      </Grid>
+      <div className={classes.root}>
+        <Grid container spacing={3}>
+          <Grid item xs={2}>
+            <Button className={classes.btn}>Сегодня</Button>
+          </Grid>
+          <Grid item xs={2}>
+            <Button className={classes.btn}>Неделя</Button>
+          </Grid>
+          <Grid item xs={2}>
+            <Button className={classes.btn}>Месяц</Button>
+          </Grid>
+          <Grid item xs={2}>
+            <Button className={classes.btn}>Год</Button>
+          </Grid>
+          <Grid item xs={4}>
+            <RangePickerANTD />
+          </Grid>
+        </Grid>
 
-      <Grid style={{marginTop:'50px'}}>
-        <Card className={classes.card}>
-          <CardHeader
-            title="Прибыль по направлениям"
-            action={
-              <IconButton aria-label="settings">
-                <CachedIcon />
-              </IconButton>
-            }
-          />
-          <CardContent style={{textAlign:'center'}}>
-          <div>
-          <Grid container spacing={3}>
-<Grid item xs={4}>
-<FormControl variant="outlined" className={classes.formControl} > 
-        <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-          Откуда
-        </InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          value={age}
-          onChange={handleChange}
-          labelWidth={labelWidth}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Элиста</MenuItem>
-          <MenuItem value={20}>Волгоград</MenuItem>
-          <MenuItem value={30}>Ростов-на-Дону</MenuItem>
-          <MenuItem value={40}>Астрахань</MenuItem>
-        </Select>
-      </FormControl>
-</Grid>
-<Grid item xs={4}>
-<FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-          Куда
-        </InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          value={age}
-          onChange={handleChange}
-          labelWidth={labelWidth}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Элиста</MenuItem>
-          <MenuItem value={20}>Волгоград</MenuItem>
-          <MenuItem value={30}>Ростов-на-Дону</MenuItem>
-          <MenuItem value={40}>Астрахань</MenuItem>
-        </Select>
-      </FormControl> 
-</Grid>
-<Grid item xs={4}>
-<RangePickerANTD />
-</Grid>
-</Grid>
-</div>
-            <Grid className={classes.profitTrip}>1 433 523 Р</Grid>
-            <div className={classes.allBlockPay}>
-              <Grid container spacing={5}>
-                <Grid item xs={4}>
-                  <Paper className={classes.paper}><p className={classes.p1}>Наличные</p> <p className={classes.p2}>695 321</p></Paper>
+        <Grid style={{ marginTop: '50px' }}>
+          <Card className={classes.card}>
+            <CardHeader
+              title="Прибыль по всем рейсам"
+              action={
+                <IconButton aria-label="settings">
+                  <CachedIcon />
+                </IconButton>
+              }
+            />
+            <CardContent>
+              <Grid className={classes.profit}>1 433 523 Р</Grid>
+              <div className={classes.allBlockPay}>
+                <Grid container spacing={5}>
+                  <Grid item xs={4}>
+                    <Paper className={classes.paper}>
+                      <p className={classes.p1}>Наличные</p>{' '}
+                      <p className={classes.p2}>695 321</p>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Paper className={classes.paper}>
+                      <p className={classes.p1}>Безналичный</p>{' '}
+                      <p className={classes.p2}>695 321</p>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Paper className={classes.paper}>
+                      <p className={classes.p1}>Возврат</p>{' '}
+                      <p className={classes.p2}>695 321</p>
+                    </Paper>
+                  </Grid>
                 </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paper}><p className={classes.p1}>Безналичный</p> <p className={classes.p2}>695 321</p></Paper>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid style={{ marginTop: '50px' }}>
+          <Card className={classes.card}>
+            <CardHeader
+              title="Прибыль по направлениям"
+              action={
+                <IconButton aria-label="settings">
+                  <CachedIcon />
+                </IconButton>
+              }
+            />
+            <CardContent style={{ textAlign: 'center' }}>
+              <div>
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                    <FormControl
+                      variant="outlined"
+                      className={classes.formControl}>
+                      <InputLabel
+                        ref={inputLabel}
+                        id="demo-simple-select-outlined-label">
+                        Откуда
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={age}
+                        onChange={handleChange}
+                        labelWidth={labelWidth}>
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Элиста</MenuItem>
+                        <MenuItem value={20}>Волгоград</MenuItem>
+                        <MenuItem value={30}>Ростов-на-Дону</MenuItem>
+                        <MenuItem value={40}>Астрахань</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <FormControl
+                      variant="outlined"
+                      className={classes.formControl}>
+                      <InputLabel
+                        ref={inputLabel}
+                        id="demo-simple-select-outlined-label">
+                        Куда
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={age}
+                        onChange={handleChange}
+                        labelWidth={labelWidth}>
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Элиста</MenuItem>
+                        <MenuItem value={20}>Волгоград</MenuItem>
+                        <MenuItem value={30}>Ростов-на-Дону</MenuItem>
+                        <MenuItem value={40}>Астрахань</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <RangePickerANTD />
+                  </Grid>
                 </Grid>
-                <Grid item xs={4}>
-                  <Paper className={classes.paper}><p className={classes.p1}>Возврат</p> <p className={classes.p2}>695 321</p></Paper>
+              </div>
+              <Grid className={classes.profitTrip}>1 433 523 Р</Grid>
+              <div className={classes.allBlockPay}>
+                <Grid container spacing={5}>
+                  <Grid item xs={4}>
+                    <Paper className={classes.paper}>
+                      <p className={classes.p1}>Наличные</p>{' '}
+                      <p className={classes.p2}>695 321</p>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Paper className={classes.paper}>
+                      <p className={classes.p1}>Безналичный</p>{' '}
+                      <p className={classes.p2}>695 321</p>
+                    </Paper>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Paper className={classes.paper}>
+                      <p className={classes.p1}>Возврат</p>{' '}
+                      <p className={classes.p2}>695 321</p>
+                    </Paper>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </div>
-          </CardContent>
-        </Card>
-      </Grid>
-    </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
+      </div>
     </div>
   );
 };

@@ -1,11 +1,9 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
-import { format, startOfWeek, endOfWeek, getISODay, isSameDay, eachDayOfInterval } from 'date-fns';
+import { Grid, Card } from '@material-ui/core';
+import { format, endOfWeek, isSameDay, eachDayOfInterval } from 'date-fns';
 import { makeJSDateObject } from '../../../../helpers/helpers';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
 import ruLocale from "date-fns/locale/ru";
-
 
 const useStyles = makeStyles(theme => ({
   borderCard: {
@@ -38,9 +36,6 @@ function TableHeader (props) {
   const start = selectedWeekStart; 
   const end = endOfWeek(selectedWeekStart, { weekStartsOn: 1 });
   const classes = useStyles();
-
-
-  let d = makeJSDateObject(start);
   
   return (
     <Grid className={classes.gridMarginBot} container item direction="row" spacing={1} xs={12}>

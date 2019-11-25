@@ -13,14 +13,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
 function CarsLoad() {
   const currentWeekStart = startOfWeek(makeJSDateObject(new Date()), { weekStartsOn: 1 });
   const [selectedWeekStart, setSelectedWeekStart] = useState(currentWeekStart);
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(false);
-  const end = endOfWeek(selectedWeekStart, { weekStartsOn: 1 });
   const start = selectedWeekStart;
+  const end = endOfWeek(selectedWeekStart, { weekStartsOn: 1 });
   const classes = useStyles();
   const [checkState, setCheckState] = React.useState({
     checked8: false,

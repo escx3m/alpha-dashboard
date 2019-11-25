@@ -1,11 +1,8 @@
-import React, { Fragment } from 'react';
-import { Grid } from '@material-ui/core';
+import React from 'react';
+import { Grid, Card, Tooltip  } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import { eachDayOfInterval, startOfWeek, endOfWeek, isSameDay } from 'date-fns';
+import { eachDayOfInterval, endOfWeek, isSameDay } from 'date-fns';
 import { makeJSDateObject } from '../../../../helpers/helpers';
-import Tooltip from '@material-ui/core/Tooltip';
-
 
 const useStyles = makeStyles(theme => ({
   gridBorder: {
@@ -78,8 +75,6 @@ function TableContent (props) {
   const start = selectedWeekStart;
   const end = endOfWeek(selectedWeekStart, { weekStartsOn: 1 });
   const maxTrips = Math.max(...cars.map(car => Math.ceil(car.carRoutes.length / 2)));
-
-  let d = makeJSDateObject(start);
 
   const renderRow = (item, index) => {
     const { car, carRoutes, scheme } = item;

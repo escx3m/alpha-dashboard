@@ -1,11 +1,6 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
-import { format, endOfWeek, isSameDay, eachDayOfInterval } from 'date-fns';
-import { makeJSDateObject } from '../../../../helpers/helpers';
+import { Grid, Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import ruLocale from "date-fns/locale/ru";
-
 
 const useStyles = makeStyles(theme => ({
   borderCard: {
@@ -40,9 +35,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function TableHeader (props) {
-  const { selectedWeekStart } = props;
-  const start = selectedWeekStart; 
-  const end = endOfWeek(selectedWeekStart, { weekStartsOn: 1 });
   const classes = useStyles();
   
   return (
@@ -58,19 +50,6 @@ function TableHeader (props) {
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Офис</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Всего</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>З/П</Card></Grid>
-
-      {/* {eachDayOfInterval({ start, end })
-            .map((currentDay, i) => {
-              
-              return (
-                <Grid key={i} item xs={1} className={classes.borderCard}>
-                  <Card className={isSameDay(makeJSDateObject(new Date()), currentDay) ? classes.cardToday : classes.card}>
-                    {`${format(currentDay, "d MMM", {locale:ruLocale})} ${format(currentDay, "EEEEEE", {locale:ruLocale})} `}
-                  </Card>
-                </Grid>
-               );
-            }) 
-        } */}
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Итого</Card></Grid>
     </Grid>
   );

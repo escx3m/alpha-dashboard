@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
+import CachedIcon from '@material-ui/icons/Cached';
+import RangePickerANTD from '../DatePicker/rangepickerANTD';
+import { makeJSDateObject } from '../../helpers/helpers';
+import axios from 'axios';
 import {
   Grid,
   Card,
@@ -9,9 +13,6 @@ import {
   Button,
   CircularProgress
 } from '@material-ui/core';
-import CachedIcon from '@material-ui/icons/Cached';
-import RangePickerANTD from '../DatePicker/rangepickerANTD';
-import axios from 'axios';
 import {
   startOfWeek,
   endOfWeek,
@@ -22,7 +23,6 @@ import {
   startOfYear,
   endOfYear
 } from 'date-fns';
-import { makeJSDateObject } from '../../helpers/helpers';
 
 const useStyles = makeStyles(theme => ({
   //  "@global": {
@@ -133,27 +133,24 @@ const Report = () => {
     '1054308': 'Домодедово',
   };
   const classes = useStyles();
-
-  const currentWeekStart = startOfWeek(makeJSDateObject(new Date()), {
-    weekStartsOn: 1
-  });
-  const [selectedWeekStart, setSelectedWeekStart] = useState(currentWeekStart);
   const [loading, setLoading] = useState(false);
   const [uniqueRoutes, setUniqueRoutes] = useState([]);
   const [allRoutes, setAllRoutes] = useState([]);
-  const start = currentWeekStart;
-  const end = endOfWeek(selectedWeekStart, { weekStartsOn: 1 });
+  const start = startOfWeek(makeJSDateObject(new Date()), {
+    weekStartsOn: 1
+  });
+  const end = endOfWeek(start, { weekStartsOn: 1 });
   const [startDay, setStartDay] = useState(startOfToday());
   const [endDay, setEndDay] = useState(endOfToday());
   const handleThisWeek = () => setStartDay(start, setEndDay(end));
   const handleToday = () =>
     setStartDay(startOfToday(), setEndDay(endOfToday()));
-  const handleThisMonth = () => (
-    setStartDay(startOfMonth(new Date())), setEndDay(endOfMonth(new Date()))
-  );
-  const handleThisYear = () => (
-    setStartDay(startOfYear(new Date())), setEndDay(endOfYear(new Date()))
-  );
+  const handleThisMonth = () => {
+    setStartDay(startOfMonth(new Date())); setEndDay(endOfMonth(new Date()))
+  };
+  const handleThisYear = () => {
+    setStartDay(startOfYear(new Date())); setEndDay(endOfYear(new Date()))
+  };
 
   useEffect(() => {
     setLoading(true);
