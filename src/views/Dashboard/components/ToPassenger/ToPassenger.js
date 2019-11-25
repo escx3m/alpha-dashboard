@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import MoneyIcon from '@material-ui/icons/Money';
+import GroupIcon from '@material-ui/icons/Group';
+
+import axios from 'axios';
+import {
+  startOfToday,
+  endOfToday,
+} from 'date-fns';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,8 +46,43 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Budget = props => {
+
+
+
+
+const ToPassenger = props => {
   const { className, ...rest } = props;
+
+  const [allRoutes, setAllRoutes] = useState([]);
+  const [startDay, setStartDay] = useState(startOfToday());
+  const [endDay, setEndDay] = useState(endOfToday());
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/api/routes', {
+        params: {
+          startWeek: startDay,
+          endWeek: endDay
+        }
+      })
+      .then(res => {
+        const routes = res.data;
+        const uniqueRoutes = routes.reduce((acc, route) => []);
+        setAllRoutes(routes);
+      });
+  }, [startDay]);
+
+  const passengersCount = allRoutes
+  .reduce((acc, route) => {
+    const passengersStatus = 3;
+    const passengersType = 1;
+    const passengersPresent = route.passengers.filter(
+      passenger => passenger.state === passengersStatus
+      &&
+      passenger.type === passengersType
+    ).length;
+    return acc + passengersPresent;
+  }, 0);
 
   const classes = useStyles();
 
@@ -62,13 +103,13 @@ const Budget = props => {
               gutterBottom
               variant="body2"
             >
-              Онлайн ко всем пассажирам
+              Перевезено пассажиров
             </Typography>
-            <Typography variant="h3">$24,000</Typography>
+            <Typography variant="h3">{passengersCount}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <MoneyIcon className={classes.icon} />
+              <GroupIcon className={classes.icon} />
             </Avatar>
           </Grid>
         </Grid>
@@ -92,8 +133,8 @@ const Budget = props => {
   );
 };
 
-Budget.propTypes = {
+ToPassenger.propTypes = {
   className: PropTypes.string
 };
 
-export default Budget;
+export default ToPassenger;

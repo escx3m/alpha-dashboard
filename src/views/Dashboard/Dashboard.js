@@ -3,12 +3,12 @@ import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 
 import {
-  Budget,
+  ToPassenger,
   TotalUsers,
   TasksProgress,
   TotalProfit,
   LatestSales,
-  UsersByDevice,
+  OnlineOffline,
   LatestProducts,
   LatestOrders
 } from './components';
@@ -35,16 +35,7 @@ const Dashboard = () => {
           xl={3}
           xs={12}
         >
-          <Budget />
-        </Grid>
-        <Grid
-          item
-          lg={3}
-          sm={6}
-          xl={3}
-          xs={12}
-        >
-          <TotalUsers />
+          <ToPassenger />
         </Grid>
         <Grid
           item
@@ -54,6 +45,15 @@ const Dashboard = () => {
           xs={12}
         >
           <TasksProgress />
+        </Grid>
+        <Grid
+          item
+          lg={3}
+          sm={6}
+          xl={3}
+          xs={12}
+        >
+          <TotalUsers />
         </Grid>
         <Grid
           item
@@ -80,7 +80,7 @@ const Dashboard = () => {
           xl={3}
           xs={12}
         >
-          <UsersByDevice />
+          <OnlineOffline />
         </Grid>
         {/* <Grid
           item

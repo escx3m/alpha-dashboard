@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
@@ -10,7 +10,13 @@ import {
   Avatar,
   LinearProgress
 } from '@material-ui/core';
-import InsertChartIcon from '@material-ui/icons/InsertChartOutlined';
+import WorkIcon from '@material-ui/icons/Work';
+
+import axios from 'axios';
+import {
+  startOfToday,
+  endOfToday,
+} from 'date-fns';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -43,6 +49,35 @@ const TasksProgress = props => {
 
   const classes = useStyles();
 
+  const [allRoutes, setAllRoutes] = useState([]);
+  const [startDay, setStartDay] = useState(startOfToday());
+  const [endDay, setEndDay] = useState(endOfToday());
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/api/routes', {
+        params: {
+          startWeek: startDay,
+          endWeek: endDay
+        }
+      })
+      .then(res => {
+        const routes = res.data;
+        const uniqueRoutes = routes.reduce((acc, route) => []);
+        setAllRoutes(routes);
+      });
+  }, [startDay]);
+
+  const passengersCount = allRoutes
+  .reduce((acc, route) => {
+    const passengersStatus = 3;
+    const passengersType = 2;
+    const passengersPresent = route.passengers.filter(
+      passenger => passenger.type === passengersType
+    ).length;
+    return acc + passengersPresent;
+  }, 0);
+
   return (
     <Card
       {...rest}
@@ -60,13 +95,13 @@ const TasksProgress = props => {
               gutterBottom
               variant="body2"
             >
-              TASKS PROGRESS
+              Перевезено посылок
             </Typography>
-            <Typography variant="h3">75.5%</Typography>
+            <Typography variant="h3">{passengersCount}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <InsertChartIcon className={classes.icon} />
+              <WorkIcon className={classes.icon} />
             </Avatar>
           </Grid>
         </Grid>

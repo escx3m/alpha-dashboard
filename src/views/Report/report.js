@@ -454,7 +454,6 @@ const Report = () => {
                         ).length;
                         return acc + passengersPresent;
                       }, 0);
-                    console.log('ssdfsdfsdfsdfs', passengersCount);
                     return (
                       <Grid
                         className={classes.gridMarginTop}

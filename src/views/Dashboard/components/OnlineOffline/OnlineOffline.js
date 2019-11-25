@@ -14,17 +14,11 @@ import {
 import RefreshIcon from '@material-ui/icons/Refresh';
 import MoneyIcon from '@material-ui/icons/Money';
 import PaymentIcon from '@material-ui/icons/Payment';
-
+import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import axios from 'axios';
 import {
-  startOfWeek,
-  endOfWeek,
   startOfToday,
   endOfToday,
-  startOfMonth,
-  endOfMonth,
-  startOfYear,
-  endOfYear
 } from 'date-fns';
 
 const useStyles = makeStyles(theme => ({
@@ -51,8 +45,49 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const UsersByDevice = props => {
+const OnlineOffline = props => {
   
+  const [allRoutes, setAllRoutes] = useState([]);
+  const [startDay, setStartDay] = useState(startOfToday());
+  const [endDay, setEndDay] = useState(endOfToday());
+  
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/api/routes', {
+        params: {
+          startWeek: startDay,
+          endWeek: endDay
+        }
+      })
+      .then(
+        res => {
+        const routes = res.data;
+        const uniqueRoutes = routes.reduce((acc, route) => {
+          const way = `${route.fromCityId}-${route.toCityId}`;
+          if (way && !acc.includes(way)) {
+            acc.push(way);
+          }
+          return acc;
+        }, []);
+        setAllRoutes(routes);
+      });
+  }, [startDay]);
+  const passengersOnline = allRoutes.reduce((acc, route) => {
+    const onlineChannel = 13;
+    const passengersPresent = route.passengers.filter(
+      passenger => passenger.sales_channel_id === onlineChannel
+    ).length;
+    return acc + passengersPresent;
+  }, 0);
+
+  const passengersOffline = allRoutes.reduce((acc, route) => {
+    const onlineChannel = 13;
+    const passengersPresent = route.passengers.filter(
+      passenger => passenger.sales_channel_id !== onlineChannel && passenger.sales_channel_id !== undefined
+    ).length;
+    return acc + passengersPresent;
+  }, 0);
+
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -61,7 +96,7 @@ const UsersByDevice = props => {
   const data = {
     datasets: [
       {
-        data: [63, 37],
+        data: [`${passengersOnline}`, `${passengersOffline}`],
         backgroundColor: [
           theme.palette.primary.main,
           theme.palette.error.main,
@@ -73,7 +108,6 @@ const UsersByDevice = props => {
       }
     ],
     labels: ['Онлайн', 'Не онлайн']
-    // labels: ['Онлайн', 'Не онлайн', 'Mobile']
   };
 
   const options = {
@@ -101,22 +135,22 @@ const UsersByDevice = props => {
   const devices = [
     {
       title: 'Онлайн',
-      value: '63',
+      value: `${passengersOnline}`,
       icon: <PaymentIcon />,
       color: theme.palette.primary.main
     },
     {
       title: 'Не онлайн',
-      value: '15',
+      value: `${passengersOffline}`,
       icon: <MoneyIcon />,
       color: theme.palette.error.main
     },
-    // {
-    //   title: 'Mobile',
-    //   value: '23',
-    //   icon: <PhoneIphoneIcon />,
-    //   color: theme.palette.warning.main
-    // }
+    {
+      title: 'Соотношение',
+      value: `${Math.round (passengersOnline/(passengersOffline+passengersOnline)*100)}%`,
+      icon: <DonutLargeIcon />,
+      color: theme.palette.warning.main
+    }
   ];
 
   return (
@@ -152,7 +186,7 @@ const UsersByDevice = props => {
                 style={{ color: device.color }}
                 variant="h2"
               >
-                {device.value}%
+                {device.value}
               </Typography>
             </div>
           ))}
@@ -162,8 +196,8 @@ const UsersByDevice = props => {
   );
 };
 
-UsersByDevice.propTypes = {
+OnlineOffline.propTypes = {
   className: PropTypes.string
 };
 
-export default UsersByDevice;
+export default OnlineOffline;

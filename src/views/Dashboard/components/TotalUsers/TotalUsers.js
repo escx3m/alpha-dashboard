@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
+
+import axios from 'axios';
+import {
+  startOfToday,
+  endOfToday,
+} from 'date-fns';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,6 +51,34 @@ const TotalUsers = props => {
 
   const classes = useStyles();
 
+  const [allRoutes, setAllRoutes] = useState([]);
+  const [startDay, setStartDay] = useState(startOfToday());
+  const [endDay, setEndDay] = useState(endOfToday());
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/api/routes', {
+        params: {
+          startWeek: startDay,
+          endWeek: endDay
+        }
+      })
+      .then(res => {
+        const routes = res.data;
+        const uniqueRoutes = routes.reduce((acc, route) => []);
+        setAllRoutes(routes);
+      });
+  }, [startDay]);
+
+  const passengersPresent = allRoutes
+  .reduce((acc, route) => {
+    const passengersPresent = route.passengers.filter(
+      passenger =>
+        passenger.state === 2 || passenger.state === 3
+    ).length;
+    return acc + passengersPresent;
+  }, 0);
+
   return (
     <Card
       {...rest}
@@ -62,9 +96,9 @@ const TotalUsers = props => {
               gutterBottom
               variant="body2"
             >
-              TOTAL USERS
+              Записанных пассажиров
             </Typography>
-            <Typography variant="h3">1,600</Typography>
+            <Typography variant="h3">{passengersPresent}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
