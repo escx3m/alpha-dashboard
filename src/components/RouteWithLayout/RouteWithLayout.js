@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 
 const RouteWithLayout = props => {
   const { layout: Layout, component: Component, ...rest } = props;
-
   return (
     <Route
       {...rest}
-      render={matchProps => (
-        <Layout>
-          <Component {...matchProps} />
-        </Layout>
-      )}
+      render={matchProps => {
+        return (
+          <Layout>
+            <Component {...matchProps}{ ...rest} />
+          </Layout>
+        )}}
     />
   );
 };

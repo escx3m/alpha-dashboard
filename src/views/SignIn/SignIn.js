@@ -14,7 +14,6 @@ import {
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CloudIcon from '@material-ui/icons/Cloud';
 
-
 const schema = {
   email: {
     presence: { allowEmpty: false, message: 'is required' },
@@ -33,7 +32,7 @@ const schema = {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.background.default
   },
   form: {
     paddingLeft: 100,
@@ -66,34 +65,35 @@ const useStyles = makeStyles(theme => ({
   cardLogin: {
     maxWidth: 600,
     width: '100%',
-    margin:'auto',
-    marginTop:'50px',
+    margin: 'auto',
+    marginTop: '50px'
   },
   cloudAlpha: {
     textAlign: 'center',
-    marginTop:'65px',
-    marginBottom:'30px',
+    marginTop: '65px',
+    marginBottom: '30px'
   },
   iconCloud: {
     fontSize: 34,
     verticalAlign: 'bottom',
-    color:'#3f51b5',
+    color: '#3f51b5'
   },
   logoText: {
-    margin:'auto',
-    textAlign:'center',
+    margin: 'auto',
+    textAlign: 'center'
   },
   alphaText: {
-    fontSize: 36,
+    fontSize: 36
   },
   imgLogo: {
-    width: '140px',
-  },
+    width: '140px'
+  }
 }));
 
 const SignIn = props => {
-  const { history } = props;
+  const { history, login } = props;
 
+  console.log(props);
   const classes = useStyles();
 
   const [formState, setFormState] = useState({
@@ -137,7 +137,9 @@ const SignIn = props => {
   };
 
   const handleSignIn = event => {
+
     event.preventDefault();
+    login();
     history.push('/');
   };
 
@@ -146,42 +148,28 @@ const SignIn = props => {
 
   return (
     <div className={classes.root}>
-      
-            <div>
-              <IconButton onClick={handleBack}>
-                <ArrowBackIcon />
-              </IconButton>
+      <div>
+        <IconButton onClick={handleBack}>
+          <ArrowBackIcon />
+        </IconButton>
+      </div>
+      <div className={classes.contentBody}>
+        <form className={classes.form} onSubmit={handleSignIn}>
+          <div>
+            <div className={classes.logoText}>
+              <img
+                className={classes.imgLogo}
+                alt="Logo"
+                src="/images/avatars/alphatour.png"
+              />
             </div>
-            <div className={classes.contentBody}>
-              <form
-                className={classes.form}
-                onSubmit={handleSignIn}
-              >
-                <div>
-                  <div className={classes.logoText}>
-                  <img className={classes.imgLogo}
-                       alt="Logo"
-                       src="/images/avatars/alphatour.png" />
-                       {/* <div className={classes.alphaText}><strong>Альфа-Тур</strong></div> */}
-                  </div>
-                <Card className={classes.cardLogin}>
-                <form
-                className={classes.form}
-                onSubmit={handleSignIn}
-              >
+            <Card className={classes.cardLogin}>
+              <form className={classes.form} onSubmit={handleSignIn}>
                 <div className={classes.cloudAlpha}>
-                  <Typography 
-                  className={classes.title}
-                  variant="h2"
-                >
-                  <CloudIcon className={classes.iconCloud} /> Альфа-Тур
-                </Typography>
+                  <Typography className={classes.title} variant="h2">
+                    <CloudIcon className={classes.iconCloud} /> Альфа-Тур
+                  </Typography>
                 </div>
-                {/* <div className={classes.logoText}>
-                  <img className={classes.imgLogo}
-                       alt="Logo"
-                       src="/images/avatars/alphatour.png" /><div className={classes.alphaText}><strong>Альфа-Тур</strong></div>
-                  </div> */}
                 <TextField
                   className={classes.textField}
                   error={hasError('email')}
@@ -218,27 +206,21 @@ const SignIn = props => {
                   size="large"
                   type="submit"
                   variant="contained"
+                  onClick={login}
                 >
                   ВОЙТИ
                 </Button>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
+                <Typography color="textSecondary" variant="body1">
                   Нет учетной записи?{' '}
-                  <Link
-                    component={RouterLink}
-                    to="/sign-up"
-                    variant="h6"
-                  >
+                  <Link component={RouterLink} to="/sign-up" variant="h6">
                     Зарегистрироваться
                   </Link>
                 </Typography>
               </form>
-                </Card>
-                </div>
-              </form>
-            </div>
+            </Card>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
