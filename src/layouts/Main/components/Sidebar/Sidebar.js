@@ -58,6 +58,11 @@ const Sidebar = props => {
       icon: <MoneyIcon />
     },
     {
+      title: 'Финансы бухгалтер',
+      href: '/financebuh',
+      icon: <MoneyIcon />
+    },
+    {
       title: 'Машинный мониторинг',
       href: '/monitoringcar',
       icon: <DeviceHubIcon />
