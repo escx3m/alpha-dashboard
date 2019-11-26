@@ -32,7 +32,7 @@ function CarsLoad() {
 
   useEffect(() => {
     setLoading(true);
-   axios.get('http://localhost:6000/api/trips', {
+   axios.get('http://localhost:9000/api/trips', {
     params: {
       startWeek: start,
       endWeek: end

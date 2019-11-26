@@ -29,7 +29,7 @@ function WeekFinance() {
   });
 
   useEffect(() => {
-    axios.get('http://localhost:6000/api/routes', {
+    axios.get('http://localhost:9000/api/routes', {
       params: {
         startWeek: selectedWeekStart,
         endWeek: endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
