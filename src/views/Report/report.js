@@ -179,7 +179,6 @@ const Report = () => {
       .then(res => {
         setLoading(false);
         const routes = res.data;
-        console.log('data recieved');
         const uniqueRoutes = routes.reduce((acc, route) => {
           const way = `${route.fromCityId}-${route.toCityId}`;
           if (way && !acc.includes(way)) {
@@ -187,7 +186,6 @@ const Report = () => {
           }
           return acc;
         }, []);
-        console.log(routes);
         // const result = cars.map((carId) => {
         //   const { car, carScheme: { seats } } = routes.find((route) => route.carId === carId);
         //   const carRoutes = routes.filter((route) => carId === route.carId);
@@ -200,15 +198,16 @@ const Report = () => {
   const passengersOnline = allRoutes.reduce((acc, route) => {
     const onlineChannel = 13;
     const passengersPresent = route.passengers.filter(
-      passenger => passenger.sales_channel_id === onlineChannel
+      passenger => passenger.sales_channel_id === onlineChannel && passenger.state !== 5
     ).length;
     return acc + passengersPresent;
   }, 0);
-
   const passengersOffline = allRoutes.reduce((acc, route) => {
     const onlineChannel = 13;
+    const passengersType = 1;
     const passengersPresent = route.passengers.filter(
       passenger => passenger.sales_channel_id !== onlineChannel && passenger.sales_channel_id !== undefined
+      // passenger => passenger.sales_channel_id !== onlineChannel && passenger.state === 2 || passenger.state === 3 || passenger.type === passengersType
     ).length;
     return acc + passengersPresent;
   }, 0);
@@ -305,7 +304,6 @@ const Report = () => {
                 </Grid>
                 <div>
                   {uniqueRoutes.map((way, i) => {
-                    console.log(way);
                     const idCityFrom = Number(way.slice(0, way.indexOf('-')));
                     const idCityTo = Number(way.slice(way.indexOf('-') + 1));
                     const passengersCount = allRoutes
@@ -324,7 +322,6 @@ const Report = () => {
                         ).length;
                         return acc + passengersPresent;
                       }, 0);
-                    console.log('ssdfsdfsdfsdfs', passengersCount);
                     return (
                       <Grid
                         className={classes.gridMarginTop}
@@ -371,7 +368,6 @@ const Report = () => {
                 </Grid>
                 <div>
                   {uniqueRoutes.map((way, i) => {
-                    console.log(way);
                     const idCityFrom = Number(way.slice(0, way.indexOf('-')));
                     const idCityTo = Number(way.slice(way.indexOf('-') + 1));
                     const passengersCount = allRoutes
@@ -388,7 +384,14 @@ const Report = () => {
                         ).length;
                         return acc + passengersPresent;
                       }, 0);
-                    console.log('кол-во', passengersCount);
+                      
+                      console.log('ROUTE', allRoutes.filter(
+                        (item, j) =>
+                          item.fromCityId === idCityFrom &&
+                          item.toCityId === idCityTo
+                      ));
+                      console.log('ЗАПИСАННЫХ', passengersCount);
+
                     return (
                       <Grid
                         className={classes.gridMarginTop}
@@ -435,7 +438,6 @@ const Report = () => {
                 </Grid>
                 <div>
                   {uniqueRoutes.map((way, i) => {
-                    console.log(way);
                     const idCityFrom = Number(way.slice(0, way.indexOf('-')));
                     const idCityTo = Number(way.slice(way.indexOf('-') + 1));
                     const passengersCount = allRoutes
@@ -448,7 +450,7 @@ const Report = () => {
                         const onlineChannel = 13;
                         const passengersPresent = route.passengers.filter(
                           passenger =>
-                            passenger.sales_channel_id === onlineChannel
+                            passenger.sales_channel_id === onlineChannel && passenger.state !== 5
                         ).length;
                         return acc + passengersPresent;
                       }, 0);
@@ -504,7 +506,6 @@ const Report = () => {
                 </Grid>
                 <div>
                   {uniqueRoutes.map((way, i) => {
-                    console.log(way);
                     const idCityFrom = Number(way.slice(0, way.indexOf('-')));
                     const idCityTo = Number(way.slice(way.indexOf('-') + 1));
                     const passengersCount = allRoutes
@@ -514,9 +515,12 @@ const Report = () => {
                           item.toCityId === idCityTo
                       )
                       .reduce((acc, route) => {
+                        const passengersStatus = 3;
                         const passengersType = 2;
                         const passengersPresent = route.passengers.filter(
-                          passenger => passenger.type === passengersType
+                          passenger => passenger.state === passengersStatus 
+                          &&
+                          passenger.type === passengersType
                         ).length;
                         return acc + passengersPresent;
                       }, 0);

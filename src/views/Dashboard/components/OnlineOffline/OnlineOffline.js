@@ -84,19 +84,17 @@ const OnlineOffline = props => {
   const passengersOnline = allRoutes.reduce((acc, route) => {
     const onlineChannel = 13;
     const passengersPresent = route.passengers.filter(
-      passenger => passenger.sales_channel_id === onlineChannel
+      passenger => passenger.sales_channel_id === onlineChannel && passenger.state !== 5
     ).length;
     return acc + passengersPresent;
   }, 0);
-
   const passengersOffline = allRoutes.reduce((acc, route) => {
     const onlineChannel = 13;
     const passengersPresent = route.passengers.filter(
-      passenger => passenger.sales_channel_id !== onlineChannel && passenger.sales_channel_id !== undefined
+      passenger => passenger.sales_channel_id !== onlineChannel
     ).length;
     return acc + passengersPresent;
   }, 0);
-
   const { className, ...rest } = props;
 
   const classes = useStyles();

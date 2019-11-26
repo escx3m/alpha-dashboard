@@ -82,7 +82,9 @@ const ToBox = props => {
     const passengersStatus = 3;
     const passengersType = 2;
     const passengersPresent = route.passengers.filter(
-      passenger => passenger.type === passengersType
+      passenger => passenger.state === passengersStatus 
+      &&
+      passenger.type === passengersType
     ).length;
     return acc + passengersPresent;
   }, 0);
