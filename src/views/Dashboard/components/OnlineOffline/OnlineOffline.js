@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -9,12 +9,18 @@ import {
   CardContent,
   IconButton,
   Divider,
-  Typography
+  Typography,
+  CircularProgress
 } from '@material-ui/core';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
-import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import TabletMacIcon from '@material-ui/icons/TabletMac';
+import MoneyIcon from '@material-ui/icons/Money';
+import PaymentIcon from '@material-ui/icons/Payment';
+import DonutLargeIcon from '@material-ui/icons/DonutLarge';
+import axios from 'axios';
+import {
+  startOfToday,
+  endOfToday,
+} from 'date-fns';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,10 +41,60 @@ const useStyles = makeStyles(theme => ({
   },
   deviceIcon: {
     color: theme.palette.icon
-  }
+  },
+  progress: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop:'50px',
+  },
 }));
 
-const UsersByDevice = props => {
+
+
+const OnlineOffline = props => {
+  
+  const [allRoutes, setAllRoutes] = useState([]);
+  const [startDay, setStartDay] = useState(startOfToday());
+  const [endDay, setEndDay] = useState(endOfToday());
+  const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get('http://localhost:5000/api/routes', {
+        params: {
+          startWeek: startDay,
+          endWeek: endDay
+        }
+      })
+      .then(res => {
+        setLoading(false);
+        const routes = res.data;
+        const uniqueRoutes = routes.reduce((acc, route) => {
+          const way = `${route.fromCityId}-${route.toCityId}`;
+          if (way && !acc.includes(way)) {
+            acc.push(way);
+          }
+          return acc;
+        }, []);
+        setAllRoutes(routes);
+      });
+  }, [startDay]);
+  const passengersOnline = allRoutes.reduce((acc, route) => {
+    const onlineChannel = 13;
+    const passengersPresent = route.passengers.filter(
+      passenger => passenger.sales_channel_id === onlineChannel && passenger.state !== 5
+    ).length;
+    return acc + passengersPresent;
+  }, 0);
+  const passengersOffline = allRoutes.reduce((acc, route) => {
+    const onlineChannel = 13;
+    const passengersPresent = route.passengers.filter(
+      passenger => passenger.sales_channel_id !== onlineChannel
+    ).length;
+    return acc + passengersPresent;
+  }, 0);
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -47,7 +103,7 @@ const UsersByDevice = props => {
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
+        data: [`${passengersOnline}`, `${passengersOffline}`],
         backgroundColor: [
           theme.palette.primary.main,
           theme.palette.error.main,
@@ -58,7 +114,7 @@ const UsersByDevice = props => {
         hoverBorderColor: theme.palette.white
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: ['Онлайн', 'Не онлайн']
   };
 
   const options = {
@@ -85,21 +141,21 @@ const UsersByDevice = props => {
 
   const devices = [
     {
-      title: 'Desktop',
-      value: '63',
-      icon: <LaptopMacIcon />,
+      title: 'Онлайн',
+      value: `${passengersOnline}`,
+      icon: <PaymentIcon />,
       color: theme.palette.primary.main
     },
     {
-      title: 'Tablet',
-      value: '15',
-      icon: <TabletMacIcon />,
+      title: 'Не онлайн',
+      value: `${passengersOffline}`,
+      icon: <MoneyIcon />,
       color: theme.palette.error.main
     },
     {
-      title: 'Mobile',
-      value: '23',
-      icon: <PhoneIphoneIcon />,
+      title: 'Соотношение',
+      value: `${Math.round (passengersOnline/(passengersOffline+passengersOnline)*100)}%`,
+      icon: <DonutLargeIcon />,
       color: theme.palette.warning.main
     }
   ];
@@ -115,9 +171,14 @@ const UsersByDevice = props => {
             <RefreshIcon />
           </IconButton>
         }
-        title="Users By Device"
+        title="Купившие онлайн ко всем пассажирам"
       />
       <Divider />
+      {loading ? (
+        <div className={classes.progress}>
+          <CircularProgress />
+        </div>
+      ) : (
       <CardContent>
         <div className={classes.chartContainer}>
           <Doughnut
@@ -137,18 +198,19 @@ const UsersByDevice = props => {
                 style={{ color: device.color }}
                 variant="h2"
               >
-                {device.value}%
+                {device.value}
               </Typography>
             </div>
           ))}
         </div>
       </CardContent>
+      )}
     </Card>
   );
 };
 
-UsersByDevice.propTypes = {
+OnlineOffline.propTypes = {
   className: PropTypes.string
 };
 
-export default UsersByDevice;
+export default OnlineOffline;
