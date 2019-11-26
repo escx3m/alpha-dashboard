@@ -38,19 +38,30 @@ function TableHeader (props) {
   const classes = useStyles();
   
   return (
-    <Grid className={classes.gridMarginBot} container item direction="row" spacing={1} xs={12}>
+    <Grid 
+      className={classes.gridMarginBot} 
+      container 
+      item 
+      direction="row" 
+      spacing={1} 
+      xs={14}
+      wrap='nowrap'
+    >
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Дата</Card></Grid> 
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Авт, г/н</Card></Grid> 
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Схема</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Владелец</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Водитель</Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Направление</Card></Grid>
+
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Пассажиров</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Безнал</Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Картой</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Наличные</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Офис</Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Корректировка</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Всего</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>З/П</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Итого</Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Начислено</Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Выдача</Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Фирма</Card></Grid>
     </Grid>
   );
 }

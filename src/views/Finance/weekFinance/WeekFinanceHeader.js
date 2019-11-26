@@ -7,17 +7,18 @@ const WeekFinanceHeader = (props) => {
   const { checkState, setCheckState } = props;
 
   return (
-
-  <Grid container direction="row" item xs={12}> 
-    <Grid item xs={3}>
-      {/* <ChooseSchema /> */}
-      <ChooseSchema checkState={ checkState } setCheckState={ setCheckState } />
+    <Grid 
+      container 
+      direction="row" 
+      item xs={12}> 
+      <Grid item xs={3}>
+        <ChooseSchema checkState={ checkState } setCheckState={ setCheckState } />
+      </Grid>
+      <Grid item xs={9}>
+        <WeekPicker {...props}/>
+      </Grid>
     </Grid>
-    <Grid item xs={9}>
-      <WeekPicker {...props}/>
-    </Grid>
-  </Grid>
-);
+  );
 }
 export default WeekFinanceHeader;
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Grid, Card } from '@material-ui/core';
+import { Grid, Card, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { eachDayOfInterval, format, endOfWeek, isSameDay } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import { makeJSDateObject } from '../../../../helpers/helpers';
-import { payToDrivers, cities } from '../../../../helpers/constants';
+import { payToDrivers, cities, notStandard } from '../../../../helpers/constants';
 
 const useStyles = makeStyles(theme => ({
   gridBorder: {
@@ -171,21 +171,26 @@ function TableContent(props) {
             );
             const { cash, card, office } = passengersIncome;
             const passengersIncomeSum = card + cash + office;
-            const payToDriver = ownersId.has(carOwner)
+            const payToDriver = isNaN(payObj.all) 
+              ? notStandard : ownersId.has(carOwner)
               ? ((payObj.all > passengersIncomeSum) 
               ? payObj.all : (payObj.owner_id > passengersIncomeSum) 
               ? passengersIncomeSum : payObj.all) : payObj.all;
 
-              
             const totalToDriver = payToDriver - cash;
+            const firmIncome = passengersIncomeSum - cash - totalToDriver;
             return (
               <Grid
                 className={classes.overAll}
                 container
                 item
+                direction='row'
                 spacing={1}
-                xs={12}
-                key={`${index}${k}`}>
+                wrap='nowrap'
+                key={`${index}${k}`}
+                
+                style={route.length === 1 ? {backgroundColor: 'orange'} : {}}
+              >
                 <Grid className={classes.gridBorder} item xs={1}>
                   <Card
                     className={
@@ -226,12 +231,17 @@ function TableContent(props) {
                 </Grid>
                 <Grid className={classes.gridBorder} item xs={1}>
                   <Card className={classes.cardInfo}>
+                    {office}
+                  </Card>
+                </Grid>
+                <Grid className={classes.gridBorder} item xs={1}>
+                  <Card className={classes.cardInfo}>
                     {cash}
                   </Card>
                 </Grid>
                 <Grid className={classes.gridBorder} item xs={1}>
                   <Card className={classes.cardInfo}>
-                    {office}
+                    <TextField variant='outlined' type='number'/> 
                   </Card>
                 </Grid>
                 <Grid className={classes.gridBorder} item xs={1}>
@@ -249,12 +259,7 @@ function TableContent(props) {
                 </Grid>
                 <Grid className={classes.gridBorder} item xs={1}>
                   <Card className={classes.cardInfo}>
-                    firma {passengersIncomeSum - cash - totalToDriver } 
-                  </Card>
-                </Grid>
-                <Grid className={classes.gridBorder} item xs={1}>
-                  <Card className={classes.cardInfo}>
-                    Корректировка 
+                    firma {firmIncome} 
                   </Card>
                 </Grid>
 

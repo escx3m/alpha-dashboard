@@ -7,17 +7,6 @@ import { startOfWeek, endOfWeek } from 'date-fns';
 import { makeJSDateObject } from '../../helpers/helpers';
                  
 const useStyles = makeStyles(theme => ({
-  //  "@global": {
-  //   ".mnoButton-button": {
-  //     backgroundColor: "#2196f3"
-  //   },
-  //   ".mnoButton-buttonDark": {
-  //     backgroundColor: "#880e4f"
-  //   },
-  //   ".mnoButton-buttonLight": {
-  //     backgroundColor: "#e1bee7"
-  //   }
-  // },
   gridMargin: {
     marginTop:'30px',
   }
@@ -46,16 +35,6 @@ function WeekFinance() {
         endWeek: endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
       }})
       .then(res => {
-       //  const routes = res.data;
-       //  console.log('data recieved', res.data);
-        //const routes = routes.reduce((acc, route) => {
-          //if(route.carId && !acc.includes(route.carId)) {
-            //acc.push(route.carId);
-          //}
-          //return acc;
-        //}, []);
-       //  console.log(routes);
-       //  const result = routes;
         setRoutes(res.data);
       });
     }, [selectedWeekStart]);
@@ -72,7 +51,6 @@ function WeekFinance() {
           setCheckState={setCheckState}
         />
       </Grid>
-       
       <Grid className={classes.gridMargin} item xs={12}>
         <WeekFinanceTable 
           routes={routes} 
