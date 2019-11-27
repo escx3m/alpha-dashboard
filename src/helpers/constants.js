@@ -22,6 +22,12 @@ export const payToDrivers = {
   'no passengers' : {
     all: 0,
   },
+  'Э-МВ 4 1': {
+    all: 4000,
+    minPrice: minPrice700,
+    maxPrice: maxPrice900,
+  },
+
   'Э-В 4 1': {
     all: 4000,
     minPrice: minPrice700,

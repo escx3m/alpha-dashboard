@@ -2,9 +2,16 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Card, CardContent, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import PeopleIcon from '@material-ui/icons/PeopleOutlined';
+import {
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+  Avatar,
+  LinearProgress,
+  CircularProgress
+} from '@material-ui/core';
+import WorkIcon from '@material-ui/icons/Work';
 
 import axios from 'axios';
 import {
@@ -24,7 +31,8 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 700
   },
   avatar: {
-    backgroundColor: theme.palette.success.main,
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
     height: 56,
     width: 56
   },
@@ -32,17 +40,8 @@ const useStyles = makeStyles(theme => ({
     height: 32,
     width: 32
   },
-  difference: {
-    marginTop: theme.spacing(2),
-    display: 'flex',
-    alignItems: 'center'
-  },
-  differenceIcon: {
-    color: theme.palette.success.dark
-  },
-  differenceValue: {
-    color: theme.palette.success.dark,
-    marginRight: theme.spacing(1)
+  progressLinear: {
+    marginTop: theme.spacing(3)
   },
   progress: {
     display: 'flex',
@@ -51,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const TotalUsers = props => {
+const ToBox = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -78,11 +77,14 @@ const TotalUsers = props => {
       });
   }, [startDay]);
 
-  const passengersPresent = allRoutes
+  const passengersCount = allRoutes
   .reduce((acc, route) => {
+    const passengersStatus = 3;
+    const passengersType = 2;
     const passengersPresent = route.passengers.filter(
-      passenger =>
-        passenger.state === 2 || passenger.state === 3
+      passenger => passenger.state === passengersStatus 
+      &&
+      passenger.type === passengersType
     ).length;
     return acc + passengersPresent;
   }, 0);
@@ -109,39 +111,29 @@ const TotalUsers = props => {
               gutterBottom
               variant="body2"
             >
-              Записанных пассажиров
+              Перевезено посылок
             </Typography>
-            <Typography variant="h3">{passengersPresent}</Typography>
+            <Typography variant="h3">{passengersCount}</Typography>
           </Grid>
           <Grid item>
             <Avatar className={classes.avatar}>
-              <PeopleIcon className={classes.icon} />
+              <WorkIcon className={classes.icon} />
             </Avatar>
           </Grid>
         </Grid>
-        <div className={classes.difference}>
-          <ArrowUpwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
-            16%
-          </Typography>
-          <Typography
-            className={classes.caption}
-            variant="caption"
-          >
-            Since last month
-          </Typography>
-        </div>
+        <LinearProgress
+          className={classes.progressLinear}
+          value={75.5}
+          variant="determinate"
+        />
       </CardContent>
       )}
     </Card>
   );
 };
 
-TotalUsers.propTypes = {
+ToBox.propTypes = {
   className: PropTypes.string
 };
 
-export default TotalUsers;
+export default ToBox;

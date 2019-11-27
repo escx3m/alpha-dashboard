@@ -15,6 +15,7 @@ import {
   MonitoringCar as MonitoringCarView,
   UserList as UserListView,
   Finance as FinanceView,
+  FinanceBuh as FinanceBuhView,
   Report as ReportView,
   Account as AccountView,
   Settings as SettingsView,
@@ -112,6 +113,14 @@ const Routes = () => {
           path="/finance"
         />
       </PrivateRoute>
+      <PrivateRoute path="/finance">
+        <RouteWithLayout
+          component={FinanceBuhView}
+          exact
+          layout={MainLayout}
+          path="/financebuh"
+        />
+        </PrivateRoute>
       <PrivateRoute path="/report">
         <RouteWithLayout
           component={ReportView}

@@ -90,7 +90,6 @@ function TableContent(props) {
           const carRoutes = currentRoutes.filter(
             route => route.carId === carId
           );
-          console.log(carRoutes)
           const carTitle = carRoutes[0].car.title;
           const carNumber = carRoutes[0].car.number;
           const carOwner = carRoutes[0].car.owner;
