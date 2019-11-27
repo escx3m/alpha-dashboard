@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Card, TextField } from '@material-ui/core';
+import { Grid, Card, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { eachDayOfInterval, format, endOfWeek, isSameDay } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
@@ -59,7 +59,12 @@ const useStyles = makeStyles(theme => ({
   },
   overAll: {
     marginLeft: '1px'
-  }
+  },
+  btnSave: {
+    width: '45px',
+    height: '40px',
+    fontSize: '9px',
+  },
 }));
 
 function TableContent(props) {
@@ -173,6 +178,9 @@ function TableContent(props) {
 
           const totalToDriver = payToDriver - cash;
           const firmIncome = passengersIncomeSum - cash - totalToDriver;
+          const rowData = {
+                            startRouteId: route[0].id
+                           } 
           return (
             <Grid
               className={classes.overAll}
@@ -243,19 +251,29 @@ function TableContent(props) {
                 </Card>
               </Grid>
               <Grid className={classes.gridBorder} item xs={1}>
-                <Card className={classes.cardInfo}>Начис {payToDriver}</Card>
+                <Card className={classes.cardInfo}>{payToDriver}</Card>
               </Grid>
               <Grid className={classes.gridBorder} item xs={1}>
                 <Card className={classes.cardInfo}>
-                  Выдача {totalToDriver}
+                  {totalToDriver}
                 </Card>
               </Grid>
               <Grid className={classes.gridBorder} item xs={1}>
                 <Card className={classes.cardInfo}>
-                  firma {firmIncome} 
+                  {firmIncome} 
                 </Card>
               </Grid>
-            </Grid>
+              <Grid className={classes.gridBorder} item xs={1}>
+                <Card className={classes.cardInfo}>
+                <Button className={classes.btnSave} 
+                            onClick={()=>console.log('routeData', rowData)}
+                            variant="contained" 
+                            color="primary">
+                              Сохранить
+                      </Button>
+                </Card>
+              </Grid>
+        </Grid>
           );
         });
         })

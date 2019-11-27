@@ -8,7 +8,7 @@ import { makeJSDateObject } from '../../../../helpers/helpers';
 import { startOfWeek } from 'date-fns';
 
 const StyledDatePicker = styled(DatePicker)`
-  .ant-calendar-picker ant-calendar-picker-large {
+  .ant-input-lg {
     height: 50px;
     padding: 12px 11px;
     font-size: 16px;

@@ -61,6 +61,7 @@ function TableHeader (props) {
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Начислено</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Выдача</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Фирма</Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>кнопка</Card></Grid>
     </Grid>
   );
 }
