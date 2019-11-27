@@ -604,7 +604,10 @@ const Report = () => {
                       item
                       xs={2}
                     >
-                      {Math.round (passengersOnline/(passengersOffline+passengersOnline)*100)}%
+                      {passengersOffline+passengersOnline !== 0 
+                        ? Math.round(passengersOnline/(passengersOffline+passengersOnline)*100)
+                        : 0
+                      }%
                     </Grid>
                   </Grid>
                 </div>

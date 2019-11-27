@@ -64,29 +64,30 @@ const useStyles = makeStyles(theme => ({
 
 function TableContent(props) {
   const classes = useStyles();
-  const { routes, selectedWeekStart } = props;
+  const { routes, selectedWeekStart, selectedDay } = props;
   const start = selectedWeekStart;
   const end = endOfWeek(selectedWeekStart, { weekStartsOn: 1 });
   const ownersId = new Set([7, 38, 52]);
+  
+  const currentRoutes = routes.filter(route =>
+    isSameDay(
+      makeJSDateObject(
+        new Date(new Date(route.fromTimeLocal).toUTCString())
+      ),
+      selectedDay
+    )
+  );
+  const cars = currentRoutes.reduce((acc, route) => {
+    if (route.carId && !acc.includes(route.carId)) {
+      acc.push(route.carId);
+    }
+    return acc;
+  }, []);
+  console.log("currentRoutes", currentRoutes);
+  console.log("cars", cars);
   return (
     <Grid container spacing={1}>
-      {eachDayOfInterval({ start, end }).map((currentDay, index) => {
-        const currentRoutes = routes.filter(route =>
-          isSameDay(
-            makeJSDateObject(
-              new Date(new Date(route.fromTimeLocal).toUTCString())
-            ),
-            currentDay
-          )
-        );
-        const cars = currentRoutes.reduce((acc, route) => {
-          if (route.carId && !acc.includes(route.carId)) {
-            acc.push(route.carId);
-          }
-          return acc;
-        }, []);
-
-        return cars.map((carId, i) => {
+      {cars.map((carId, i) => {
           const carRoutes = currentRoutes.filter(
             route => route.carId === carId
           );
@@ -187,18 +188,18 @@ function TableContent(props) {
                 direction='row'
                 spacing={1}
                 wrap='nowrap'
-                key={`${index}${k}`}
+                key={`${k}`}
                 
                 style={route.length === 1 ? {backgroundColor: 'orange'} : {}}
               >
                 <Grid className={classes.gridBorder} item xs={1}>
                   <Card
                     className={
-                      isSameDay(makeJSDateObject(new Date()), currentDay)
+                      isSameDay(makeJSDateObject(new Date()), selectedDay)
                         ? classes.cardToday
                         : classes.cardDate
                     }>
-                    {format(currentDay, 'd MMM', { locale: ruLocale })}
+                    {format(selectedDay, 'd MMM', { locale: ruLocale })}
                   </Card>
                 </Grid>
                 <Grid className={classes.gridBorder} item xs={1}>
@@ -266,8 +267,8 @@ function TableContent(props) {
               </Grid>
             );
           });
-        });
-      })}
+        })
+      }
     </Grid>
   );
 }

@@ -52,7 +52,6 @@ function TableHeader (props) {
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Владелец</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Водитель</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Направление</Card></Grid>
-
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Пассажиров</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Картой</Card></Grid>
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Наличные</Card></Grid>

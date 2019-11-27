@@ -42,6 +42,7 @@ const SelectWeek = (props) => {
   const handlePrevButtonClick = () => setSelectedWeekStart(addWeeks(selectedWeekStart, -1));
   const handleNextButtonClick = () => setSelectedWeekStart(addWeeks(selectedWeekStart, 1));
   const handleThisWeek = () => setSelectedWeekStart(currentWeekStart, 1);
+ 
   return (
     <Grid container >
       <Card className={classes.card}>

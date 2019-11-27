@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
 function WeekFinance() {
   const currentWeekStart = startOfWeek(makeJSDateObject(new Date()), { weekStartsOn: 1 });
   const [selectedWeekStart, setSelectedWeekStart] = useState(currentWeekStart);
+  const [selectedDay, setSelectedDay] = useState(new Date());
   const [routes, setRoutes] = useState([]);
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
@@ -45,6 +46,8 @@ function WeekFinance() {
         <WeekFinanceHeader 
           loading={loading} 
           setLoading={setLoading}
+          selectedDay={selectedDay}
+          setSelectedDay={setSelectedDay}
           selectedWeekStart={selectedWeekStart}
           setSelectedWeekStart={setSelectedWeekStart}
           checkState={checkState}
@@ -55,6 +58,7 @@ function WeekFinance() {
         <WeekFinanceTable 
           routes={routes} 
           loading={loading}
+          selectedDay={selectedDay}
           selectedWeekStart={selectedWeekStart}
           setSelectedWeekStart={setSelectedWeekStart}
           checkState={checkState}

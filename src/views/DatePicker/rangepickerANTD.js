@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { DatePicker } from 'antd';
 import 'moment/locale/ru';
 import moment from 'moment';
+import { makeJSDateObject } from '../../helpers/helpers';
 
 const { RangePicker } = DatePicker;
 
@@ -35,8 +36,9 @@ const RangePickerANTD = (props) => {
     setSize(e.target.value);
   };
   const handleDateChange = val => {
-    setStartDay(val[0]);
-    setEndDay(val[1]);
+    setStartDay(makeJSDateObject(val[0]));
+    setEndDay(makeJSDateObject(val[1]));
+    console.log(val[0], val[1])
     return (
       [moment(startDay), moment(endDay)]
     );
@@ -48,7 +50,8 @@ const RangePickerANTD = (props) => {
         size={size}
         format="DD-MM-YYYY"
         placeholder={['НАЧАЛО', 'КОНЕЦ']}
-        value={startDay && [moment(startDay), moment(endDay)]}
+        onChange={handleDateChange}
+        defaultValue={startDay && [moment(startDay), moment(endDay)]}
       />
     </div>
   );

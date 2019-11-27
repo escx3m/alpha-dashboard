@@ -113,7 +113,7 @@ const Routes = () => {
           path="/finance"
         />
       </PrivateRoute>
-      <PrivateRoute path="/finance">
+      <PrivateRoute path="/financebuh">
         <RouteWithLayout
           component={FinanceBuhView}
           exact
