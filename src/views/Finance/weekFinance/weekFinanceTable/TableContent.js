@@ -90,7 +90,6 @@ function TableContent(props) {
           const carRoutes = currentRoutes.filter(
             route => route.carId === carId
           );
-          console.log(carRoutes)
           const carTitle = carRoutes[0].car.title;
           const carNumber = carRoutes[0].car.number;
           const carOwner = carRoutes[0].car.owner;
@@ -115,7 +114,6 @@ function TableContent(props) {
             }
           }
 
-          console.log('resultRoutes ', resultRoutes);
           return resultRoutes.map((route, k) => {
             const human = 1;
             const delivered = 3;
@@ -137,15 +135,12 @@ function TableContent(props) {
             const toCity = cities[route[0].toCityId][0];
             const fromToCityKey = `${fromCity}-${toCity} ${carScheme} ${totalPassengers}`;
             const toFromCityKey = `${toCity}-${fromCity} ${carScheme} ${totalPassengers}`;
-            console.log(fromToCityKey, payToDrivers[fromToCityKey]);
-            console.log(toFromCityKey, payToDrivers[toFromCityKey]);
             const payObj = payToDrivers.hasOwnProperty(fromToCityKey)
               ? payToDrivers[fromToCityKey]
               : payToDrivers.hasOwnProperty(toFromCityKey) 
               ? payToDrivers[toFromCityKey]
               : payToDrivers['no passengers'];
 
-            console.log('payObj ', payObj);
             const passengersIncome = passengers.reduce((acc, passenger) => {
                 switch (+passenger.price_status) {
                   case payCard:

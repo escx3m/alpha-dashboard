@@ -1,11 +1,9 @@
 import React from 'react';
 import { RouteWithLayout } from './components';
-import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
+import { Main as MainLayout } from './layouts';
 import {
   Switch,
   Redirect,
-  BrowserRouter as Router,
-  Link,
   Route,
   useHistory,
   useLocation
@@ -19,9 +17,7 @@ import {
   Report as ReportView,
   Account as AccountView,
   Settings as SettingsView,
-  SignUp as SignUpView,
   SignIn as SignInView,
-  NotFound as NotFoundView
 } from './views';
 
 const fakeAuth = {
@@ -67,15 +63,20 @@ const Routes = () => {
     fakeAuth.authenticate(() => {
       history.replace(from);
     });
-    console.log("login ");
   };
-  
+  const logout = () => {
+    fakeAuth.signout(() => {
+      history.push("/");
+    });
+
+  };
   return (
     <Switch>
       <PrivateRoute path="/dashboard">
         <RouteWithLayout
           component={DashboardView}
           exact
+          logout={logout}
           layout={MainLayout}
           path="/dashboard"
         />
@@ -83,6 +84,7 @@ const Routes = () => {
       <Route path="/sign-in">
         <RouteWithLayout
           login={login}
+          logout={logout}
           component={SignInView}
           exact
           layout={MainLayout}
@@ -92,6 +94,7 @@ const Routes = () => {
       <PrivateRoute path="/users">
         <RouteWithLayout
           component={UserListView}
+          logout={logout}
           exact
           layout={MainLayout}
           path="/users"
@@ -100,6 +103,7 @@ const Routes = () => {
       <PrivateRoute path="/monitoringcar">
         <RouteWithLayout
           component={MonitoringCarView}
+          logout={logout}
           exact
           layout={MainLayout}
           path="/monitoringcar"
@@ -107,6 +111,7 @@ const Routes = () => {
       </PrivateRoute>
       <PrivateRoute path="/finance">
         <RouteWithLayout
+          logout={logout}
           component={FinanceView}
           exact
           layout={MainLayout}
@@ -115,6 +120,7 @@ const Routes = () => {
       </PrivateRoute>
       <PrivateRoute path="/financebuh">
         <RouteWithLayout
+          logout={logout}
           component={FinanceBuhView}
           exact
           layout={MainLayout}
@@ -123,6 +129,7 @@ const Routes = () => {
         </PrivateRoute>
       <PrivateRoute path="/report">
         <RouteWithLayout
+          logout={logout}
           component={ReportView}
           exact
           layout={MainLayout}
@@ -131,6 +138,7 @@ const Routes = () => {
       </PrivateRoute>
       <PrivateRoute path="/account">
         <RouteWithLayout
+          logout={logout}
           component={AccountView}
           exact
           layout={MainLayout}
@@ -139,6 +147,7 @@ const Routes = () => {
       </PrivateRoute>
       <PrivateRoute path="/settings">
         <RouteWithLayout
+          logout={logout}
           component={SettingsView}
           exact
           layout={MainLayout}

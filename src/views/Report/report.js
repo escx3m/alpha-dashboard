@@ -381,13 +381,6 @@ const Report = () => {
                         return acc + passengersPresent;
                       }, 0);
                       
-                      console.log('ROUTE', allRoutes.filter(
-                        (item, j) =>
-                          item.fromCityId === idCityFrom &&
-                          item.toCityId === idCityTo
-                      ));
-                      console.log('ЗАПИСАННЫХ', passengersCount);
-
                     return (
                       <Grid
                         className={classes.gridMarginTop}

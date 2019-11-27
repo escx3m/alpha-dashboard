@@ -16,7 +16,6 @@ const useStyles = makeStyles(() => ({
 
 const Topbar = props => {
   const { className, ...rest } = props;
-
   const classes = useStyles();
 
   return (

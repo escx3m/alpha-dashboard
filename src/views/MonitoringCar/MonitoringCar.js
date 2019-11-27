@@ -40,14 +40,12 @@ function CarsLoad() {
     .then(res => {
       setLoading(false);
       const routes = res.data;
-      console.log('data recieved');
       const cars = routes.reduce((acc, route) => {
         if(route.carId && !acc.includes(route.carId)) {
           acc.push(route.carId);
         }
         return acc;
       }, []);
-      console.log(cars);
       const result = cars.map((carId) => {
         const { car, carScheme: { seats } } = routes.find((route) => route.carId === carId);
         const carRoutes = routes.filter((route) => carId === route.carId);

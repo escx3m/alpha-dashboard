@@ -87,7 +87,6 @@ const ToPassenger = props => {
     ).length;
     return acc + passengersPresent;
   }, 0);
-  console.log('SSSSSSSSS', passengersCount)
   const classes = useStyles();
 
   return (

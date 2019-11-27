@@ -92,8 +92,6 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = props => {
   const { history, login } = props;
-
-  console.log(props);
   const classes = useStyles();
 
   const [formState, setFormState] = useState({

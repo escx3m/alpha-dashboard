@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Sidebar = props => {
-  const { open, variant, onClose, className, ...rest } = props;
+  const { open, variant, onClose, className, logout, ...rest } = props;
 
   const classes = useStyles();
 
@@ -85,6 +85,7 @@ const Sidebar = props => {
     {
       title: 'Выйти',
       href: '/sign-in',
+      onClick: logout,
       icon: <LockOpenIcon />
     }
   ];

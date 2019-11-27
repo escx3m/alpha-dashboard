@@ -51,7 +51,6 @@ const CustomRouterLink = forwardRef((props, ref) => (
 
 const SidebarNav = props => {
   const { pages, className, ...rest } = props;
-
   const classes = useStyles();
 
   return (
@@ -70,6 +69,7 @@ const SidebarNav = props => {
             className={classes.button}
             component={CustomRouterLink}
             to={page.href}
+            onClick={page.onClick}
           >
             <div className={classes.icon}>{page.icon}</div>
             {page.title}

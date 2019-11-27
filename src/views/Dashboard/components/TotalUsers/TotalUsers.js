@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
-
 import axios from 'axios';
 import {
   startOfToday,
@@ -53,9 +52,7 @@ const useStyles = makeStyles(theme => ({
 
 const TotalUsers = props => {
   const { className, ...rest } = props;
-
   const classes = useStyles();
-
   const [allRoutes, setAllRoutes] = useState([]);
   const [startDay, setStartDay] = useState(startOfToday());
   const [endDay, setEndDay] = useState(endOfToday());

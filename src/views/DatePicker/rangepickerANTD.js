@@ -30,15 +30,10 @@ const StyledRangePicker = styled(RangePicker)`
 
 const RangePickerANTD = (props) => {
   const { startDay, endDay, setStartDay, setEndDay } = props;
-  const  [size, setSize] = useState('large');
 
-  const handleSizeChange = e => {
-    setSize(e.target.value);
-  };
   const handleDateChange = val => {
     setStartDay(makeJSDateObject(val[0]));
     setEndDay(makeJSDateObject(val[1]));
-    console.log(val[0], val[1])
     return (
       [moment(startDay), moment(endDay)]
     );
@@ -47,7 +42,7 @@ const RangePickerANTD = (props) => {
   return (
     <div>
       <StyledRangePicker
-        size={size}
+        size="large"
         format="DD-MM-YYYY"
         placeholder={['НАЧАЛО', 'КОНЕЦ']}
         onChange={handleDateChange}
