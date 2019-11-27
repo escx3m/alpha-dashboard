@@ -80,11 +80,11 @@ const ToBox = props => {
   const passengersCount = allRoutes
   .reduce((acc, route) => {
     const passengersStatus = 3;
-    const passengersType = 2;
+    const passengersBox = 2;
     const passengersPresent = route.passengers.filter(
       passenger => passenger.state === passengersStatus 
       &&
-      passenger.type === passengersType
+      passenger.type === passengersBox
     ).length;
     return acc + passengersPresent;
   }, 0);

@@ -203,8 +203,7 @@ const Report = () => {
     const onlineChannel = 13;
     const passengersType = 1;
     const passengersPresent = route.passengers.filter(
-      passenger => passenger.sales_channel_id !== onlineChannel && passenger.sales_channel_id !== undefined
-      // passenger => passenger.sales_channel_id !== onlineChannel && passenger.state === 2 || passenger.state === 3 || passenger.type === passengersType
+      passenger => passenger.sales_channel_id !== onlineChannel && passenger.sales_channel_id !== null
     ).length;
     return acc + passengersPresent;
   }, 0);
@@ -377,7 +376,7 @@ const Report = () => {
                         // const passengersStatus = 3;
                         const passengersPresent = route.passengers.filter(
                           passenger =>
-                            passenger.state ===5 && passenger.attached_to_route_time
+                            passenger.state !== 5 && passenger.attached_to_route_time >= startDay && passenger.attached_to_route_time <= endDay
                         ).length;
                         return acc + passengersPresent;
                       }, 0);
