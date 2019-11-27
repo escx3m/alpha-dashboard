@@ -86,12 +86,12 @@ const ToPassenger = props => {
     const passengersType = 1;
     const passengersPresent = route.passengers.filter(
       passenger => passenger.state === passengersStatus
-      &&
-      passenger.type === passengersType
+                    &&
+                    passenger.type === passengersType
     ).length;
     return acc + passengersPresent;
   }, 0);
-
+  console.log('SSSSSSSSS', passengersCount)
   const classes = useStyles();
 
   return (

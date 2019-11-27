@@ -377,7 +377,7 @@ const Report = () => {
                         // const passengersStatus = 3;
                         const passengersPresent = route.passengers.filter(
                           passenger =>
-                            passenger.state === 2 || passenger.state === 3
+                            passenger.state ===5 && passenger.attached_to_route_time
                         ).length;
                         return acc + passengersPresent;
                       }, 0);
