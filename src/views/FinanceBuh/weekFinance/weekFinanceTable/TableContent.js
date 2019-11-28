@@ -5,6 +5,7 @@ import { eachDayOfInterval, format, endOfWeek, isSameDay } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import { makeJSDateObject } from '../../../../helpers/helpers';
 import { payToDrivers, cities, notStandard } from '../../../../helpers/constants';
+import { borders } from '@material-ui/system';
 
 const useStyles = makeStyles(theme => ({
   gridBorder: {
@@ -190,7 +191,8 @@ function TableContent(props) {
               spacing={1}
               wrap='nowrap'
               key={`${k}`}
-              style={route.length === 1 ? {backgroundColor: 'orange'} : {}}
+              // style={route.length === 1 ? {backgroundColor: 'orange'} : {}}
+              style={route.length === 1 ? {borderColor: 'red'} : {}}
             >
               <Grid className={classes.gridBorder} item xs={1}>
                 <Card
