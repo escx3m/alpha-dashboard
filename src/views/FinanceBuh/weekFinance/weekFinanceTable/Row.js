@@ -94,8 +94,10 @@ function Row(props) {
     totalToDriver,
     firmIncome,
     startRouteId,
-  } = props;
-  const [sendCorrection, setSendCorrection] = useState(0);
+  } = props.rowdata;
+  const [sendCorrection, setSendCorrection] = useState(currentCorrection === '' ? 0 : currentCorrection);
+  console.log('ROW startRouteId ', startRouteId)
+  console.log('ROW sendCorrection ', sendCorrection)
   return (
     <Grid
       className={classes.overAll}
@@ -104,27 +106,7 @@ function Row(props) {
       direction="row"
       spacing={1}
       wrap="nowrap">
-       {/* key={`${k}`}
-      style={route.length === 1 ? { backgroundColor: 'orange' } : {}}> */}
-      
-      <TextField
-        value={sendCorrection}
-        onChange={e => setSendCorrection(e.target.value)}
-      />
-      <Button
-        className={classes.btnSave}
-        onClick={() =>
-          axios.post('http://localhost:9000/api/board/corrections',
-            {
-              correction: sendCorrection,
-              startRouteId: 123
-            })
-        }
-        variant="contained"
-        color="primary">
-        Сохранить
-          </Button>
-      {/* <Grid className={classes.gridBorder} item xs={1}>
+      <Grid className={classes.gridBorder} item xs={1}>
         <Card
           className={
             isSameDay(makeJSDateObject(new Date()), selectedDay)
@@ -168,7 +150,10 @@ function Row(props) {
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
-          
+          <TextField 
+            defaultValue={0 || sendCorrection}
+            onChange={e => setSendCorrection(e.target.value)}
+          />
         </Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
@@ -187,11 +172,11 @@ function Row(props) {
         <Card className={classes.cardInfo}>
           <Button
             className={classes.btnSave}
-            onClick={sendCorrection => 
-              axios.post('http:localhost:9000/api/board/corrections', 
+            onClick={() => 
+                axios.post('http://localhost:9000/api/board/corrections', 
                 {
-                  correction: sendCorrection,
-                  startRouteId: startRouteId
+                  correction: +sendCorrection,
+                  startRouteId: +startRouteId
                 })
             }
             variant="contained"
@@ -199,7 +184,7 @@ function Row(props) {
             Сохранить
           </Button>
         </Card>
-      </Grid> */}
+      </Grid> 
     </Grid>
   );
 }
