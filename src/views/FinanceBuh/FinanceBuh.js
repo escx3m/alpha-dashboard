@@ -18,6 +18,7 @@ function WeekFinance() {
   const [selectedWeekStart, setSelectedWeekStart] = useState(currentWeekStart);
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [routes, setRoutes] = useState([]);
+  const [corrections, setCorrections] = useState([]);
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
   const [checkState, setCheckState] = React.useState({
@@ -37,8 +38,17 @@ function WeekFinance() {
       }})
       .then(res => {
         setRoutes(res.data);
+        axios.get('http://localhost:9000/api/board/corrections', {
+          params: {
+            ids: res.data.map(({ id }) => id)
+          }}) 
+          .then(res => {
+            const { corrections } = res.data;
+            setCorrections(corrections);
+          });
+
       });
-    }, [selectedWeekStart]);
+        }, [selectedWeekStart]);
 
   return (
     <Grid className={classes.gridMargin} container direction="row"> 
@@ -57,6 +67,7 @@ function WeekFinance() {
       <Grid className={classes.gridMargin} item xs={12}>
         <WeekFinanceTable 
           routes={routes} 
+          corrections={corrections}
           loading={loading}
           selectedDay={selectedDay}
           selectedWeekStart={selectedWeekStart}
