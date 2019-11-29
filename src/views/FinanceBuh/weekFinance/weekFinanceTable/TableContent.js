@@ -189,10 +189,10 @@ function TableContent(props) {
               item
               direction='row'
               spacing={1}
+              xs='auto'
               wrap='nowrap'
               key={`${k}`}
-              // style={route.length === 1 ? {backgroundColor: 'orange'} : {}}
-              style={route.length === 1 ? {borderColor: 'red'} : {}}
+              style={route.length === 1 ? {backgroundColor: 'orange'} : {}}
             >
               <Grid className={classes.gridBorder} item xs={1}>
                 <Card

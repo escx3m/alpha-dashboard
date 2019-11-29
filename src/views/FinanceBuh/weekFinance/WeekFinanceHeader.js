@@ -12,9 +12,6 @@ const WeekFinanceHeader = (props) => {
       <Grid item xs={3} style={{marginLeft:'50px'}}>
         <DatePickerANTD {...props} />
       </Grid>
-      {/* <Grid item xs={6}>
-      <WeekPicker {...props}/>
-      </Grid> */}
     </Grid>
   );
 }

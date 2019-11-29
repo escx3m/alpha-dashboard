@@ -50,7 +50,6 @@ const DatePickerANTD = (props) => {
       setSelectedWeekStart(startOfWeek(makeJSDateObject(new Date(date)),  { weekStartsOn: 1 }));
     }
     setSelectedDay(makeJSDateObject(new Date(date)));
-    console.log(date, dateString);
   }
   return (
     <div>

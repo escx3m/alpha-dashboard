@@ -10,10 +10,6 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '4px',
     fontSize: '20px',
     marginLeft: '1px',
-    // position: 'fixed',  
-    // top: '0',
-    // zIndex: '100',  
-    // width: '100',
   },
   card: {
     background: '#C8C8C8',
@@ -44,7 +40,7 @@ function TableHeader (props) {
       item 
       direction="row" 
       spacing={1} 
-      xs={14}
+      xs='auto'
       wrap='nowrap'
     >
       <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Дата</Card></Grid> 
