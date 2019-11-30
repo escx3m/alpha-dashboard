@@ -5,13 +5,11 @@ import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
 import {
   Button,
-  IconButton,
   TextField,
   Link,
   Typography,
   Card
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CloudIcon from '@material-ui/icons/Cloud';
 
 const schema = {
@@ -146,11 +144,6 @@ const SignIn = props => {
 
   return (
     <div className={classes.root}>
-      <div>
-        <IconButton onClick={handleBack}>
-          <ArrowBackIcon />
-        </IconButton>
-      </div>
       <div className={classes.contentBody}>
         <form className={classes.form} onSubmit={handleSignIn}>
           <div>
