@@ -9,3 +9,4 @@ export { default as SignUp } from './SignUp';
 export { default as Finance } from './Finance';
 export { default as FinanceBuh } from './FinanceBuh';
 export { default as UserList } from './UserList';
+export { default as Sms } from './Sms';

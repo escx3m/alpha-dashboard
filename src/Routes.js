@@ -18,6 +18,7 @@ import {
   Account as AccountView,
   Settings as SettingsView,
   SignIn as SignInView,
+  Sms as SmsView,
 } from './views';
 
 const fakeAuth = {
@@ -107,6 +108,15 @@ const Routes = () => {
           exact
           layout={MainLayout}
           path="/monitoringcar"
+        />
+      </PrivateRoute>
+      <PrivateRoute path="/sms">
+        <RouteWithLayout
+          component={SmsView}
+          logout={logout}
+          exact
+          layout={MainLayout}
+          path="/sms"
         />
       </PrivateRoute>
       <PrivateRoute path="/finance">

@@ -11,6 +11,7 @@ import InsertChartIcon from '@material-ui/icons/InsertChart';
 import DeviceHubIcon from '@material-ui/icons/DeviceHub';
 import MoneyIcon from '@material-ui/icons/Money';
 import GroupIcon from '@material-ui/icons/Group';
+import SmsIcon from '@material-ui/icons/Sms';
 import { Profile, SidebarNav } from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -66,6 +67,11 @@ const Sidebar = props => {
       title: 'Машинный мониторинг',
       href: '/monitoringcar',
       icon: <DeviceHubIcon />
+    },
+    {
+      title: 'Sms',
+      href: '/sms',
+      icon: <SmsIcon />
     },
     {
       title: 'Персонал',
