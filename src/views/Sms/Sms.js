@@ -119,7 +119,8 @@ const Sms = () => {
         })
         .then(res => {
           console.log('get sms');
-        });
+        })
+        .catch();
         setLoading(false);
       });
   }, [start]);
