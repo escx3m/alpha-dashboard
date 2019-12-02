@@ -78,12 +78,14 @@ const TotalUsers = props => {
   const passengersPresent = allRoutes
   .reduce((acc, route) => {
     const passengersPresent = route.passengers.filter(
-      passenger =>
-        passenger.state !== 5 && passenger.state !== null && passenger.attached_to_route_time >= startDay && passenger.attached_to_route_time <= endDay 
-    ).length;
+      passenger => {
+        console.log ('SSSSSSSSS', new Date(new Date (passenger.attached_to_route_time).toISOString()));
+        return passenger.state === 2 || passenger.state === 3 && new Date(passenger.attached_to_route_time) >= startDay && new Date(passenger.attached_to_route_time) <= endDay
+      }).length; 
+    
     return acc + passengersPresent;
   }, 0);
-
+  
   return (
     <Card
       {...rest}
