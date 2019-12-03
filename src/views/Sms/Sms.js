@@ -7,9 +7,14 @@ import { makeJSDateObject } from '../../helpers/helpers';
 import { citiesName } from '../../helpers/constants';
 import axios from 'axios';
 import { Grid, Card, CardContent, CardHeader, Paper,
-  IconButton, Button, CircularProgress
+  IconButton, Button, CircularProgress, Link,
+  ExpansionPanel as Expansion,
+  ExpansionPanelSummary as ExpansionHeader,
+  ExpansionPanelDetails as ExpansionBody
 } from '@material-ui/core';
-import { startOfToday, endOfToday, startOfWeek, endOfWeek } from 'date-fns';
+import { 
+  startOfDay, endOfDay, isSameDay, 
+  startOfToday, endOfToday, startOfWeek, endOfWeek } from 'date-fns';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -70,15 +75,20 @@ const Sms = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [allRoutes, setAllRoutes] = useState([]);
   const [uniqueRoutes, setUniqueRoutes] = useState([]);
+  const [alreadySendSms, setAlreadySendSms] = useState([]);
   const [start, setStart] = useState(startOfWeek(makeJSDateObject(selectedDate), {
     weekStartsOn: 1
   }));
   const [end, setEnd] = useState(endOfWeek(start, { weekStartsOn: 1 }));
+  const routeIdTemplate = 'http://crmbus.ru/#/company/6/route/'; //route.id
   const handleToday = () =>
     setSelectedDate(startOfToday(), setSelectedDate(endOfToday()));
   const { pickerProps, wrapperProps } = useStaticState({
     value: selectedDate, 
-    onChange: setSelectedDate
+    onChange: e => {
+      console.log('day change ',e)
+      setSelectedDate(e)
+    }
   });
  
   const passengersIds = [];
@@ -87,8 +97,8 @@ const Sms = () => {
     axios
       .get('http://localhost:9000/api/routes', {
         params: {
-          startWeek: startOfToday(),
-          endWeek: endOfToday()
+          startWeek: startOfDay(selectedDate),
+          endWeek: endOfDay(selectedDate)
         }
       })
       .then(res => {
@@ -114,16 +124,19 @@ const Sms = () => {
         }); 
         axios.get('http://localhost:9000/api/sms',{
           params: {
-            ids: passengersIds, 
-          }
-        })
-        .then(res => {
-          console.log('get sms');
-        })
-        .catch();
-        setLoading(false);
+              ids: passengersIds, 
+            }
+          })
+          .then(res => {
+            setAlreadySendSms(res.data); 
+          })
+          .catch(e => console.log(e.toString()));
+          setLoading(false);
       });
-  }, [start]);
+      
+  }, [selectedDate]);
+
+  const currentRoutes = allRoutes.filter(route => isSameDay(new Date(route.fromTime), new Date(selectedDate)));
 
   return (
       <div className={classes.root}>
@@ -144,14 +157,9 @@ const Sms = () => {
                 title="SMS"
               />
               <CardContent>
-                <Grid className={classes.headInfo}>
-                  <span className={classes.trip}>Рейсы</span>
-                  <span className={classes.spanSumm}>Количество</span>
-                </Grid>
                 <div>
-                  {uniqueRoutes.map((way, i) => {
-                    const idCityFrom = Number(way.slice(0, way.indexOf('-')));
-                    const idCityTo = Number(way.slice(way.indexOf('-') + 1));
+                  {currentRoutes.map((route, i) => {
+                     
                     return (
                       <Grid
                         className={classes.gridMarginTop}
@@ -159,8 +167,37 @@ const Sms = () => {
                         key={i}
                         spacing={1}
                       >
-                        <Grid item xs={10}>{`${citiesName[idCityFrom]}-${citiesName[idCityTo]}`}</Grid>
-                        <Grid item xs={2}>{}</Grid>
+                        <Grid item xs={12}>
+                          {currentRoutes.map(route => {
+                            const sendSmsCount = route.passengers.filter(passenger => 
+                              passengersIds.includes(passenger.id)
+                            ).length;
+
+                            console.log(route);
+                            return (
+                              <Expansion>
+                                <ExpansionHeader>
+                                  <Grid item xs={12}>{`${citiesName[route.fromCityId]}-${citiesName[route.toCityId]}`}</Grid>
+                                  <Link href={`${routeIdTemplate}${route.id}`}>На crmbus</Link>
+                                </ExpansionHeader>
+                                <ExpansionBody>
+                                  {
+                                    route.passengers.map(p => {
+                                      return (
+                                        <div>
+                                          {p.surname + ' ' 
+                                            + p.name + ' ' 
+                                            + p.patronymic + ' '
+                                            + p.phone
+                                          }
+                                        </div>
+                                      )
+                                  })}
+                                </ExpansionBody>
+                              </Expansion>
+                            )
+                          })}
+                        </Grid>
                       </Grid>
                     );
                   })}
