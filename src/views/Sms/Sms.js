@@ -91,8 +91,9 @@ const Sms = () => {
       setSelectedDate(e)
     }
   });
- 
+  const canceledState = 5;
   const passengersIds = [];
+
   useEffect(() => {
     setLoading(true);
     axios
@@ -113,11 +114,9 @@ const Sms = () => {
         }, []);
         setUniqueRoutes(uniqueRoutes);
         setAllRoutes(routes);
-        console.log('allRoutes ', routes);
-
         routes.forEach(route => {
           const passengers = route.passengers.filter(passenger => {
-            if (passenger.state !== 5) {
+            if (passenger.state !== canceledState) {
               passengersIds.push(passenger.id);
             }
             return;
@@ -125,88 +124,123 @@ const Sms = () => {
         }); 
         axios.get('http://localhost:9000/api/sms',{
           params: {
-              ids: passengersIds, 
-            }
-          })
-          .then(res => {
-            setAlreadySendSms(res.data); 
-          })
-          .catch(e => console.log(e.toString()));
-          setLoading(false);
+            ids: passengersIds, 
+          }
+        })
+        .then(res => {
+          setAlreadySendSms(res.data); 
+        })
+        .catch(e => console.log(e.toString()));
+        setLoading(false);
       });
       
   }, [selectedDate]);
 
   const currentRoutes = allRoutes.filter(route => isSameDay(new Date(route.fromTime), new Date(selectedDate)));
-
+  const currentSms = alreadySendSms.filter(sms => isSameDay(new Date(sms.sendTime), new Date(selectedDate)));
+  const currentSmsIds = currentSms.map(({ passengerId }) => passengerId);
+  console.log(currentSmsIds);
+  const uniqueSmsTime = alreadySendSms.reduce((acc, sms) => {
+    const sendTimeHours = `0${new Date(sms.sendTime).getHours()}`.slice(-2);
+    const sendTimeMinutes = `0${new Date(sms.sendTime).getMinutes()}`.slice(-2);
+    const sendSmsTime = sendTimeHours + ':' + sendTimeMinutes; 
+    if (!acc.includes(sendSmsTime)) {
+      acc.push(sendSmsTime); 
+    }
+    return acc;
+  }, []); 
+  uniqueSmsTime.sort();
+  
   return (
-      <div className={classes.root}>
-        <Grid container spacing={3} >
-          <Grid item xs={3}>
-            <Paper>
-              <Calendar style={{overflow: "hidden"}} {...pickerProps} />  
-            </Paper>
-          </Grid>
-          <Grid item xs={9} >
-            <Card className={classes.card}>
-              <CardHeader
-                action={
-                  <IconButton aria-label="settings">
-                    <CachedIcon />
-                  </IconButton>
-                }
-                title="SMS"
-              />
-              <CardContent>
-                <div>
-                  {currentRoutes.map((route, i) => {
-                    const routeTime = new Date(route.fromTime);
-                    return (
-                      <Grid
-                        className={classes.gridMarginTop}
-                        container
-                        key={i}
-                        spacing={1}
-                      >
-                        <Grid item xs={12}>
-                          <Expansion>
-                            <ExpansionHeader
-                              expandIcon={<ExpandMoreIcon />}
-                            >
-                              <Grid item xs={4}>{`${citiesName[route.fromCityId]}-${citiesName[route.toCityId]}`}</Grid>
-                              <Grid item xs={4}>
-                                {`0${routeTime.getHours()}`.slice(-2) 
-                                  + ':' + `0${routeTime.getMinutes()}`.slice(-2)}
-                              </Grid>
-                              <Grid item xs={4}><Link href={`${routeIdTemplate}${route.id}`} target="_blank">Crmbus</Link></Grid>
-                            </ExpansionHeader>
-                            <ExpansionBody>
-                              <Grid container>
-                              {
-                                route.passengers.map(p => {
-                                  return (
-                                    <Grid xs={12} item>
-                                      {p.surname + ' ' 
-                                        + p.name + ' ' 
-                                        + p.patronymic + ' '
-                                        + p.phone
-                                      }
-                                    </Grid>
-                                  )
-                              })}
-                              </Grid>
-                            </ExpansionBody>
-                          </Expansion>
-                        </Grid>
-                      </Grid>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
+    <div className={classes.root}>
+      <Grid container spacing={3} >
+        <Grid item xs={3}>
+          <Paper>
+            <Calendar style={{overflow: "hidden"}} {...pickerProps} />  
+          </Paper>
         </Grid>
-      </div>
+        <Grid item xs={9}>
+          <Card className={classes.card}>
+            <CardHeader
+              action={
+                <IconButton aria-label="settings">
+                  <CachedIcon />
+                </IconButton>
+              }
+              title="SMS"
+            />
+            <CardContent>
+              {uniqueSmsTime.map((smsTime, i) => {
+                const passengersIdsAtTime = alreadySendSms.reduce((acc, sms) => {
+                  const sendTimeHours = `0${new Date(sms.sendTime).getHours()}`.slice(-2);
+                  const sendTimeMinutes = `0${new Date(sms.sendTime).getMinutes()}`.slice(-2);
+                  const sendSmsTime = sendTimeHours + ':' + sendTimeMinutes; 
+                  if (!acc.includes(sms.passengerId) && sendSmsTime === smsTime) {
+                    acc.push(sms.passengerId); 
+                  }
+                  return acc;
+                }, [])
+                console.log(passengersIdsAtTime);
+                return (
+                  <Expansion>
+                    <ExpansionHeader
+                      expandIcon={<ExpandMoreIcon />}
+                    >
+                      <Grid item xs={4}>{smsTime}</Grid>
+                      <Grid item xs={4}>
+                      </Grid>
+                    </ExpansionHeader>
+                    <ExpansionBody>
+                      <Grid container >
+                      {currentRoutes.map((route, i) => {
+                        const routeTime = new Date(route.fromTime);
+                        const correctPassengers = route.passengers.filter(passenger => passenger.state !== canceledState && passengersIdsAtTime.includes(passenger.id));
+                        const passengersCount = correctPassengers.length;
+                        
+                        return (
+                          <Grid item xs={12}>
+                            <Expansion>
+                              <ExpansionHeader
+                                expandIcon={<ExpandMoreIcon />}
+                              >
+                                <Grid item xs={4}>{`${citiesName[route.fromCityId]}-${citiesName[route.toCityId]}`}</Grid>
+                                <Grid item xs={4}>
+                                  {`0${routeTime.getHours()}`.slice(-2) 
+                                    + ':' + `0${routeTime.getMinutes()}`.slice(-2)}
+                                </Grid>
+                                <Grid item xs={1}>{passengersCount}</Grid>
+                                <Grid item xs={2}><Link href={`${routeIdTemplate}${route.id}`} target="_blank">Crmbus</Link></Grid>
+                              </ExpansionHeader>
+                              <ExpansionBody>
+                                <Grid container>
+                                {
+                                  correctPassengers.map(passenger => {
+                                    return (
+                                      <Grid xs={12} item>
+                                        {passenger.surname + ' ' 
+                                          + passenger.name + ' ' 
+                                          + passenger.patronymic + ' '
+                                          + passenger.phone
+                                        }
+                                      </Grid>
+                                    )
+                                })}
+                                </Grid>
+                              </ExpansionBody>
+                            </Expansion>
+                          </Grid>
+                        );
+                      })}
+                      </Grid>
+                    </ExpansionBody>
+                  </Expansion>
+                );
+              })}
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </div>
   );
 };
 
