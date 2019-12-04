@@ -93,7 +93,7 @@ function TableContent(props) {
           const carTitle = carRoutes[0].car.title;
           const carNumber = carRoutes[0].car.number;
           const carOwner = carRoutes[0].car.owner;
-          const carDriver = carRoutes[0].driver;
+          const carDriver = carRoutes[0].driver.user;
           const carScheme = carRoutes[0].carScheme.seats;
           const resultRoutes = [];
           const copy = [...carRoutes];
