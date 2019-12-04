@@ -67,6 +67,25 @@ const useStyles = makeStyles(theme => ({
   icon: {
     height: 32,
     width: 32
+  },
+  gridCenter: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  backgroundName: {
+    "&:nth-child(odd)": {
+      background: 'rgb(244,249,253)',
+    },
+  },
+  borderGrid: {
+    borderBottom: '1px solid #3f51b5',
+    paddingTop: '8px',
+    paddingBottom: '8px',
+  },
+  paddingGrid: {
+    paddingTop: '8px',
+    paddingBottom: '8px',
   }
 }));
 
@@ -167,7 +186,7 @@ const Sms = () => {
                   <CachedIcon />
                 </IconButton>
               }
-              title="SMS"
+              title="SMS уведомление"
             />
             <CardContent>
               {uniqueSmsTime.map((smsTime, i) => {
@@ -203,26 +222,46 @@ const Sms = () => {
                               <ExpansionHeader
                                 expandIcon={<ExpandMoreIcon />}
                               >
-                                <Grid item xs={4}>{`${citiesName[route.fromCityId]}-${citiesName[route.toCityId]}`}</Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs={3}>{`${citiesName[route.fromCityId]}-${citiesName[route.toCityId]}`}</Grid>
+                                <Grid item xs={3} className={classes.gridCenter}> Время рейса:&nbsp;
                                   {`0${routeTime.getHours()}`.slice(-2) 
                                     + ':' + `0${routeTime.getMinutes()}`.slice(-2)}
                                 </Grid>
                                 <Grid item xs={1}>{passengersCount}</Grid>
-                                <Grid item xs={2}><Link href={`${routeIdTemplate}${route.id}`} target="_blank">Crmbus</Link></Grid>
+                                <Grid item xs={3} className={classes.gridCenter}><Link href={`${routeIdTemplate}${route.id}`} target="_blank">Crmbus</Link></Grid>
                               </ExpansionHeader>
                               <ExpansionBody>
                                 <Grid container>
+                                <Grid container xs={12} className={classes.borderGrid}>
+                                <Grid xs={3} item>
+                                <strong>Фамилия Имя Отчество</strong>
+                              </Grid>
+                              <Grid xs={3} item className={classes.gridCenter}>
+                              <strong>Номер телефона</strong>
+                              </Grid>
+                              <Grid xs={3} item className={classes.gridCenter}>
+                              <strong>Кол-во SMS/Людей в рейсе</strong>
+                              </Grid>
+                              </Grid>
                                 {
-                                  correctPassengers.map(passenger => {
+                                  correctPassengers.map(p => {
                                     return (
-                                      <Grid xs={12} item>
-                                        {passenger.surname + ' ' 
-                                          + passenger.name + ' ' 
-                                          + passenger.patronymic + ' '
-                                          + passenger.phone
-                                        }
-                                      </Grid>
+                                      <Grid container xs={12} className={classes.backgroundName}>
+                                    <Grid xs={3} item className={classes.paddingGrid}>
+                                      {p.surname + ' ' 
+                                        + p.name + ' ' 
+                                        + p.patronymic + ' '
+                                      }
+                                    </Grid>
+                                    <Grid xs={3} item className={classes.gridCenter}>
+                                      +{
+                                        + p.phone
+                                      }
+                                    </Grid>
+                                    <Grid xs={3} item className={classes.gridCenter}>
+                                      50/12
+                                    </Grid>
+                                    </Grid>
                                     )
                                 })}
                                 </Grid>
