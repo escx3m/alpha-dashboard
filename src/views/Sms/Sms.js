@@ -5,7 +5,7 @@ import CachedIcon from '@material-ui/icons/Cached';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import RangePickerANTD from '../DatePicker/rangepickerANTD';
 import { makeJSDateObject } from '../../helpers/helpers';
-import { citiesName } from '../../helpers/constants';
+import { cityShortNames as citiesName } from '../../helpers/constants';
 import axios from 'axios';
 import { Grid, Card, CardContent, CardHeader, Paper,
   IconButton, Button, CircularProgress, Link, Typography,
@@ -95,6 +95,7 @@ const Sms = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [allRoutes, setAllRoutes] = useState([]);
   const [uniqueRoutes, setUniqueRoutes] = useState([]);
+  const [allSendSms, setAllSendSms] = useState([]);
   const [alreadySendSms, setAlreadySendSms] = useState([]);
   const [start, setStart] = useState(startOfWeek(makeJSDateObject(selectedDate), {
     weekStartsOn: 1
@@ -105,14 +106,11 @@ const Sms = () => {
     setSelectedDate(startOfToday(), setSelectedDate(endOfToday()));
   const { pickerProps, wrapperProps } = useStaticState({
     value: selectedDate, 
-    onChange: e => {
-      console.log('day change ',e)
-      setSelectedDate(e)
-    }
+    onChange: e => {setSelectedDate(e)}
   });
   const canceledState = 5;
   const passengersIds = [];
-
+  const currentPhones = [];
   useEffect(() => {
     setLoading(true);
     axios
@@ -150,6 +148,18 @@ const Sms = () => {
           setAlreadySendSms(res.data); 
         })
         .catch(e => console.log(e.toString()));
+        allRoutes.forEach(route => route.passengers.forEach(passenger => currentPhones.push(passenger.phone)));
+        console.log(currentPhones)
+        axios
+          .get('http://localhost:9000/api/smssend',{
+              params: {
+                phones: currentPhones, 
+              }
+            })
+            .then(res => {
+              setAllSendSms(res.data); 
+            })
+            .catch(e => console.log(e.toString()));
         setLoading(false);
       });
       
@@ -158,7 +168,6 @@ const Sms = () => {
   const currentRoutes = allRoutes.filter(route => isSameDay(new Date(route.fromTime), new Date(selectedDate)));
   const currentSms = alreadySendSms.filter(sms => isSameDay(new Date(sms.sendTime), new Date(selectedDate)));
   const currentSmsIds = currentSms.map(({ passengerId }) => passengerId);
-  console.log(currentSmsIds);
   const uniqueSmsTime = alreadySendSms.reduce((acc, sms) => {
     const sendTimeHours = `0${new Date(sms.sendTime).getHours()}`.slice(-2);
     const sendTimeMinutes = `0${new Date(sms.sendTime).getMinutes()}`.slice(-2);
@@ -168,8 +177,10 @@ const Sms = () => {
     }
     return acc;
   }, []); 
+
+
   uniqueSmsTime.sort();
-  
+  console.log(allSendSms);  
   return (
     <div className={classes.root}>
       <Grid container spacing={3} >
@@ -178,7 +189,7 @@ const Sms = () => {
             <Calendar style={{overflow: "hidden"}} {...pickerProps} />  
           </Paper>
         </Grid>
-        <Grid item xs={9}>
+        <Grid item container xs={9}>
           <Card className={classes.card}>
             <CardHeader
               action={
@@ -186,7 +197,7 @@ const Sms = () => {
                   <CachedIcon />
                 </IconButton>
               }
-              title="SMS уведомление"
+              title={`SMS уведомление    Всего ${currentSmsIds.length}`}
             />
             <CardContent>
               {uniqueSmsTime.map((smsTime, i) => {
@@ -200,61 +211,62 @@ const Sms = () => {
                   return acc;
                 }, [])
                 const smsCount = passengersIdsAtTime.length;
-                console.log(passengersIdsAtTime);
                 return (
                   <Expansion>
-                    <ExpansionHeader
-                      expandIcon={<ExpandMoreIcon />}
-                    >
-                      <Grid item xs={4}>{smsTime}</Grid>
-                      <Grid item xs={4}>Отправлено {smsCount}</Grid>
+                    <ExpansionHeader expandIcon={<ExpandMoreIcon />}>
+                      <Grid container xs={12}>
+                        <Grid container item xs={12} direction="row">
+                          <Grid item xs={4} direction="column">{smsTime}</Grid>
+                          <Grid item xs={4} direction="column">Отправлено {smsCount}</Grid>
+                        </Grid>
+                        <Grid container item xs={12} direction="row">
+                          <Grid item xs={4} direction="column">Направление</Grid>
+                          <Grid item xs={4} direction="column">Время рейса</Grid>
+                          <Grid item xs={3} direction="column">СМС/Пассажиры</Grid>
+                        </Grid>
+                      </Grid>
                     </ExpansionHeader>
                     <ExpansionBody>
                       <Grid container >
                       {currentRoutes.map((route, i) => {
                         const routeTime = new Date(route.fromTime);
+                        const totalPassengers = route.passengers.filter(passenger => passenger.state !== canceledState).length;
                         const correctPassengers = route.passengers.filter(passenger => passenger.state !== canceledState && passengersIdsAtTime.includes(passenger.id));
                         const passengersCount = correctPassengers.length;
-                        
                         return (
                           passengersCount ?
                           <Grid item xs={12}>
                             <Expansion>
-                              <ExpansionHeader
-                                expandIcon={<ExpandMoreIcon />}
-                              >
-                                <Grid item xs={3}>{`${citiesName[route.fromCityId]}-${citiesName[route.toCityId]}`}</Grid>
+                              <ExpansionHeader expandIcon={<ExpandMoreIcon />}>
+                                <Grid item xs={4}>{`${citiesName[route.fromCityId]} - ${citiesName[route.toCityId]}`}</Grid>
                                 <Grid item xs={3} className={classes.gridCenter}> Время рейса:&nbsp;
                                   {`0${routeTime.getHours()}`.slice(-2) 
                                     + ':' + `0${routeTime.getMinutes()}`.slice(-2)}
                                 </Grid>
-                                <Grid item xs={3}>{passengersCount}</Grid>
-                                <Grid item xs={3} className={classes.gridCenter}><Link href={`${routeIdTemplate}${route.id}`} target="_blank">Crmbus</Link></Grid>
+                                  <Grid item xs={3} className={classes.gridCenter}>{passengersCount} / {totalPassengers}</Grid>
+                                <Grid item xs={2} className={classes.gridCenter}><Link href={`${routeIdTemplate}${route.id}`} target="_blank">Crmbus</Link></Grid>
                               </ExpansionHeader>
                               <ExpansionBody>
                                 <Grid container>
                                   <Grid container xs={12} className={classes.borderGrid}>
-                                    <Grid xs={3} item>
-                                      <strong>Фамилия Имя Отчество</strong>
+                                    <Grid xs={6} item>
+                                      <strong>ФИО</strong>
                                     </Grid>
-                                    <Grid xs={3} item className={classes.gridCenter}>
-                                      <strong>Номер телефона</strong>
-                                    </Grid>
-                                    <Grid xs={3} item className={classes.gridCenter}>
-                                      <strong>Кол-во SMS/Людей в рейсе</strong>
+                                    <Grid xs={6} item className={classes.gridCenter}>
+                                      <strong>Номер</strong>
                                     </Grid>
                                   </Grid>
                                 {
                                   correctPassengers.map(p => {
                                     return (
                                       <Grid container xs={12} className={classes.backgroundName}>
-                                        <Grid xs={3} item className={classes.paddingGrid}>
+                                        <Grid xs={6} item className={classes.paddingGrid}>
                                           {p.surname + ' ' 
                                             + p.name + ' ' 
                                             + p.patronymic + ' '
                                           }
                                         </Grid>
-                                        <Grid xs={3} item className={classes.gridCenter}>
+                                        <Grid xs={6} item className={classes.gridCenter}>
                                           {p.phone}
                                         </Grid>
                                       </Grid>
