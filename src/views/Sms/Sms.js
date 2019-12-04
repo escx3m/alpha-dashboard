@@ -199,6 +199,7 @@ const Sms = () => {
                   }
                   return acc;
                 }, [])
+                const smsCount = passengersIdsAtTime.length;
                 console.log(passengersIdsAtTime);
                 return (
                   <Expansion>
@@ -206,8 +207,7 @@ const Sms = () => {
                       expandIcon={<ExpandMoreIcon />}
                     >
                       <Grid item xs={4}>{smsTime}</Grid>
-                      <Grid item xs={4}>
-                      </Grid>
+                      <Grid item xs={4}>Отправлено {smsCount}</Grid>
                     </ExpansionHeader>
                     <ExpansionBody>
                       <Grid container >
@@ -217,6 +217,7 @@ const Sms = () => {
                         const passengersCount = correctPassengers.length;
                         
                         return (
+                          passengersCount ?
                           <Grid item xs={12}>
                             <Expansion>
                               <ExpansionHeader
@@ -227,47 +228,43 @@ const Sms = () => {
                                   {`0${routeTime.getHours()}`.slice(-2) 
                                     + ':' + `0${routeTime.getMinutes()}`.slice(-2)}
                                 </Grid>
-                                <Grid item xs={1}>{passengersCount}</Grid>
+                                <Grid item xs={3}>{passengersCount}</Grid>
                                 <Grid item xs={3} className={classes.gridCenter}><Link href={`${routeIdTemplate}${route.id}`} target="_blank">Crmbus</Link></Grid>
                               </ExpansionHeader>
                               <ExpansionBody>
                                 <Grid container>
-                                <Grid container xs={12} className={classes.borderGrid}>
-                                <Grid xs={3} item>
-                                <strong>Фамилия Имя Отчество</strong>
-                              </Grid>
-                              <Grid xs={3} item className={classes.gridCenter}>
-                              <strong>Номер телефона</strong>
-                              </Grid>
-                              <Grid xs={3} item className={classes.gridCenter}>
-                              <strong>Кол-во SMS/Людей в рейсе</strong>
-                              </Grid>
-                              </Grid>
+                                  <Grid container xs={12} className={classes.borderGrid}>
+                                    <Grid xs={3} item>
+                                      <strong>Фамилия Имя Отчество</strong>
+                                    </Grid>
+                                    <Grid xs={3} item className={classes.gridCenter}>
+                                      <strong>Номер телефона</strong>
+                                    </Grid>
+                                    <Grid xs={3} item className={classes.gridCenter}>
+                                      <strong>Кол-во SMS/Людей в рейсе</strong>
+                                    </Grid>
+                                  </Grid>
                                 {
                                   correctPassengers.map(p => {
                                     return (
                                       <Grid container xs={12} className={classes.backgroundName}>
-                                    <Grid xs={3} item className={classes.paddingGrid}>
-                                      {p.surname + ' ' 
-                                        + p.name + ' ' 
-                                        + p.patronymic + ' '
-                                      }
-                                    </Grid>
-                                    <Grid xs={3} item className={classes.gridCenter}>
-                                      +{
-                                        + p.phone
-                                      }
-                                    </Grid>
-                                    <Grid xs={3} item className={classes.gridCenter}>
-                                      50/12
-                                    </Grid>
-                                    </Grid>
+                                        <Grid xs={3} item className={classes.paddingGrid}>
+                                          {p.surname + ' ' 
+                                            + p.name + ' ' 
+                                            + p.patronymic + ' '
+                                          }
+                                        </Grid>
+                                        <Grid xs={3} item className={classes.gridCenter}>
+                                          {p.phone}
+                                        </Grid>
+                                      </Grid>
                                     )
                                 })}
                                 </Grid>
                               </ExpansionBody>
                             </Expansion>
                           </Grid>
+                          : ''
                         );
                       })}
                       </Grid>
