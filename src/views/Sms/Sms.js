@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Calendar, useStaticState } from '@material-ui/pickers';
 import CachedIcon from '@material-ui/icons/Cached';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import RangePickerANTD from '../DatePicker/rangepickerANTD';
 import { makeJSDateObject } from '../../helpers/helpers';
 import { citiesName } from '../../helpers/constants';
 import axios from 'axios';
 import { Grid, Card, CardContent, CardHeader, Paper,
-  IconButton, Button, CircularProgress, Link,
+  IconButton, Button, CircularProgress, Link, Typography,
   ExpansionPanel as Expansion,
   ExpansionPanelSummary as ExpansionHeader,
   ExpansionPanelDetails as ExpansionBody
@@ -159,7 +160,7 @@ const Sms = () => {
               <CardContent>
                 <div>
                   {currentRoutes.map((route, i) => {
-                     
+                    const routeTime = new Date(route.fromTime);
                     return (
                       <Grid
                         className={classes.gridMarginTop}
@@ -168,35 +169,34 @@ const Sms = () => {
                         spacing={1}
                       >
                         <Grid item xs={12}>
-                          {currentRoutes.map(route => {
-                            const sendSmsCount = route.passengers.filter(passenger => 
-                              passengersIds.includes(passenger.id)
-                            ).length;
-
-                            console.log(route);
-                            return (
-                              <Expansion>
-                                <ExpansionHeader>
-                                  <Grid item xs={12}>{`${citiesName[route.fromCityId]}-${citiesName[route.toCityId]}`}</Grid>
-                                  <Link href={`${routeIdTemplate}${route.id}`}>На crmbus</Link>
-                                </ExpansionHeader>
-                                <ExpansionBody>
-                                  {
-                                    route.passengers.map(p => {
-                                      return (
-                                        <div>
-                                          {p.surname + ' ' 
-                                            + p.name + ' ' 
-                                            + p.patronymic + ' '
-                                            + p.phone
-                                          }
-                                        </div>
-                                      )
-                                  })}
-                                </ExpansionBody>
-                              </Expansion>
-                            )
-                          })}
+                          <Expansion>
+                            <ExpansionHeader
+                              expandIcon={<ExpandMoreIcon />}
+                            >
+                              <Grid item xs={4}>{`${citiesName[route.fromCityId]}-${citiesName[route.toCityId]}`}</Grid>
+                              <Grid item xs={4}>
+                                {`0${routeTime.getHours()}`.slice(-2) 
+                                  + ':' + `0${routeTime.getMinutes()}`.slice(-2)}
+                              </Grid>
+                              <Grid item xs={4}><Link href={`${routeIdTemplate}${route.id}`} target="_blank">Crmbus</Link></Grid>
+                            </ExpansionHeader>
+                            <ExpansionBody>
+                              <Grid container>
+                              {
+                                route.passengers.map(p => {
+                                  return (
+                                    <Grid xs={12} item>
+                                      {p.surname + ' ' 
+                                        + p.name + ' ' 
+                                        + p.patronymic + ' '
+                                        + p.phone
+                                      }
+                                    </Grid>
+                                  )
+                              })}
+                              </Grid>
+                            </ExpansionBody>
+                          </Expansion>
                         </Grid>
                       </Grid>
                     );
