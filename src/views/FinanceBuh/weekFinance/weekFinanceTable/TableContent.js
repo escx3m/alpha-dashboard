@@ -92,6 +92,17 @@ function TableContent(props) {
     return acc;
   }, []);
 
+  const totalPerDay = {
+    passengers: 0,
+    card: 0,
+    cash: 0,
+    office: 0,
+    correction: 0,
+    tripSum: 0,
+    toDriver: 0,
+    giveToDriver: 0,
+    firm: 0
+  };
 
   return (
     <Grid container spacing={1}>
@@ -217,86 +228,18 @@ function TableContent(props) {
             firmIncome: firmIncome,
             startRouteId: rowData.startRouteId,
             cities: cities,
-          }; //<Grid className={classes.gridBorder} item xs={1}>
+          }; 
           console.log('rowdata.startRouteId ', rowdata.startRouteId);
-                //<Card
-                  //className={
-                    //isSameDay(makeJSDateObject(new Date()), selectedDay)
-                      //? classes.cardToday
-                      //: classes.cardDate
-                  //}>
-                  //{format(selectedDay, 'd MMM', { locale: ruLocale })}
-                //</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>
-                  //{carTitle} {carNumber}
-                //</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>
-                  //{`${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`}
-                //</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>
-                  //{`${carDriver.surname} ${carDriver.name} ${carDriver.patronymic}`}
-                //</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>
-                  //{cities[route[0].fromCityId]}->{cities[route[0].toCityId]}
-                //</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{totalPassengers}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{card}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{office}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{cash}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>
-                  //<TextField
-                    //defaultValue={currentCorrection}
-                    //onChange={e => e.value = e.target.value}
-                  ///>
-                //</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{passengersIncomeSum}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{payToDriver}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{totalToDriver}</Card>
-             //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{firmIncome}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>
-                  //<Button
-                    //className={classes.btnSave}
-                    //onClick={currentCorrection => 
-                      //axios.post('http://localhost:9000/api/board/corrections', 
-                        //{
-                          //correction: currentCorrection,
-                          //startRouteId: rowData.startRouteId
-                        //})
-                    //}
-                    //variant="contained"
-                    //color="primary">
-                    //Сохранить
-                  //</Button>
-                //</Card>
-              //</Grid>
+
+          totalPerDay.passengers += +totalPassengers;
+          totalPerDay.cash += +cash;
+          totalPerDay.card += +card;
+          totalPerDay.office += +office;
+          totalPerDay.correction += +currentCorrection;
+          totalPerDay.tripSum += +passengersIncomeSum;
+          totalPerDay.toDriver += +payToDriver;
+          totalPerDay.giveToDriver += +totalToDriver;
+          totalPerDay.firm += +firmIncome;
 
           return (
             <Grid
@@ -315,6 +258,60 @@ function TableContent(props) {
           );
         });
       })}
+      <Grid className={classes.gridBorder} item xs={1}>
+        <Card>
+          {format(selectedDay, 'd MMM', { locale: ruLocale })}
+        </Card>
+      </Grid>
+      <Grid className={classes.gridBorder} item xs={1}>
+        <Card className={classes.cardInfo}>{totalPerDay.passengers}</Card>
+      </Grid>
+      <Grid className={classes.gridBorder} item xs={1}>
+        <Card className={classes.cardInfo}>{totalPerDay.card}</Card>
+      </Grid>
+      <Grid className={classes.gridBorder} item xs={1}>
+        <Card className={classes.cardInfo}>{totalPerDay.office}</Card>
+      </Grid>
+      <Grid className={classes.gridBorder} item xs={1}>
+        <Card className={classes.cardInfo}>{totalPerDay.cash}</Card>
+      </Grid>
+      <Grid className={classes.gridBorder} item xs={1}>
+        <Card className={classes.cardInfo}>
+          <TextField
+            defaultValue={totalPerDay.correction}
+            onChange={e => e.value = e.target.value}
+          />
+        </Card>
+      </Grid>
+      <Grid className={classes.gridBorder} item xs={1}>
+        <Card className={classes.cardInfo}>{totalPerDay.tripSum}</Card>
+      </Grid>
+      <Grid className={classes.gridBorder} item xs={1}>
+        <Card className={classes.cardInfo}>{totalPerDay.toDriver}</Card>
+      </Grid>
+      <Grid className={classes.gridBorder} item xs={1}>
+        <Card className={classes.cardInfo}>{totalPerDay.giveToDriver}</Card>
+     </Grid>
+      <Grid className={classes.gridBorder} item xs={1}>
+        <Card className={classes.cardInfo}>{totalPerDay.firm}</Card>
+      </Grid>
+      <Grid className={classes.gridBorder} item xs={1}>
+        <Card className={classes.cardInfo}>
+          <Button
+            className={classes.btnSave}
+            //onClick={currentCorrection => 
+              //axios.post('http://localhost:9000/api/board/corrections', 
+                //{
+                  //correction: currentCorrection,
+                  //startRouteId: rowData.startRouteId
+                //})
+            //}
+            variant="contained"
+            color="primary">
+            Сохранить
+          </Button>
+        </Card>
+      </Grid>
     </Grid>
   );
 }

@@ -96,8 +96,6 @@ function Row(props) {
     startRouteId,
   } = props.rowdata;
   const [sendCorrection, setSendCorrection] = useState(currentCorrection === '' ? 0 : currentCorrection);
-  console.log('ROW startRouteId ', startRouteId)
-  console.log('ROW sendCorrection ', sendCorrection)
   return (
     <Grid
       className={classes.overAll}
