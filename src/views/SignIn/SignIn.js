@@ -144,7 +144,7 @@ const SignIn = props => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.contentBody}>
+      <div className={classes.form}>
         <form className={classes.form} onSubmit={handleSignIn}>
           <div>
             <div className={classes.logoText}>
@@ -201,12 +201,6 @@ const SignIn = props => {
                 >
                   ВОЙТИ
                 </Button>
-                <Typography color="textSecondary" variant="body1">
-                  Нет учетной записи?{' '}
-                  <Link component={RouterLink} to="/sign-up" variant="h6">
-                    Зарегистрироваться
-                  </Link>
-                </Typography>
               </form>
             </Card>
           </div>

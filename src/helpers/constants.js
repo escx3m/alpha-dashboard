@@ -1,3 +1,4 @@
+export const isPassenger = 1;
 export const minPrice700 = 700;
 export const maxPrice900 = 900;
 export const minPrice900 = 900;
