@@ -90,8 +90,9 @@ const OnlineOffline = props => {
   }, 0);
   const passengersOffline = allRoutes.reduce((acc, route) => {
     const onlineChannel = 13;
+    const passengersType = 1;
     const passengersPresent = route.passengers.filter(
-      passenger => (passenger.sales_channel_id !== onlineChannel || passenger.sales_channel_id !== null) && passenger.state !== 5
+      passenger => (passenger.sales_channel_id !== onlineChannel || passenger.sales_channel_id !== null) && passenger.state !== 5 && passenger.type === passengersType
     ).length;
     return acc + passengersPresent;
   }, 0);
