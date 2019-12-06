@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import DatePickerANTD from '../TotalProfit/datepickerANTD';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,7 +41,8 @@ const TotalProfit = props => {
       {...rest}
       className={clsx(classes.root, className)}
     >
-      <CardContent>
+      <DatePickerANTD {...props}/>
+      {/* <CardContent>
         <Grid
           container
           justify="space-between"
@@ -67,7 +69,7 @@ const TotalProfit = props => {
             </Avatar>
           </Grid>
         </Grid>
-      </CardContent>
+      </CardContent> */}
     </Card>
   );
 };
