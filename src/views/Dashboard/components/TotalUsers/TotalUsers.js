@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
 import axios from 'axios';
 import {
@@ -12,9 +10,6 @@ import {
 } from 'date-fns';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    height: '100%'
-  },
   content: {
     alignItems: 'center',
     display: 'flex'
@@ -77,9 +72,15 @@ const TotalUsers = props => {
 
   const passengersPresent = allRoutes
   .reduce((acc, route) => {
+    const passengersType = 1;
     const passengersPresent = route.passengers.filter(
       passenger => {
-        return passenger.state === 2 || passenger.state === 3 && new Date(passenger.attached_to_route_time) >= startDay && new Date(passenger.attached_to_route_time) <= endDay
+        console.log ('ATTACHED', new Date(passenger.attached_to_route_time) >= endDay);
+        return passenger.state !==5
+        // (passenger.state === 2 || passenger.state === 3)\
+            && new Date(passenger.attached_to_route_time) >= startDay
+            && new Date(passenger.attached_to_route_time) <= endDay
+            && passenger.type === passengersType
       }).length; 
     
     return acc + passengersPresent;
@@ -88,7 +89,6 @@ const TotalUsers = props => {
   return (
     <Card
       {...rest}
-      className={clsx(classes.root, className)}
     >
       {loading ? (
         <div className={classes.progress}>
@@ -117,21 +117,6 @@ const TotalUsers = props => {
             </Avatar>
           </Grid>
         </Grid>
-        <div className={classes.difference}>
-          <ArrowUpwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
-            16%
-          </Typography>
-          <Typography
-            className={classes.caption}
-            variant="caption"
-          >
-            Since last month
-          </Typography>
-        </div>
       </CardContent>
       )}
     </Card>

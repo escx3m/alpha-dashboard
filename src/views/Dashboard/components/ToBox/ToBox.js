@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -8,7 +7,6 @@ import {
   Grid,
   Typography,
   Avatar,
-  LinearProgress,
   CircularProgress
 } from '@material-ui/core';
 import WorkIcon from '@material-ui/icons/Work';
@@ -92,7 +90,6 @@ const ToBox = props => {
   return (
     <Card
       {...rest}
-      className={clsx(classes.root, className)}
     >
       {loading ? (
         <div className={classes.progress}>
@@ -121,11 +118,6 @@ const ToBox = props => {
             </Avatar>
           </Grid>
         </Grid>
-        <LinearProgress
-          className={classes.progressLinear}
-          value={75.5}
-          variant="determinate"
-        />
       </CardContent>
       )}
     </Card>
