@@ -171,6 +171,7 @@ const Sms = () => {
 
   const currentRoutes = allRoutes.filter(route => isSameDay(new Date(route.fromTime), new Date(selectedDate)));
   const currentSms = alreadySendSms.filter(sms => differenceInHours(new Date(sms.sendTime), new Date(selectedDate)) < 24);
+  const currentSmsPassengersIds = currentSms.map(({ passengerId }) => passengerId);
   const selectedDateSendSms = allSendSms.filter(sendSms => differenceInHours(new Date(sendSms.sendTime), new Date(selectedDate)) < 24)
   const uniqueSmsDateTime = currentSms.reduce((acc, sms) => {
     const sendTimeHours = `0${new Date(sms.sendTime).getHours()}`.slice(-2);
@@ -203,15 +204,12 @@ const Sms = () => {
                   const sendTimeHours = `0${new Date(sms.sendTime).getHours()}`.slice(-2);
                   const sendTimeMinutes = `0${new Date(sms.sendTime).getMinutes()}`.slice(-2);
                   const sendSmsDateTime = sendTimeHours + ':' + sendTimeMinutes; 
-                  if (!acc.includes(sms.passengerId) && sendSmsDateTime === smsTime) {
+                  if (!acc.includes(sms.passengerId) && sendSmsDateTime === smsTime.slice(-5)) {
                     acc.push(sms.passengerId); 
                   }
                   return acc;
                 }, []);
                 const passengersIdsSendSms = selectedDateSendSms.reduce((acc, sendSms) => {
-                  const sendTimeHours = `0${new Date(sendSms.sendTime).getHours()}`.slice(-2);
-                  const sendTimeMinutes = `0${new Date(sendSms.sendTime).getMinutes()}`.slice(-2);
-                  const sendSmsDateTime = sendTimeHours + ':' + sendTimeMinutes; 
                   if (!acc.includes(sendSms.phone)) {
                     acc.push(sendSms.phone); 
                   }
@@ -225,6 +223,7 @@ const Sms = () => {
                     key={i} 
                     expanded={expanded === `panel${i}`} 
                     onChange={handleChange(`panel${i}`)}
+                    TransitionProps={{ unmountOnExit: true }} 
                   >
                     <ExpansionHeader expandIcon={<ExpandMoreIcon />}>
                       <Grid container>
@@ -245,23 +244,25 @@ const Sms = () => {
                     <ExpansionBody>
                       <Grid container >
                       {currentRoutes.map((route, j) => {
+                        const routeDate = `0${new Date(route.fromTime).getDate()}`.slice(-2);
+                        const routeMonth = `0${new Date(route.fromTime).getMonth() + 1}`.slice(-2);
                         const routeTime = new Date(route.fromTime);
                         const totalPassengers = route.passengers.filter(passenger => passenger.state !== canceledState 
                           && passenger.type === isPassenger).length;
                         const correctPassengers = route.passengers.filter(passenger => passenger.state !== canceledState 
-                          && passengersIdsAtTime.includes(passenger.id)
                           && passenger.type === isPassenger);
                         const routePassengers = route.passengers.filter(passenger => 
                           passenger.state !== canceledState && passenger.type === isPassenger)
                         const passengersCount = correctPassengers.length;
+
                         return (
-                          //passengersCount ?
+                          passengersCount ?
                           <Grid item xs={12} key={j}>
-                            <Expansion>
+                            <Expansion TransitionProps={{ unmountOnExit: true }} >
                               <ExpansionHeader expandIcon={<ExpandMoreIcon />}>
                                 <Grid item xs={3}>{`${citiesName[route.fromCityId]} - ${citiesName[route.toCityId]}`}</Grid>
                                 <Grid item xs={3} className={classes.gridCenter}>
-                                  {`0${routeTime.getHours()}`.slice(-2) 
+                                  {routeDate + '.' + routeMonth + ' ' + `0${routeTime.getHours()}`.slice(-2) 
                                     + ':' + `0${routeTime.getMinutes()}`.slice(-2)}
                                 </Grid>
                                   <Grid item xs={3} className={classes.gridCenter}>{passengersCount} / {totalPassengers}</Grid>
@@ -274,7 +275,6 @@ const Sms = () => {
                                   <Grid container className={classes.borderGrid}>
                                     <Grid xs={4} item><strong>ФИО</strong></Grid>
                                     <Grid xs={4} item className={classes.gridCenter}><strong>Номер</strong></Grid>
-                                    <Grid xs={4} item className={classes.gridCenter}><strong>Время</strong></Grid>
                                   </Grid>
                                   {
                                     //correctPassengers.map((p, k) => {
@@ -297,8 +297,10 @@ const Sms = () => {
                                       const fromCrmbus = selectedDateSendSms.filter(sendSms => 
                                               sendSms.phone === p.phone || sendSms.phone === p.phone_2)
                                       const sendTimeCrmBus = fromCrmbus.length > 0
-                                        ? (`0${new Date(fromCrmbus[0].sendTime).getHours()}`.slice(-2) + ':' 
-                                        + `0${new Date(fromCrmbus[0].sendTime).getMinutes()}`.slice(-2))
+                                        ? (`0${new Date(fromCrmbus[0].sendTime).getDate()}`.slice(-2) + '.' 
+                                          + `0${new Date(fromCrmbus[0].sendTime).getMonth() + 1}`.slice(-2) + ' ' 
+                                          + `0${new Date(fromCrmbus[0].sendTime).getHours()}`.slice(-2) + ':' 
+                                          + `0${new Date(fromCrmbus[0].sendTime).getMinutes()}`.slice(-2))
                                         : '';
                                       return (
                                         <Grid container className={classes.backgroundName} key={k}>
@@ -317,7 +319,7 @@ const Sms = () => {
                               </ExpansionBody>
                             </Expansion>
                           </Grid>
-                          //: ''
+                          : ''
                         );
                       })}
                       </Grid>
