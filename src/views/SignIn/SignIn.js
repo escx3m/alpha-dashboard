@@ -13,9 +13,8 @@ import {
 import CloudIcon from '@material-ui/icons/Cloud';
 
 const schema = {
-  email: {
+  login: {
     presence: { allowEmpty: false, message: 'is required' },
-    email: true,
     length: {
       maximum: 64
     }
@@ -132,11 +131,18 @@ const SignIn = props => {
     }));
   };
 
+  const usr = {
+    login: 'admin',
+    password: '123',
+  };
   const handleSignIn = event => {
-
+    if (formState.values.login === usr.login && formState.values.password === usr.password) {
+      event.preventDefault();
+      login();
+      history.push('/');
+    }
     event.preventDefault();
-    login();
-    history.push('/');
+    
   };
 
   const hasError = field =>
@@ -145,66 +151,61 @@ const SignIn = props => {
   return (
     <div className={classes.root}>
       <div className={classes.form}>
-        <form className={classes.form} onSubmit={handleSignIn}>
-          <div>
-            <div className={classes.logoText}>
-              <img
-                className={classes.imgLogo}
-                alt="Logo"
-                src="/images/avatars/alphatour.png"
-              />
+        <div className={classes.logoText}>
+          <img
+            className={classes.imgLogo}
+            alt="Logo"
+            src="/images/avatars/alphatour.png"
+          />
+        </div>
+        <Card className={classes.cardLogin}>
+          <form className={classes.form} onSubmit={handleSignIn}>
+            <div className={classes.cloudAlpha}>
+              <Typography className={classes.title} variant="h2">
+                <CloudIcon className={classes.iconCloud} /> Альфа-Тур
+              </Typography>
             </div>
-            <Card className={classes.cardLogin}>
-              <form className={classes.form} onSubmit={handleSignIn}>
-                <div className={classes.cloudAlpha}>
-                  <Typography className={classes.title} variant="h2">
-                    <CloudIcon className={classes.iconCloud} /> Альфа-Тур
-                  </Typography>
-                </div>
-                <TextField
-                  className={classes.textField}
-                  error={hasError('email')}
-                  fullWidth
-                  helperText={
-                    hasError('email') ? formState.errors.email[0] : null
-                  }
-                  label="Электронная почта"
-                  name="email"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.values.email || ''}
-                  variant="outlined"
-                />
-                <TextField
-                  className={classes.textField}
-                  error={hasError('password')}
-                  fullWidth
-                  helperText={
-                    hasError('password') ? formState.errors.password[0] : null
-                  }
-                  label="Пароль"
-                  name="password"
-                  onChange={handleChange}
-                  type="password"
-                  value={formState.values.password || ''}
-                  variant="outlined"
-                />
-                <Button
-                  className={classes.signInButton}
-                  color="primary"
-                  disabled={!formState.isValid}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  onClick={login}
-                >
-                  ВОЙТИ
-                </Button>
-              </form>
-            </Card>
-          </div>
-        </form>
+            <TextField
+              className={classes.textField}
+              error={hasError('login')}
+              fullWidth
+              helperText={
+                hasError('login') ? formState.errors.login[0] : null
+              }
+              label="Логин"
+              name="login"
+              onChange={handleChange}
+              type="text"
+              value={formState.values.login || ''}
+              variant="outlined"
+            />
+            <TextField
+              className={classes.textField}
+              error={hasError('password')}
+              fullWidth
+              helperText={
+                hasError('password') ? formState.errors.password[0] : null
+              }
+              label="Пароль"
+              name="password"
+              onChange={handleChange}
+              type="password"
+              value={formState.values.password || ''}
+              variant="outlined"
+            />
+            <Button
+              className={classes.signInButton}
+              color="primary"
+              disabled={!formState.isValid}
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+            >
+              ВОЙТИ
+            </Button>
+          </form>
+        </Card>
       </div>
     </div>
   );
