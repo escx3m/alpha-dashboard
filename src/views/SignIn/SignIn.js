@@ -133,7 +133,7 @@ const SignIn = props => {
 
   const usr = {
     login: 'admin',
-    password: '123',
+    password: 'alphatoursecret',
   };
   const handleSignIn = event => {
     if (formState.values.login === usr.login && formState.values.password === usr.password) {
