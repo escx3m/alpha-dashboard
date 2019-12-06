@@ -14,7 +14,7 @@ import { Grid, Card, CardContent, CardHeader, Paper,
   ExpansionPanelDetails as ExpansionBody
 } from '@material-ui/core';
 import { 
-  startOfDay, endOfDay, isSameDay, 
+  startOfDay, endOfDay, isSameDay, differenceInHours, 
   startOfToday, endOfToday, startOfWeek, endOfWeek } from 'date-fns';
 
 const useStyles = makeStyles(theme => ({
@@ -170,18 +170,20 @@ const Sms = () => {
   }, [selectedDate]);
 
   const currentRoutes = allRoutes.filter(route => isSameDay(new Date(route.fromTime), new Date(selectedDate)));
-  const currentSms = alreadySendSms.filter(sms => isSameDay(new Date(sms.sendTime), new Date(selectedDate)));
-  const selectedDateSendSms = allSendSms.filter(sendSms => isSameDay(new Date(sendSms.sendTime), new Date(selectedDate)))
-  const uniqueSmsTime = currentSms.reduce((acc, sms) => {
+  const currentSms = alreadySendSms.filter(sms => differenceInHours(new Date(sms.sendTime), new Date(selectedDate)) < 24);
+  const selectedDateSendSms = allSendSms.filter(sendSms => differenceInHours(new Date(sendSms.sendTime), new Date(selectedDate)) < 24)
+  const uniqueSmsDateTime = currentSms.reduce((acc, sms) => {
     const sendTimeHours = `0${new Date(sms.sendTime).getHours()}`.slice(-2);
     const sendTimeMinutes = `0${new Date(sms.sendTime).getMinutes()}`.slice(-2);
-    const sendSmsTime = sendTimeHours + ':' + sendTimeMinutes; 
-    if (!acc.includes(sendSmsTime)) {
-      acc.push(sendSmsTime); 
+    const sendDate = `0${new Date(sms.sendTime).getDate()}`.slice(-2);
+    const sendMonth = `0${new Date(sms.sendTime).getMonth() + 1}`.slice(-2);
+    const sendSmsDateTime = sendDate + '.' + sendMonth + ' в ' + sendTimeHours + ':' + sendTimeMinutes; 
+    if (!acc.includes(sendSmsDateTime)) {
+      acc.push(sendSmsDateTime); 
     }
     return acc;
   }, []);
-  uniqueSmsTime.sort();
+  uniqueSmsDateTime.sort();
 
   return (
     <div className={classes.root}>
@@ -196,12 +198,12 @@ const Sms = () => {
                 title={<div>SMS уведомление<br/><br/> Всего: {currentSms.length} </div>}
             />
             <CardContent>
-              {uniqueSmsTime.map((smsTime, i) => {
+              {uniqueSmsDateTime.map((smsTime, i) => {
                 const passengersIdsAtTime = currentSms.reduce((acc, sms) => {
                   const sendTimeHours = `0${new Date(sms.sendTime).getHours()}`.slice(-2);
                   const sendTimeMinutes = `0${new Date(sms.sendTime).getMinutes()}`.slice(-2);
-                  const sendSmsTime = sendTimeHours + ':' + sendTimeMinutes; 
-                  if (!acc.includes(sms.passengerId) && sendSmsTime === smsTime) {
+                  const sendSmsDateTime = sendTimeHours + ':' + sendTimeMinutes; 
+                  if (!acc.includes(sms.passengerId) && sendSmsDateTime === smsTime) {
                     acc.push(sms.passengerId); 
                   }
                   return acc;
@@ -209,7 +211,7 @@ const Sms = () => {
                 const passengersIdsSendSms = selectedDateSendSms.reduce((acc, sendSms) => {
                   const sendTimeHours = `0${new Date(sendSms.sendTime).getHours()}`.slice(-2);
                   const sendTimeMinutes = `0${new Date(sendSms.sendTime).getMinutes()}`.slice(-2);
-                  const sendSmsTime = sendTimeHours + ':' + sendTimeMinutes; 
+                  const sendSmsDateTime = sendTimeHours + ':' + sendTimeMinutes; 
                   if (!acc.includes(sendSms.phone)) {
                     acc.push(sendSms.phone); 
                   }
@@ -249,9 +251,11 @@ const Sms = () => {
                         const correctPassengers = route.passengers.filter(passenger => passenger.state !== canceledState 
                           && passengersIdsAtTime.includes(passenger.id)
                           && passenger.type === isPassenger);
+                        const routePassengers = route.passengers.filter(passenger => 
+                          passenger.state !== canceledState && passenger.type === isPassenger)
                         const passengersCount = correctPassengers.length;
                         return (
-                          passengersCount ?
+                          //passengersCount ?
                           <Grid item xs={12} key={j}>
                             <Expansion>
                               <ExpansionHeader expandIcon={<ExpandMoreIcon />}>
@@ -271,29 +275,48 @@ const Sms = () => {
                                     <Grid xs={4} item><strong>ФИО</strong></Grid>
                                     <Grid xs={4} item className={classes.gridCenter}><strong>Номер</strong></Grid>
                                   </Grid>
-                                {
-                                  correctPassengers.map((p, k) => {
-                                    const fromCrmbus = selectedDateSendSms.filter(sendSms => 
-                                            sendSms.phone === p.phone || sendSms.phone === p.phone_2)
-                                    const sendTimeCrmBus = fromCrmbus.length > 0
-                                      ? (`0${new Date(fromCrmbus[0].sendTime).getHours()}`.slice(-2) + ':' 
-                                      + `0${new Date(fromCrmbus[0].sendTime).getMinutes()}`.slice(-2))
-                                      : '';
-                                    return (
-                                      <Grid container className={classes.backgroundName} key={k}>
-                                        <Grid xs={4} item className={classes.paddingGrid}>
-                                          {p.surname + ' ' + p.name + ' ' + p.patronymic + ' '}
-                                        </Grid>
-                                        <Grid xs={4} item className={classes.gridCenter}>{p.phone}</Grid>
+                                  {
+                                    //correctPassengers.map((p, k) => {
+                                      //const fromCrmbus = selectedDateSendSms.filter(sendSms => 
+                                              //sendSms.phone === p.phone || sendSms.phone === p.phone_2)
+                                      //const sendTimeCrmBus = fromCrmbus.length > 0
+                                        //? (`0${new Date(fromCrmbus[0].sendTime).getHours()}`.slice(-2) + ':' 
+                                        //+ `0${new Date(fromCrmbus[0].sendTime).getMinutes()}`.slice(-2))
+                                        //: '';
+                                      //return (
+                                        //<Grid container className={classes.backgroundName} key={k}>
+                                          //<Grid xs={4} item className={classes.paddingGrid}>
+                                            //{p.surname + ' ' + p.name + ' ' + p.patronymic + ' '}
+                                          //</Grid>
+                                          //<Grid xs={4} item className={classes.gridCenter}>{p.phone}</Grid>
+                                            //<Grid xs={4} item className={classes.gridCenter}>{sendTimeCrmBus}</Grid>
+                                        //</Grid>
+                                      //)
+                                    routePassengers.map((p, k) => {
+                                      const fromCrmbus = selectedDateSendSms.filter(sendSms => 
+                                              sendSms.phone === p.phone || sendSms.phone === p.phone_2)
+                                      const sendTimeCrmBus = fromCrmbus.length > 0
+                                        ? (`0${new Date(fromCrmbus[0].sendTime).getHours()}`.slice(-2) + ':' 
+                                        + `0${new Date(fromCrmbus[0].sendTime).getMinutes()}`.slice(-2))
+                                        : '';
+                                      return (
+                                        <Grid container className={classes.backgroundName} key={k}>
+                                          <Grid xs={4} item className={classes.paddingGrid}>
+                                            {p.surname + ' ' + p.name + ' ' + p.patronymic + ' '}
+                                          </Grid>
+                                          <Grid xs={4} container item direction="column" className={classes.gridCenter}>
+                                            <Grid item className={classes.gridCenter}>{p.phone}</Grid>
+                                            <Grid item className={classes.gridCenter}>{p.phone_2 ? p.phone_2 : ''}</Grid>
+                                          </Grid>
                                           <Grid xs={4} item className={classes.gridCenter}>{sendTimeCrmBus}</Grid>
-                                      </Grid>
-                                    )
-                                })}
+                                        </Grid>
+                                      )
+                                  })}
                                 </Grid>
                               </ExpansionBody>
                             </Expansion>
                           </Grid>
-                          : ''
+                          //: ''
                         );
                       })}
                       </Grid>
