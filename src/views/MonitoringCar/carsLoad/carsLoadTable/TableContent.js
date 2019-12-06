@@ -3,6 +3,7 @@ import { Grid, Card, Tooltip  } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { eachDayOfInterval, endOfWeek, isSameDay } from 'date-fns';
 import { makeJSDateObject } from '../../../../helpers/helpers';
+import { citiesName, cities } from '../../../../helpers/constants';
 
 const useStyles = makeStyles(theme => ({
   gridBorder: {
@@ -37,37 +38,6 @@ const useStyles = makeStyles(theme => ({
     marginLeft: '1px',
   },
 }));
-
-const citiesName = {
-  "10" : "Влг",
-  "23" : "Астр",
-  "52" : "Ессентуки",
-  "67" : "Кисловодск",
-  "72" : "Краснодар",
-  "90" : "Нальчик",
-  "119" : "РнД",
-  "133" : "Сочи",
-  "134" : "Ставрополь",
-  "166" : "Эл",
-  "1797" : "МинВод",
-  "8748" : "Зимовники",
-  "1042266" : "Ольг",
-};
-const cities = {
-  "10" : "В",
-  "23" : "А",
-  "52" : "Ес",
-  "67" : "КВ",
-  "72" : "Кдр",
-  "90" : "Н",
-  "119" : "Р",
-  "133" : "Сч",
-  "134" : "Став",
-  "166" : "Э",
-  "1797" : "МВ",
-  "8748" : "Зим",
-  "1042266" : "Ольг",
-};
 
 function TableContent (props) {
   const classes = useStyles(); 
