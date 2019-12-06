@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import GroupIcon from '@material-ui/icons/Group';
 
 import axios from 'axios';
@@ -13,12 +11,9 @@ import {
 } from 'date-fns';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    height: '100%'
-  },
   content: {
     alignItems: 'center',
-    display: 'flex'
+    display: 'flex',
   },
   title: {
     fontWeight: 700
@@ -49,6 +44,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  contentCard: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 }));
 
 const ToPassenger = props => {
@@ -92,7 +92,6 @@ const ToPassenger = props => {
   return (
     <Card
       {...rest}
-      className={clsx(classes.root, className)}
     >
       {loading ? (
         <div className={classes.progress}>
@@ -121,21 +120,6 @@ const ToPassenger = props => {
             </Avatar>
           </Grid>
         </Grid>
-        <div className={classes.difference}>
-          <ArrowDownwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
-            12%
-          </Typography>
-          <Typography
-            className={classes.caption}
-            variant="caption"
-          >
-            Since last month
-          </Typography>
-        </div>
       </CardContent>
       )}
     </Card>
