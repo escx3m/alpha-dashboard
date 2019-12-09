@@ -140,7 +140,7 @@ const Sms = () => {
         }); 
         axios.get('http://localhost:9000/api/sms',{
           params: {
-            ids: passengersIds, 
+            ids: passengersIds
           }
         })
         .then(res => {
@@ -148,7 +148,7 @@ const Sms = () => {
         })
         .catch(e => console.log(e.toString()));
         routes.forEach(route => route.passengers.forEach(passenger => {
-          if (passenger.phone_2 != '') { 
+          if (passenger.phone_2 !== '' && passenger.phone_2 !== null) { 
             currentPhones.push(passenger.phone, passenger.phone_2)
           } else {
             currentPhones.push(passenger.phone)
@@ -250,11 +250,15 @@ const Sms = () => {
                         const totalPassengers = route.passengers.filter(passenger => passenger.state !== canceledState 
                           && passenger.type === isPassenger).length;
                         const correctPassengers = route.passengers.filter(passenger => passenger.state !== canceledState 
+                          && passengersIdsAtTime.includes(passenger.id)
                           && passenger.type === isPassenger);
                         const routePassengers = route.passengers.filter(passenger => 
                           passenger.state !== canceledState && passenger.type === isPassenger)
                         const passengersCount = correctPassengers.length;
 
+                        console.log(smsTime)
+                        console.log('route passengers ', routePassengers)
+                        console.log('correct passengers ', correctPassengers)
                         return (
                           passengersCount ?
                           <Grid item xs={12} key={j}>
@@ -293,7 +297,7 @@ const Sms = () => {
                                             //<Grid xs={4} item className={classes.gridCenter}>{sendTimeCrmBus}</Grid>
                                         //</Grid>
                                       //)
-                                    routePassengers.map((p, k) => {
+                                    correctPassengers.map((p, k) => {
                                       const fromCrmbus = selectedDateSendSms.filter(sendSms => 
                                               sendSms.phone === p.phone || sendSms.phone === p.phone_2)
                                       const sendTimeCrmBus = fromCrmbus.length > 0
