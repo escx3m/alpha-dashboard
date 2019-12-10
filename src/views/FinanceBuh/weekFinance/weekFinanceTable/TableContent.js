@@ -285,7 +285,7 @@ function TableContent(props) {
                   //<Button
                     //className={classes.btnSave}
                     //onClick={currentCorrection => 
-                      //axios.post('http://localhost:9000/api/board/corrections', 
+                      //axios.post('/api/board/corrections', 
                         //{
                           //correction: currentCorrection,
                           //startRouteId: rowData.startRouteId

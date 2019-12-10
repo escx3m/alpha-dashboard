@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import WeekFinanceTable from './weekFinance/WeekFinanceTable';
 import WeekFinanceHeader from './weekFinance/WeekFinanceHeader';
 import { Grid, makeStyles } from '@material-ui/core';
 import axios from 'axios';
 import { startOfWeek, endOfWeek } from 'date-fns';
 import { makeJSDateObject } from '../../helpers/helpers';
+import { ApiContext } from '../../Routes';
                  
 const useStyles = makeStyles(theme => ({
   gridMargin: {
     marginTop:'30px',
   }
 }));
-
 
 function WeekFinance() {
   const currentWeekStart = startOfWeek(makeJSDateObject(new Date()), { weekStartsOn: 1 });
@@ -30,25 +30,23 @@ function WeekFinance() {
     checkedAll: true,
   });
 
+  const { api } = useContext(ApiContext);
+
   useEffect(() => {
-    axios.get('http://localhost:9000/api/routes', {
-      params: {
-        startWeek: selectedWeekStart,
-        endWeek: endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
-      }})
+    api.getRoutes(selectedWeekStart, endOfWeek(selectedWeekStart, { weekStartsOn: 1 }))
       .then(res => {
         setRoutes(res.data);
-        axios.get('http://localhost:9000/api/board/corrections', {
-          params: {
-            ids: res.data.map(({ id }) => id)
-          }}) 
+        const params = {
+          ids: res.data.map(({ id }) => id)
+        }
+        api.getCorrections(params)
           .then(res => {
             const { corrections } = res.data;
             setCorrections(corrections);
           });
 
       });
-        }, [selectedWeekStart]);
+  }, [selectedWeekStart]);
 
   return (
     <Grid className={classes.gridMargin} container direction="row"> 

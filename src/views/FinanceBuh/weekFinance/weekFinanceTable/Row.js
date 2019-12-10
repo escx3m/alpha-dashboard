@@ -173,7 +173,7 @@ function Row(props) {
           <Button
             className={classes.btnSave}
             onClick={() => 
-                axios.post('http://localhost:9000/api/board/corrections', 
+                axios.post('/api/board/corrections', 
                 {
                   correction: +sendCorrection,
                   startRouteId: +startRouteId

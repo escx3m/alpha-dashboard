@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import CachedIcon from '@material-ui/icons/Cached';
 import RangePickerANTD from '../DatePicker/rangepickerANTD';
 import { makeJSDateObject } from '../../helpers/helpers';
 import { citiesName } from '../../helpers/constants';
-import axios from 'axios';
 import {
   Grid,
   Card,
@@ -24,6 +23,7 @@ import {
   startOfYear,
   endOfYear
 } from 'date-fns';
+import { ApiContext } from '../../Routes';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -100,15 +100,11 @@ const Report = () => {
     setStartDay(startOfYear(new Date())); setEndDay(endOfYear(new Date()))
   };
 
+  const { api } = useContext(ApiContext);
+
   useEffect(() => {
     setLoading(true);
-    axios
-      .get('http://localhost:9000/api/routes', {
-        params: {
-          startWeek: startDay,
-          endWeek: endDay
-        }
-      })
+    api.getRoutes(startDay, endDay)
       .then(res => {
         setLoading(false);
         const routes = res.data;

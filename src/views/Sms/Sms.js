@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Calendar, useStaticState } from '@material-ui/pickers';
 import CachedIcon from '@material-ui/icons/Cached';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import RangePickerANTD from '../DatePicker/rangepickerANTD';
-import { makeJSDateObject } from '../../helpers/helpers';
 import { cityShortNames as citiesName, isPassenger } from '../../helpers/constants';
 import axios from 'axios';
 import { Grid, Card, CardContent, CardHeader, Paper,
-  IconButton, Button, CircularProgress, Link, Typography,
+  IconButton, Link,
   ExpansionPanel as Expansion,
   ExpansionPanelSummary as ExpansionHeader,
   ExpansionPanelDetails as ExpansionBody
 } from '@material-ui/core';
 import { 
   startOfDay, endOfDay, isSameDay, 
-  startOfToday, endOfToday, startOfWeek, endOfWeek } from 'date-fns';
+  startOfToday, endOfToday
+} from 'date-fns';
+import { ApiContext } from '../../Routes';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -111,15 +111,12 @@ const Sms = () => {
   const canceledState = 5;
   const passengersIds = [];
   const currentPhones = [];
+
+  const { api } = useContext(ApiContext);
+
   useEffect(() => {
     setLoading(true);
-    axios
-      .get('http://localhost:9000/api/routes', {
-        params: {
-          startWeek: startOfDay(selectedDate),
-          endWeek: endOfDay(selectedDate)
-        }
-      })
+    api.getRoutes(selectedDate, selectedDate)
       .then(res => {
         const routes = res.data;
         const uniqueRoutes = routes.reduce((acc, route) => {
@@ -138,7 +135,7 @@ const Sms = () => {
             }
           })
         }); 
-        axios.get('http://localhost:9000/api/sms',{
+        axios.get('/api/sms',{
           params: {
             ids: passengersIds, 
           }
@@ -155,7 +152,7 @@ const Sms = () => {
           }
         }));
         axios
-          .get('http://localhost:9000/api/smssend',{
+          .get('/api/smssend',{
               params: {
                 phones: currentPhones, 
               }
