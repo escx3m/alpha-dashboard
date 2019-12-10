@@ -1,20 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import GroupIcon from '@material-ui/icons/Group';
 import { startOfToday, endOfToday } from 'date-fns';
 import { ApiContext } from '../../../../Routes';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    height: '100%'
-  },
   content: {
     alignItems: 'center',
-    display: 'flex'
+    display: 'flex',
   },
   title: {
     fontWeight: 700
@@ -45,6 +40,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  contentCard: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 }));
 
 const ToPassenger = props => {
@@ -80,7 +80,6 @@ const ToPassenger = props => {
   return (
     <Card
       {...rest}
-      className={clsx(classes.root, className)}
     >
       {loading ? (
         <div className={classes.progress}>
@@ -110,7 +109,6 @@ const ToPassenger = props => {
             </Grid>
           </Grid>
           <div className={classes.difference}>
-            <ArrowDownwardIcon className={classes.differenceIcon} />
             <Typography
               className={classes.differenceValue}
               variant="body2"
