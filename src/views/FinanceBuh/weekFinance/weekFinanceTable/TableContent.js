@@ -23,8 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
   cardTotal: {
     background: '#F6F6F6',
-    color: 'black',
-    height: 25,
+    color: 'black', height: 25,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -92,7 +91,6 @@ function TableContent(props) {
     return acc;
   }, []);
 
-
   return (
     <Grid container spacing={1}>
       {cars.map((carId, i) => {
@@ -132,14 +130,10 @@ function TableContent(props) {
           const currentCorrection = currentCorrectionsArray.length 
             ? currentCorrectionsArray.slice(-1)[0].correction
             : '';
-          console.log('currentCorrection ', currentCorrection);
           const passengers = route.reduce((acc, r) => {
             const { passengers } = r;
             return acc.concat(
-              passengers.filter(
-                passenger =>
-                  passenger.state === delivered && passenger.type === human
-              )
+              passengers.filter(passenger => passenger.state === delivered && passenger.type === human)
             );
           }, []);
           const totalPassengers = passengers.length;
@@ -217,87 +211,7 @@ function TableContent(props) {
             firmIncome: firmIncome,
             startRouteId: rowData.startRouteId,
             cities: cities,
-          }; //<Grid className={classes.gridBorder} item xs={1}>
-          console.log('rowdata.startRouteId ', rowdata.startRouteId);
-                //<Card
-                  //className={
-                    //isSameDay(makeJSDateObject(new Date()), selectedDay)
-                      //? classes.cardToday
-                      //: classes.cardDate
-                  //}>
-                  //{format(selectedDay, 'd MMM', { locale: ruLocale })}
-                //</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>
-                  //{carTitle} {carNumber}
-                //</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>
-                  //{`${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`}
-                //</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>
-                  //{`${carDriver.surname} ${carDriver.name} ${carDriver.patronymic}`}
-                //</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>
-                  //{cities[route[0].fromCityId]}->{cities[route[0].toCityId]}
-                //</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{totalPassengers}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{card}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{office}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{cash}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>
-                  //<TextField
-                    //defaultValue={currentCorrection}
-                    //onChange={e => e.value = e.target.value}
-                  ///>
-                //</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{passengersIncomeSum}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{payToDriver}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{totalToDriver}</Card>
-             //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>{firmIncome}</Card>
-              //</Grid>
-              //<Grid className={classes.gridBorder} item xs={1}>
-                //<Card className={classes.cardInfo}>
-                  //<Button
-                    //className={classes.btnSave}
-                    //onClick={currentCorrection => 
-                      //axios.post('http://localhost:9000/api/board/corrections', 
-                        //{
-                          //correction: currentCorrection,
-                          //startRouteId: rowData.startRouteId
-                        //})
-                    //}
-                    //variant="contained"
-                    //color="primary">
-                    //Сохранить
-                  //</Button>
-                //</Card>
-              //</Grid>
-
+          }; 
           return (
             <Grid
               className={classes.overAll}
