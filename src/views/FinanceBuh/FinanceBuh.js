@@ -28,6 +28,7 @@ function WeekFinance() {
     checked4: false,
     checkedAll: true,
   });
+  let routesIds = [];
 
   useEffect(() => {
     axios.get('http://localhost:9000/api/routes', {
@@ -36,16 +37,16 @@ function WeekFinance() {
         endWeek: endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
       }})
       .then(res => {
+        routesIds = res.data.map(({ id }) => id)
         setRoutes(res.data);
         axios.get('http://localhost:9000/api/board/finances', {
           params: {
-            ids: res.data.map(({ id }) => id)
+            ids: routesIds
           }}) 
           .then(res => {
             const { finances } = res.data;
             setFinances(finances);
           });
-
       });
   }, [selectedWeekStart]);
 

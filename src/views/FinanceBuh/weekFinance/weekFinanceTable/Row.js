@@ -104,7 +104,6 @@ function Row(props) {
   useEffect(() => {
     setSendCorrection(currentCorrection) 
   }, [currentCorrection])
-  console.log(sendCorrection)
   return (
     <Grid
       className={classes.overAll}
@@ -150,10 +149,10 @@ function Row(props) {
         <Card className={classes.cardInfo}>{card}</Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{office}</Card>
+        <Card className={classes.cardInfo}>{cash}</Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{cash}</Card>
+        <Card className={classes.cardInfo}>{office}</Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
