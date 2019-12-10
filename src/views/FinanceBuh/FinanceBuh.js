@@ -12,13 +12,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
 function WeekFinance() {
   const currentWeekStart = startOfWeek(makeJSDateObject(new Date()), { weekStartsOn: 1 });
   const [selectedWeekStart, setSelectedWeekStart] = useState(currentWeekStart);
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [routes, setRoutes] = useState([]);
-  const [corrections, setCorrections] = useState([]);
+  const [finances, setFinances] = useState([]);
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
   const [checkState, setCheckState] = React.useState({
@@ -38,17 +37,17 @@ function WeekFinance() {
       }})
       .then(res => {
         setRoutes(res.data);
-        axios.get('http://localhost:9000/api/board/corrections', {
+        axios.get('http://localhost:9000/api/board/finances', {
           params: {
             ids: res.data.map(({ id }) => id)
           }}) 
           .then(res => {
-            const { corrections } = res.data;
-            setCorrections(corrections);
+            const { finances } = res.data;
+            setFinances(finances);
           });
 
       });
-        }, [selectedWeekStart]);
+  }, [selectedWeekStart]);
 
   return (
     <Grid className={classes.gridMargin} container direction="row"> 
@@ -67,7 +66,7 @@ function WeekFinance() {
       <Grid className={classes.gridMargin} item xs={12}>
         <WeekFinanceTable 
           routes={routes} 
-          corrections={corrections}
+          finances={finances}
           loading={loading}
           selectedDay={selectedDay}
           selectedWeekStart={selectedWeekStart}

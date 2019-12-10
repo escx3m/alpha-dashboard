@@ -1,6 +1,5 @@
 import React  from 'react';
-import axios from 'axios';
-import { Grid, Card, TextField, Button } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { eachDayOfInterval, format, endOfWeek, isSameDay } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
@@ -74,7 +73,7 @@ const useStyles = makeStyles(theme => ({
 
 function TableContent(props) {
   const classes = useStyles();
-  const { routes, corrections, selectedWeekStart, selectedDay } = props;
+  const { routes, finances, selectedWeekStart, selectedDay } = props;
   const start = selectedWeekStart;
   const end = endOfWeek(selectedWeekStart, { weekStartsOn: 1 });
   const ownersId = new Set([7, 38, 52]);
@@ -125,11 +124,13 @@ function TableContent(props) {
           const payCash = 4;
           const payCard = 2;
           const payOffice = 3;
-          const currentCorrectionsArray = corrections.filter(correction => 
-            correction.startRouteId === route[0].id);
-          const currentCorrection = currentCorrectionsArray.length 
-            ? currentCorrectionsArray.slice(-1)[0].correction
+          const currentFinancesArray = finances.filter(finance => 
+            finance.startRouteId === route[0].id);
+          const currentCorrection = currentFinancesArray.length 
+            ? currentFinancesArray.slice(-1)[0].correction
             : '';
+
+          console.log(currentCorrection)
           const passengers = route.reduce((acc, r) => {
             const { passengers } = r;
             return acc.concat(
@@ -224,7 +225,7 @@ function TableContent(props) {
               key={`${k}`}
               style={route.length === 1 ? { backgroundColor: 'orange' } : {}}
             >
-             <Row rowdata={rowdata}/>
+              <Row rowdata={rowdata}/>
             </Grid>
           );
         });

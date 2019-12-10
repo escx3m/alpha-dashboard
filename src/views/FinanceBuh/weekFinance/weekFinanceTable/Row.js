@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Grid, Card, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -95,9 +95,16 @@ function Row(props) {
     firmIncome,
     startRouteId,
   } = props.rowdata;
-  const [sendCorrection, setSendCorrection] = useState(currentCorrection === '' ? 0 : currentCorrection);
-  console.log('ROW startRouteId ', startRouteId)
-  console.log('ROW sendCorrection ', sendCorrection)
+  
+  const [sendCorrection, setSendCorrection] = useState(currentCorrection);
+  const direction = cities[route[0].fromCityId] + '->' + cities[route[0].toCityId]; 
+  const carOwnerString = `${carOwner.id} ${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`
+  const carDriverString = `${carDriver.id} ${carDriver.surname} ${carDriver.name} ${carDriver.patronymic}`
+
+  useEffect(() => {
+    setSendCorrection(currentCorrection) 
+  }, [currentCorrection])
+  console.log(sendCorrection)
   return (
     <Grid
       className={classes.overAll}
@@ -133,7 +140,7 @@ function Row(props) {
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
-          {cities[route[0].fromCityId]}->{cities[route[0].toCityId]}
+          {direction}
         </Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
@@ -151,7 +158,7 @@ function Row(props) {
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
           <TextField 
-            defaultValue={0 || sendCorrection}
+            value={sendCorrection}
             onChange={e => setSendCorrection(e.target.value)}
           />
         </Card>
@@ -173,10 +180,23 @@ function Row(props) {
           <Button
             className={classes.btnSave}
             onClick={() => 
-                axios.post('http://localhost:9000/api/board/corrections', 
+              axios.post('http://localhost:9000/api/board/finances', 
                 {
+                  startRouteId: +startRouteId,
+                  startRouteDate: route[0].fromTime,
+                  carTitle: carTitle + ' ' + carNumber,
+                  carOwner: carOwnerString, 
+                  carDriver: carDriverString,
+                  direction: direction,
+                  passengersTotal: totalPassengers,
+                  card: +card,
+                  cash: +cash,
+                  office: +office,
                   correction: +sendCorrection,
-                  startRouteId: +startRouteId
+                  totalSum: +passengersIncomeSum,
+                  earned: +payToDriver,
+                  pay: +totalToDriver,
+                  firm: +firmIncome,
                 })
             }
             variant="contained"
