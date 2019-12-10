@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import WeekFinanceTable from './weekFinance/WeekFinanceTable';
 import WeekFinanceHeader from './weekFinance/WeekFinanceHeader';
 import { Grid, makeStyles } from '@material-ui/core';
 import axios from 'axios';
 import { startOfWeek, endOfWeek } from 'date-fns';
 import { makeJSDateObject } from '../../helpers/helpers';
+import { ApiContext } from '../../Routes';
                  
 const useStyles = makeStyles(theme => ({
   gridMargin: {
@@ -30,19 +31,17 @@ function WeekFinance() {
   });
   let routesIds = [];
 
+  const { api } = useContext(ApiContext);
+
   useEffect(() => {
-    axios.get('http://localhost:9000/api/routes', {
-      params: {
-        startWeek: selectedWeekStart,
-        endWeek: endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
-      }})
+    api.getRoutes(selectedWeekStart, endOfWeek(selectedWeekStart, { weekStartsOn: 1 }))
       .then(res => {
         routesIds = res.data.map(({ id }) => id)
         setRoutes(res.data);
-        axios.get('http://localhost:9000/api/board/finances', {
-          params: {
-            ids: routesIds
-          }}) 
+        const params = {
+          ids: routesIds
+        }
+        api.getFinances(params)
           .then(res => {
             const { finances } = res.data;
             setFinances(finances);
@@ -68,6 +67,7 @@ function WeekFinance() {
         <WeekFinanceTable 
           routes={routes} 
           finances={finances}
+          setFinances={setFinances}
           loading={loading}
           selectedDay={selectedDay}
           selectedWeekStart={selectedWeekStart}

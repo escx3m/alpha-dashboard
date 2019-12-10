@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useContext } from 'react';
 import { Grid, Card, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { eachDayOfInterval, format, endOfWeek, isSameDay } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import { makeJSDateObject } from '../../../../helpers/helpers';
+import { ApiContext } from '../../../../Routes';
 import {
   payToDrivers,
   cities,
@@ -74,6 +74,8 @@ const useStyles = makeStyles(theme => ({
 
 function Row(props) {
   const classes = useStyles();
+  const { api } = useContext(ApiContext);
+  console.log('api row ', api)
   const {
     totalPassengers,
     k,
@@ -95,12 +97,28 @@ function Row(props) {
     firmIncome,
     startRouteId,
   } = props.rowdata;
-  
+  const { finances, setFinances } = props;
   const [sendCorrection, setSendCorrection] = useState(currentCorrection);
   const direction = cities[route[0].fromCityId] + '->' + cities[route[0].toCityId]; 
   const carOwnerString = `${carOwner.id} ${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`
   const carDriverString = `${carDriver.id} ${carDriver.surname} ${carDriver.name} ${carDriver.patronymic}`
-
+  const currentFinance = {
+    startRouteId: +startRouteId,
+    startRouteDate: route[0].fromTime,
+    carTitle: carTitle + ' ' + carNumber,
+    carOwner: carOwnerString, 
+    carDriver: carDriverString,
+    direction: direction,
+    passengersTotal: totalPassengers,
+    card: +card,
+    cash: +cash,
+    office: +office,
+    correction: +sendCorrection,
+    totalSum: +passengersIncomeSum,
+    earned: +payToDriver,
+    pay: +totalToDriver,
+    firm: +firmIncome,
+  }
   useEffect(() => {
     setSendCorrection(currentCorrection) 
   }, [currentCorrection])
@@ -178,25 +196,10 @@ function Row(props) {
         <Card className={classes.cardInfo}>
           <Button
             className={classes.btnSave}
-            onClick={() => 
-              axios.post('http://localhost:9000/api/board/finances', 
-                {
-                  startRouteId: +startRouteId,
-                  startRouteDate: route[0].fromTime,
-                  carTitle: carTitle + ' ' + carNumber,
-                  carOwner: carOwnerString, 
-                  carDriver: carDriverString,
-                  direction: direction,
-                  passengersTotal: totalPassengers,
-                  card: +card,
-                  cash: +cash,
-                  office: +office,
-                  correction: +sendCorrection,
-                  totalSum: +passengersIncomeSum,
-                  earned: +payToDriver,
-                  pay: +totalToDriver,
-                  firm: +firmIncome,
-                })
+            onClick={() => {
+                setFinances([...finances, currentFinance ])
+                api.addFinances(currentFinance)
+              }
             }
             variant="contained"
             color="primary">

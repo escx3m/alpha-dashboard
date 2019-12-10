@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
 
 function TableContent(props) {
   const classes = useStyles();
-  const { routes, finances, selectedWeekStart, selectedDay } = props;
+  const { routes, finances, setFinances, selectedWeekStart, selectedDay } = props;
   const start = selectedWeekStart;
   const end = endOfWeek(selectedWeekStart, { weekStartsOn: 1 });
   const ownersId = new Set([7, 38, 52]);
@@ -225,7 +225,7 @@ function TableContent(props) {
               key={`${k}`}
               style={route.length === 1 ? { backgroundColor: 'orange' } : {}}
             >
-              <Row rowdata={rowdata}/>
+              <Row rowdata={rowdata} finances={finances} setFinances={setFinances}/>
             </Grid>
           );
         });

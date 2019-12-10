@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -10,12 +10,8 @@ import {
   CircularProgress
 } from '@material-ui/core';
 import WorkIcon from '@material-ui/icons/Work';
-
-import axios from 'axios';
-import {
-  startOfToday,
-  endOfToday,
-} from 'date-fns';
+import { startOfToday, endOfToday } from 'date-fns';
+import { ApiContext } from '../../../../Routes';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,15 +54,11 @@ const ToBox = props => {
   const [endDay, setEndDay] = useState(endOfToday());
   const [loading, setLoading] = useState(false);
 
+  const { api } = useContext(ApiContext);
+
   useEffect(() => {
     setLoading(true);
-    axios
-      .get('http://localhost:9000/api/routes', {
-        params: {
-          startWeek: startDay,
-          endWeek: endDay
-        }
-      })
+    api.getRoutes(startDay, endDay)
       .then(res => {
         setLoading(false);
         const routes = res.data;
