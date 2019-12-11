@@ -12,7 +12,7 @@ import { Grid, Card, CardContent, CardHeader, Paper,
   ExpansionPanelDetails as ExpansionBody
 } from '@material-ui/core';
 import { 
-  isSameDay, differenceInHours, 
+  isSameDay, differenceInHours, startOfDay, endOfDay,
   startOfToday, endOfToday } from 'date-fns';
 import { ApiContext } from '../../Routes';
 
@@ -115,7 +115,7 @@ const Sms = () => {
 
   useEffect(() => {
     setLoading(true);
-    api.getRoutes(selectedDate, selectedDate)
+    api.getRoutes(startOfDay(selectedDate), endOfDay(selectedDate))
       .then(res => {
         const routes = res.data;
         const uniqueRoutes = routes.reduce((acc, route) => {
