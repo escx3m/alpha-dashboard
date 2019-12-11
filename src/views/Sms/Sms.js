@@ -134,15 +134,11 @@ const Sms = () => {
             }
           })
         }); 
-        axios.get('/api/sms',{
-          params: {
-            ids: passengersIds, 
-          }
-        })
-        .then(res => {
-          setAlreadySendSms(res.data); 
-        })
-        .catch(e => console.log(e.toString()));
+        api.getSms(passengersIds)
+          .then(res => {
+            setAlreadySendSms(res.data); 
+          })
+          .catch(e => console.log(e.toString()));
         routes.forEach(route => route.passengers.forEach(passenger => {
           if (passenger.phone_2 != '') { 
             currentPhones.push(passenger.phone, passenger.phone_2)
@@ -150,16 +146,11 @@ const Sms = () => {
             currentPhones.push(passenger.phone)
           }
         }));
-        axios
-          .get('/api/smssend',{
-              params: {
-                phones: currentPhones, 
-              }
-            })
-            .then(res => {
-              setAllSendSms(res.data); 
-            })
-            .catch(e => console.log(e.toString()));
+        api.getSmssend(currentPhones)
+          .then(res => {
+            setAllSendSms(res.data); 
+          })
+          .catch(e => console.log(e.toString()));
         setLoading(false);
       });
       

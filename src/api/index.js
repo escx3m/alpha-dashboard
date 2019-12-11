@@ -82,4 +82,12 @@ export default class Api {
     return this.client.post('http://localhost:9000/api/board/finances', data);
   }
 
+  getSms(ids) {
+    return this.client.get('http://localhost:9000/api/sms', { params: { ids } });
+  }
+
+  getSmssend(phones) {
+    return this.client.get('http://localhost:9000/api/smssend', { params: { phones } });
+  }
+
 }
