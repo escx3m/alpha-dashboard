@@ -23,11 +23,14 @@ import {
   Sms as SmsView,
 } from './views';
 
-const api = new Api();
+const token = localStorage.getItem('token');
+const refreshToken = localStorage.getItem('refreshToken');
+
+const api = new Api({ token, refreshToken });
 export const ApiContext = createContext({});
 
 const fakeAuth = {
-  isAuthenticated: false,
+  isAuthenticated: token ? true :false,
   async authenticate(loginRequest, cb) {
     await api.login(loginRequest);
     fakeAuth.isAuthenticated = true;

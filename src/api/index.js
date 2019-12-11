@@ -49,6 +49,8 @@ export default class Api {
     const { data } = await this.client.post('http://localhost:9000/api/auth/login', { login, password });
     this.token = data.token;
     this.refreshToken = data.refreshToken;
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('refreshToken', data.refreshToken);
   }
 
   async logout() {
@@ -56,6 +58,8 @@ export default class Api {
     await this.client.post('http://localhost:9000/api/auth/logout', { refreshToken });
     this.token = null;
     this.refreshToken = null;
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
   }
 
   getTrips(startWeek, endWeek) {
