@@ -5,7 +5,7 @@ import { format, isSameDay } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import { makeJSDateObject } from '../../../../helpers/helpers';
 import { ApiContext } from '../../../../Routes';
-import { cities } from '../../../../helpers/constants';
+import { cities, wrongPricePassenger } from '../../../../helpers/constants';
 
 const useStyles = makeStyles(theme => ({
   gridBorder: {

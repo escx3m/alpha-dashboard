@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Calendar, useStaticState } from '@material-ui/pickers';
 import CachedIcon from '@material-ui/icons/Cached';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { cityShortNames as citiesName, isPassenger } from '../../helpers/constants';
+import { cityShortNames as citiesName, isPassenger, canceledState } from '../../helpers/constants';
 import axios from 'axios';
 import { Grid, Card, CardContent, CardHeader, Paper,
   IconButton, Link,
@@ -12,7 +12,7 @@ import { Grid, Card, CardContent, CardHeader, Paper,
   ExpansionPanelDetails as ExpansionBody
 } from '@material-ui/core';
 import { 
-  isSameDay, differenceInHours, 
+  isSameDay, differenceInHours, startOfDay, endOfDay, 
   startOfToday, endOfToday } from 'date-fns';
 import { ApiContext } from '../../Routes';
 
@@ -107,7 +107,6 @@ const Sms = () => {
     value: selectedDate, 
     onChange: e => {setSelectedDate(e)}
   });
-  const canceledState = 5;
   const passengersIds = [];
   const currentPhones = [];
 
@@ -115,7 +114,7 @@ const Sms = () => {
 
   useEffect(() => {
     setLoading(true);
-    api.getRoutes(selectedDate, selectedDate)
+    api.getRoutes(startOfDay(selectedDate), endOfDay(selectedDate))
       .then(res => {
         const routes = res.data;
         const uniqueRoutes = routes.reduce((acc, route) => {

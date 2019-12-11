@@ -81,6 +81,7 @@ function TableContent(props) {
   const classes = useStyles();
   const { routes, finances, setFinances, selectedDay } = props;
   const financesIds = new Set(finances.map(({ startRouteId }) => startRouteId))
+  console.log(' finances Ids ' ,financesIds)
   const ownersId = new Set([7, 38, 52]);
   const currentRoutes = routes.filter(route =>
     isSameDay(
@@ -124,6 +125,8 @@ function TableContent(props) {
         }
         return resultRoutes.map((route, k) => {
           const startRouteId = route[0].id;
+          console.log('route ', route)
+          //console.log('start route id ', startRouteId)
           const currentFinancesArray = finances.filter(finance => 
             finance.startRouteId === startRouteId);
           const currentCorrection = currentFinancesArray.length 
@@ -132,10 +135,14 @@ function TableContent(props) {
           let rowdata  = {};
 
           if (financesIds.has(startRouteId)) {
-            const financeRoute = finances.filter(finance => 
-              finance.startRouteId === startRouteId
-            ).slice(-1);
-            console.log(financeRoute)
+            const financeRoute = finances.filter(finance => {
+              //console.log('finance date ',finance.startRouteDate, ' selected date ', selectedDay)
+              console.log('finance ',finance)
+
+              return finance.startRouteId === startRouteId 
+                //&& isSameDay(new Date(finance.startRouteDate), new Date(selectedDay))
+            }).slice(-1);
+            console.log('fin route ',financeRoute)
             rowdata = {
               k: k,
               route: financeRoute,
@@ -155,7 +162,7 @@ function TableContent(props) {
               payToDriver: financeRoute[0].earned,
               totalToDriver: financeRoute[0].pay,
               firmIncome: financeRoute[0].firm,
-              startRouteId: startRouteId,
+              startRouteId: financeRoute[0].startRouteId,
             }; 
           } else {
             const passengers = route.reduce((acc, r) => {
@@ -234,7 +241,7 @@ function TableContent(props) {
               payToDriver: payToDriver,
               totalToDriver: totalToDriver,
               firmIncome: firmIncome,
-              startRouteId: startRouteId.startRouteId,
+              startRouteId: startRouteId,
               }; 
           }
           return (

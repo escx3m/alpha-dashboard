@@ -42,6 +42,7 @@ function WeekFinance() {
         api.getFinances(params)
           .then(res => {
             const { finances } = res.data;
+            console.log('finances ', finances)
             setFinances(finances);
           });
       });
