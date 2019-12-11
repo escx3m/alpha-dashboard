@@ -1,4 +1,9 @@
 export const isPassenger = 1;
+export const delivered = 3;
+export const payNot = 1;
+export const payCash = 4;
+export const payCard = 2;
+export const payOffice = 3;
 export const minPrice700 = 700;
 export const maxPrice900 = 900;
 export const minPrice900 = 900;

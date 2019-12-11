@@ -1,18 +1,24 @@
 import React  from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { eachDayOfInterval, format, endOfWeek, isSameDay } from 'date-fns';
-import ruLocale from 'date-fns/locale/ru';
+import { isSameDay } from 'date-fns';
+import Row from './Row';
 import { makeJSDateObject } from '../../../../helpers/helpers';
 import {
   payToDrivers,
   cities,
-  notStandard
+  notStandard,
+  isPassenger,
+  payNot,
+  payCard,
+  payCash,
+  payOffice,
+  delivered,
 } from '../../../../helpers/constants';
-import Row from './Row';
+
 
 const useStyles = makeStyles(theme => ({
-  gridBorder: {
+  gridBorder: { 
     border: '1px solid #969696'
   },
   card: {
@@ -73,9 +79,8 @@ const useStyles = makeStyles(theme => ({
 
 function TableContent(props) {
   const classes = useStyles();
-  const { routes, finances, setFinances, selectedWeekStart, selectedDay } = props;
-  const start = selectedWeekStart;
-  const end = endOfWeek(selectedWeekStart, { weekStartsOn: 1 });
+  const { routes, finances, setFinances, selectedDay } = props;
+  const financesIds = new Set(finances.map(({ startRouteId }) => startRouteId))
   const ownersId = new Set([7, 38, 52]);
   const currentRoutes = routes.filter(route =>
     isSameDay(
@@ -118,101 +123,120 @@ function TableContent(props) {
           }
         }
         return resultRoutes.map((route, k) => {
-          const human = 1;
-          const delivered = 3;
-          const payNot = 1;
-          const payCash = 4;
-          const payCard = 2;
-          const payOffice = 3;
+          const startRouteId = route[0].id;
           const currentFinancesArray = finances.filter(finance => 
-            finance.startRouteId === route[0].id);
+            finance.startRouteId === startRouteId);
           const currentCorrection = currentFinancesArray.length 
             ? currentFinancesArray.slice(-1)[0].correction
             : '';
+          let rowdata  = {};
 
+          if (financesIds.has(startRouteId)) {
+            const financeRoute = finances.filter(finance => 
+              finance.startRouteId === startRouteId
+            ).slice(-1);
+            console.log(financeRoute)
+            rowdata = {
+              k: k,
+              route: financeRoute,
+              selectedDay: selectedDay,
+              carTitle: financeRoute[0].carTitle.toString(),
+              carNumber: '',
+              carOwner: financeRoute[0].carOwner.toString(),
+              carDriver: financeRoute[0].carDriver.toString(),
+              totalPassengers: financeRoute[0].passengersTotal,
+              fromCity: financeRoute[0].direction[0],
+              toCity: financeRoute[0].direction[3],
+              cash: financeRoute[0].cash,
+              card: financeRoute[0].card, 
+              office: financeRoute[0].office,
+              passengersIncomeSum: financeRoute[0].totalSum,
+              currentCorrection: financeRoute[0].correction    ,
+              payToDriver: financeRoute[0].earned,
+              totalToDriver: financeRoute[0].pay,
+              firmIncome: financeRoute[0].firm,
+              startRouteId: startRouteId,
+            }; 
+          } else {
+            const passengers = route.reduce((acc, r) => {
+              const { passengers } = r;
+              return acc.concat(
+                passengers.filter(passenger => passenger.state === delivered && passenger.type === isPassenger)
+              );
+            }, []);
+            const totalPassengers = passengers.length;
+            const fromCity = cities[route[0].fromCityId][0];
+            const toCity = cities[route[0].toCityId][0];
+            const fromToCityKey = `${fromCity}-${toCity} ${carScheme} ${totalPassengers}`;
+            const toFromCityKey = `${toCity}-${fromCity} ${carScheme} ${totalPassengers}`;
+            const payObj = payToDrivers.hasOwnProperty(fromToCityKey)
+              ? payToDrivers[fromToCityKey]
+              : payToDrivers.hasOwnProperty(toFromCityKey)
+                ? payToDrivers[toFromCityKey]
+                : payToDrivers['no passengers'];
 
-          const passengers = route.reduce((acc, r) => {
-            const { passengers } = r;
-            return acc.concat(
-              passengers.filter(passenger => passenger.state === delivered && passenger.type === human)
+            const passengersIncome = passengers.reduce(
+              (acc, passenger) => {
+                switch (+passenger.price_status) {
+                  case payCard:
+                    return {
+                      ...acc,
+                      card: acc.card + +passenger.price
+                    };
+                  case payNot:
+                  case payCash:
+                    return {
+                      ...acc,
+                      cash: acc.cash + +passenger.price
+                    };
+                  case payOffice:
+                    return {
+                      ...acc,
+                      office: acc.office + +passenger.price
+                    };
+                  default:
+                    return acc;
+                }
+              },
+              { cash: 0, card: 0, office: 0 }
             );
-          }, []);
-          const totalPassengers = passengers.length;
-          const fromCity = cities[route[0].fromCityId][0];
-          const toCity = cities[route[0].toCityId][0];
-          const fromToCityKey = `${fromCity}-${toCity} ${carScheme} ${totalPassengers}`;
-          const toFromCityKey = `${toCity}-${fromCity} ${carScheme} ${totalPassengers}`;
-          const payObj = payToDrivers.hasOwnProperty(fromToCityKey)
-            ? payToDrivers[fromToCityKey]
-            : payToDrivers.hasOwnProperty(toFromCityKey)
-            ? payToDrivers[toFromCityKey]
-            : payToDrivers['no passengers'];
+            const { cash, card, office } = passengersIncome;
+            const passengersIncomeSum = card + cash + office + currentCorrection;
+            const payToDriver = isNaN(payObj.all)
+              ? notStandard
+              : ownersId.has(carOwner)
+                ? payObj.all > passengersIncomeSum
+                  ? payObj.all
+                  : payObj.owner_id > passengersIncomeSum
+                    ? passengersIncomeSum
+                    : payObj.all
+                : payObj.all;
 
-          const passengersIncome = passengers.reduce(
-            (acc, passenger) => {
-              switch (+passenger.price_status) {
-                case payCard:
-                  return {
-                    ...acc,
-                    card: acc.card + +passenger.price
-                  };
-                case payNot:
-                case payCash:
-                  return {
-                    ...acc,
-                    cash: acc.cash + +passenger.price
-                  };
-                case payOffice:
-                  return {
-                    ...acc,
-                    office: acc.office + +passenger.price
-                  };
-                default:
-                  return acc;
-              }
-            },
-            { cash: 0, card: 0, office: 0 }
-          );
-          const { cash, card, office } = passengersIncome;
-          const passengersIncomeSum = card + cash + office + currentCorrection;
-          const payToDriver = isNaN(payObj.all)
-            ? notStandard
-            : ownersId.has(carOwner)
-              ? payObj.all > passengersIncomeSum
-                ? payObj.all
-                : payObj.owner_id > passengersIncomeSum
-                  ? passengersIncomeSum
-                  : payObj.all
-              : payObj.all;
-
-          const totalToDriver = payToDriver - cash;
-          const firmIncome = passengersIncomeSum - cash - totalToDriver;
-          const rowData = {
-            startRouteId: route[0].id
-          };
-          const rowdata = {
-            k: k,
-            route: route,
-            isSameDay: isSameDay,
-            selectedDay: selectedDay,
-            carTitle: carTitle,
-            carNumber: carNumber,
-            carOwner: carOwner,
-            carDriver: carDriver,
-            totalPassengers: totalPassengers,
-            fromCity: fromCity,
-            toCity: toCity,
-            cash: cash,
-            card: card, 
-            office: office,
-            passengersIncomeSum: passengersIncomeSum,
-            currentCorrection: currentCorrection,
-            payToDriver: payToDriver,
-            totalToDriver: totalToDriver,
-            firmIncome: firmIncome,
-            startRouteId: rowData.startRouteId,
-            cities: cities,
-          }; 
+            const totalToDriver = payToDriver - cash;
+            const firmIncome = passengersIncomeSum - cash - totalToDriver;
+            
+            rowdata = {
+              k: k,
+              route: route,
+              selectedDay: selectedDay,
+              carTitle: carTitle,
+              carNumber: carNumber,
+              carOwner: carOwner,
+              carDriver: carDriver,
+              totalPassengers: totalPassengers,
+              fromCity: fromCity,
+              toCity: toCity,
+              cash: cash,
+              card: card, 
+              office: office,
+              passengersIncomeSum: passengersIncomeSum,
+              currentCorrection: currentCorrection,
+              payToDriver: payToDriver,
+              totalToDriver: totalToDriver,
+              firmIncome: firmIncome,
+              startRouteId: startRouteId.startRouteId,
+              }; 
+          }
           return (
             <Grid
               className={classes.overAll}
@@ -225,7 +249,7 @@ function TableContent(props) {
               wrap="nowrap"
               xs="auto"
             >
-              <Row  finances={finances} rowdata={rowdata} setFinances={setFinances}/>
+              <Row finances={finances} rowdata={rowdata} setFinances={setFinances} />
             </Grid>
           );
         });

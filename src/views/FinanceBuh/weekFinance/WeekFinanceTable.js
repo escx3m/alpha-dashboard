@@ -3,7 +3,15 @@ import TableHeader from './weekFinanceTable/TableHeader';
 import TableContent from './weekFinanceTable/TableContent';
 import { Grid, CircularProgress } from '@material-ui/core';
 
-const WeekFinanceTable = ({ routes, finances, setFinances, loading, selectedWeekStart, checkState, selectedDay }) => ( 
+const WeekFinanceTable = ({ 
+  routes, 
+  finances, 
+  setFinances, 
+  loading, 
+  selectedWeekStart, 
+  checkState, 
+  selectedDay
+}) => ( 
   loading 
   ? <CircularProgress />
   : <Grid container direction="row">

@@ -50,8 +50,8 @@ function WeekFinance() {
   return (
     <Grid className={classes.gridMargin} container direction="row"> 
       <Grid item xs={12}>
-        <WeekFinanceHeader 
-          loading={loading} 
+        <WeekFinanceHeader
+          loading={loading}
           setLoading={setLoading}
           selectedDay={selectedDay}
           setSelectedDay={setSelectedDay}
@@ -62,8 +62,8 @@ function WeekFinance() {
         />
       </Grid>
       <Grid className={classes.gridMargin} item xs={12}>
-        <WeekFinanceTable 
-          routes={routes} 
+        <WeekFinanceTable
+          routes={routes}
           finances={finances}
           setFinances={setFinances}
           loading={loading}
