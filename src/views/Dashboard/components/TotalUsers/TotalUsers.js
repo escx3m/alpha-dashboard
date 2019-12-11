@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
-import axios from 'axios';
-import {
-  startOfToday,
-  endOfToday,
-} from 'date-fns';
+import { startOfToday, endOfToday } from 'date-fns';
+import { ApiContext } from '../../../../Routes';
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -53,35 +50,27 @@ const TotalUsers = props => {
   const [endDay, setEndDay] = useState(endOfToday());
   const [loading, setLoading] = useState(false);
 
+  const { api } = useContext(ApiContext);
+
   useEffect(() => {
     setLoading(true);
-    axios
-      .get('http://localhost:9000/api/routes', {
-        params: {
-          startWeek: startDay,
-          endWeek: endDay
-        }
-      })
+    api.getRoutes(startDay, endDay)
       .then(res => {
         setLoading(false);
         const routes = res.data;
-        const uniqueRoutes = routes.reduce((acc, route) => []);
         setAllRoutes(routes);
       });
   }, [startDay]);
 
-  const passengersPresent = allRoutes
-  .reduce((acc, route) => {
+  const passengersPresent = allRoutes.reduce((acc, route) => {
     const passengersType = 1;
-    const passengersPresent = route.passengers.filter(
-      passenger => {
-        console.log ('ATTACHED', new Date(passenger.attached_to_route_time) >= endDay);
-        return passenger.state !==5
-        // (passenger.state === 2 || passenger.state === 3)\
-            && new Date(passenger.attached_to_route_time) >= startDay
-            && new Date(passenger.attached_to_route_time) <= endDay
-            && passenger.type === passengersType
-      }).length; 
+    const passengersPresent = route.passengers.filter(passenger => {
+      return passenger.state !== 5
+      // (passenger.state === 2 || passenger.state === 3)\
+        && new Date(passenger.attached_to_route_time) >= startDay
+        && new Date(passenger.attached_to_route_time) <= endDay
+        && passenger.type === passengersType
+    }).length; 
     
     return acc + passengersPresent;
   }, 0);
@@ -95,29 +84,43 @@ const TotalUsers = props => {
           <CircularProgress />
         </div>
       ) : (
-      <CardContent>
-        <Grid
-          container
-          justify="space-between"
-        >
-          <Grid item>
+        <CardContent>
+          <Grid
+            container
+            justify="space-between"
+          >
+            <Grid item>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                gutterBottom
+                variant="body2"
+              >
+                Записанных пассажиров
+              </Typography>
+              <Typography variant="h3">{passengersPresent}</Typography>
+            </Grid>
+            <Grid item>
+              <Avatar className={classes.avatar}>
+                <PeopleIcon className={classes.icon} />
+              </Avatar>
+            </Grid>
+          </Grid>
+          <div className={classes.difference}>
             <Typography
-              className={classes.title}
-              color="textSecondary"
-              gutterBottom
+              className={classes.differenceValue}
               variant="body2"
             >
-              Записанных пассажиров
+              16%
             </Typography>
-            <Typography variant="h3">{passengersPresent}</Typography>
-          </Grid>
-          <Grid item>
-            <Avatar className={classes.avatar}>
-              <PeopleIcon className={classes.icon} />
-            </Avatar>
-          </Grid>
-        </Grid>
-      </CardContent>
+            <Typography
+              className={classes.caption}
+              variant="caption"
+            >
+              Since last month
+            </Typography>
+          </div>
+        </CardContent>
       )}
     </Card>
   );

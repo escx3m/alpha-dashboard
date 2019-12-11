@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import { RouteWithLayout } from './components';
 import { Main as MainLayout } from './layouts';
+import Api from './api';
+
 import {
   Switch,
   Redirect,
@@ -21,15 +23,20 @@ import {
   Sms as SmsView,
 } from './views';
 
+const api = new Api();
+export const ApiContext = createContext({});
+
 const fakeAuth = {
   isAuthenticated: false,
-  authenticate(cb) {
+  async authenticate(loginRequest, cb) {
+    await api.login(loginRequest);
     fakeAuth.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
+    cb();
   },
-  signout(cb) {
+  async signout(cb) {
+    await api.logout();
     fakeAuth.isAuthenticated = false;
-    setTimeout(cb, 100);
+    cb();
   }
 };
 
@@ -60,8 +67,12 @@ const Routes = () => {
   let location = useLocation();
 
   let { from } = location.state || { from: { pathname: '/' } };
-  let login = () => {
-    fakeAuth.authenticate(() => {
+  let login = (login, password) => {
+    const loginRequest = {
+      login,
+      password
+    }
+    fakeAuth.authenticate(loginRequest, () => {
       history.replace(from);
     });
   };
@@ -72,100 +83,102 @@ const Routes = () => {
 
   };
   return (
-    <Switch>
-      <PrivateRoute path="/dashboard">
-        <RouteWithLayout
-          component={DashboardView}
-          exact
-          logout={logout}
-          layout={MainLayout}
-          path="/dashboard"
-        />
-      </PrivateRoute>
-      <Route path="/sign-in">
-        <RouteWithLayout
-          login={login}
-          logout={logout}
-          component={SignInView}
-          exact
-          layout={MainLayout}
-          path="/sign-in"
-        />
-      </Route>
-      <PrivateRoute path="/users">
-        <RouteWithLayout
-          component={UserListView}
-          logout={logout}
-          exact
-          layout={MainLayout}
-          path="/users"
-        />
-      </PrivateRoute>
-      <PrivateRoute path="/monitoringcar">
-        <RouteWithLayout
-          component={MonitoringCarView}
-          logout={logout}
-          exact
-          layout={MainLayout}
-          path="/monitoringcar"
-        />
-      </PrivateRoute>
-      <PrivateRoute path="/sms">
-        <RouteWithLayout
-          component={SmsView}
-          logout={logout}
-          exact
-          layout={MainLayout}
-          path="/sms"
-        />
-      </PrivateRoute>
-      <PrivateRoute path="/finance">
-        <RouteWithLayout
-          logout={logout}
-          component={FinanceView}
-          exact
-          layout={MainLayout}
-          path="/finance"
-        />
-      </PrivateRoute>
-      <PrivateRoute path="/financebuh">
-        <RouteWithLayout
-          logout={logout}
-          component={FinanceBuhView}
-          exact
-          layout={MainLayout}
-          path="/financebuh"
-        />
+    <ApiContext.Provider value={{ api }}>
+      <Switch>
+        <PrivateRoute path="/dashboard">
+          <RouteWithLayout
+            component={DashboardView}
+            exact
+            logout={logout}
+            layout={MainLayout}
+            path="/dashboard"
+          />
         </PrivateRoute>
-      <PrivateRoute path="/report">
-        <RouteWithLayout
-          logout={logout}
-          component={ReportView}
-          exact
-          layout={MainLayout}
-          path="/report"
-        />
-      </PrivateRoute>
-      <PrivateRoute path="/account">
-        <RouteWithLayout
-          logout={logout}
-          component={AccountView}
-          exact
-          layout={MainLayout}
-          path="/account"
-        />
-      </PrivateRoute>
-      <PrivateRoute path="/settings">
-        <RouteWithLayout
-          logout={logout}
-          component={SettingsView}
-          exact
-          layout={MainLayout}
-          path="/settings"
-        />
-      </PrivateRoute>
-      <Redirect to="/dashboard" />
-    </Switch>
+        <Route path="/sign-in">
+          <RouteWithLayout
+            login={login}
+            logout={logout}
+            component={SignInView}
+            exact
+            layout={MainLayout}
+            path="/sign-in"
+          />
+        </Route>
+        <PrivateRoute path="/users">
+          <RouteWithLayout
+            component={UserListView}
+            logout={logout}
+            exact
+            layout={MainLayout}
+            path="/users"
+          />
+        </PrivateRoute>
+        <PrivateRoute path="/monitoringcar">
+          <RouteWithLayout
+            component={MonitoringCarView}
+            logout={logout}
+            exact
+            layout={MainLayout}
+            path="/monitoringcar"
+          />
+        </PrivateRoute>
+        <PrivateRoute path="/sms">
+          <RouteWithLayout
+            component={SmsView}
+            logout={logout}
+            exact
+            layout={MainLayout}
+            path="/sms"
+          />
+        </PrivateRoute>
+        <PrivateRoute path="/finance">
+          <RouteWithLayout
+            logout={logout}
+            component={FinanceView}
+            exact
+            layout={MainLayout}
+            path="/finance"
+          />
+        </PrivateRoute>
+        <PrivateRoute path="/financebuh">
+          <RouteWithLayout
+            logout={logout}
+            component={FinanceBuhView}
+            exact
+            layout={MainLayout}
+            path="/financebuh"
+          />
+          </PrivateRoute>
+        <PrivateRoute path="/report">
+          <RouteWithLayout
+            logout={logout}
+            component={ReportView}
+            exact
+            layout={MainLayout}
+            path="/report"
+          />
+        </PrivateRoute>
+        <PrivateRoute path="/account">
+          <RouteWithLayout
+            logout={logout}
+            component={AccountView}
+            exact
+            layout={MainLayout}
+            path="/account"
+          />
+        </PrivateRoute>
+        <PrivateRoute path="/settings">
+          <RouteWithLayout
+            logout={logout}
+            component={SettingsView}
+            exact
+            layout={MainLayout}
+            path="/settings"
+          />
+        </PrivateRoute>
+        <Redirect to="/dashboard" />
+      </Switch>
+    </ApiContext.Provider>
   );
 };
 

@@ -1,15 +1,11 @@
-import React, { useState, useCallback } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useContext } from 'react';
 import { Grid, Card, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { eachDayOfInterval, format, endOfWeek, isSameDay } from 'date-fns';
+import { format, isSameDay } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import { makeJSDateObject } from '../../../../helpers/helpers';
-import {
-  payToDrivers,
-  cities,
-  notStandard
-} from '../../../../helpers/constants';
+import { ApiContext } from '../../../../Routes';
+import { cities } from '../../../../helpers/constants';
 
 const useStyles = makeStyles(theme => ({
   gridBorder: {
@@ -73,8 +69,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Row(props) {
-  const classes = useStyles();
   const {
+    cash,
+    card,
     totalPassengers,
     k,
     route,
@@ -84,28 +81,55 @@ function Row(props) {
     carOwner,
     carDriver,
     office,
-    cash,
-    card,
     fromCity,
     toCity,
-    passengersIncomeSum,
     currentCorrection,
+    passengersIncomeSum,
     payToDriver,
     totalToDriver,
     firmIncome,
     startRouteId,
   } = props.rowdata;
-  const [sendCorrection, setSendCorrection] = useState(currentCorrection === '' ? 0 : currentCorrection);
-  console.log('ROW startRouteId ', startRouteId)
-  console.log('ROW sendCorrection ', sendCorrection)
+  const classes = useStyles();
+  const { api } = useContext(ApiContext);
+  const { finances, setFinances } = props;
+  const [sendCorrection, setSendCorrection] = useState(currentCorrection);
+  const direction = cities[route[0].fromCityId] + '->' + cities[route[0].toCityId]; 
+  const carOwnerString = `${carOwner.id} ${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`
+  const carDriverString = `${carDriver.id} ${carDriver.surname} ${carDriver.name} ${carDriver.patronymic}`
+  
+  useEffect(() => {
+    setSendCorrection(currentCorrection) 
+  }, [currentCorrection])
+  
+  const totalSum = +card + +cash + +office + +sendCorrection
+  const totalFirm = totalSum - +cash - +totalToDriver
+  const currentFinance = {
+    startRouteId: +startRouteId,
+    startRouteDate: route[0].fromTime,
+    carTitle: carTitle + ' ' + carNumber,
+    carOwner: carOwnerString, 
+    carDriver: carDriverString,
+    direction: direction,
+    passengersTotal: totalPassengers,
+    card: +card,
+    cash: +cash,
+    office: +office,
+    correction: +sendCorrection,
+    totalSum: +totalSum,
+    earned: +payToDriver,
+    pay: +totalToDriver,
+    firm: +totalFirm,
+  }
   return (
     <Grid
       className={classes.overAll}
       container
-      item
       direction="row"
+      item
       spacing={1}
-      wrap="nowrap">
+      wrap="nowrap"
+    >
       <Grid className={classes.gridBorder} item xs={1}>
         <Card
           className={
@@ -133,7 +157,7 @@ function Row(props) {
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
-          {cities[route[0].fromCityId]}->{cities[route[0].toCityId]}
+          {direction}
         </Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
@@ -143,21 +167,21 @@ function Row(props) {
         <Card className={classes.cardInfo}>{card}</Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{office}</Card>
+        <Card className={classes.cardInfo}>{cash}</Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{cash}</Card>
+        <Card className={classes.cardInfo}>{office}</Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
           <TextField 
-            defaultValue={0 || sendCorrection}
             onChange={e => setSendCorrection(e.target.value)}
+            value={sendCorrection}
           />
         </Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{passengersIncomeSum}</Card>
+        <Card className={classes.cardInfo}>{currentFinance.totalSum}</Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>{payToDriver}</Card>
@@ -166,21 +190,19 @@ function Row(props) {
         <Card className={classes.cardInfo}>{totalToDriver}</Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{firmIncome}</Card>
+        <Card className={classes.cardInfo}>{currentFinance.firm}</Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
           <Button
             className={classes.btnSave}
-            onClick={() => 
-                axios.post('http://localhost:9000/api/board/corrections', 
-                {
-                  correction: +sendCorrection,
-                  startRouteId: +startRouteId
-                })
-            }
+            color="primary"
+            onClick={() => {
+              setFinances([...finances, currentFinance])
+              api.addFinances(currentFinance)
+            }}
             variant="contained"
-            color="primary">
+          >
             Сохранить
           </Button>
         </Card>

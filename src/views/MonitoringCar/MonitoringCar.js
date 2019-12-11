@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import CarsLoadTable from '../MonitoringCar/carsLoad/CarsLoadTable';
-import CarsLoadHeader from '../MonitoringCar/carsLoad/CarsLoadHeader';
+import React, { useState, useEffect, useContext } from 'react';
 import { Grid } from '@material-ui/core';
-import axios from 'axios';
 import { startOfWeek, endOfWeek } from 'date-fns';
 import { makeJSDateObject } from '../../helpers/helpers';
 import { makeStyles } from '@material-ui/core/styles';
-       
+import CarsLoadTable from '../MonitoringCar/carsLoad/CarsLoadTable';
+import CarsLoadHeader from '../MonitoringCar/carsLoad/CarsLoadHeader';
+import { ApiContext } from '../../Routes';
+
 const useStyles = makeStyles(theme => ({
   gridMargin: {
     marginTop:'30px',
@@ -30,30 +30,27 @@ function CarsLoad() {
     checkedAll: true,
   });
 
+  const { api } = useContext(ApiContext);
+
   useEffect(() => {
     setLoading(true);
-   axios.get('http://localhost:9000/api/trips', {
-    params: {
-      startWeek: start,
-      endWeek: end
-    }})
-    .then(res => {
-      setLoading(false);
-      const routes = res.data;
-      const cars = routes.reduce((acc, route) => {
-        if(route.carId && !acc.includes(route.carId)) {
-          acc.push(route.carId);
-        }
-        return acc;
-      }, []);
-      const result = cars.map((carId) => {
-        const { car, carScheme: { seats } } = routes.find((route) => route.carId === carId);
-        const carRoutes = routes.filter((route) => carId === route.carId);
-        return { car, scheme: seats, carRoutes };
+    api.getTrips(start, end)
+      .then(res => {
+        setLoading(false);
+        const routes = res.data;
+        const cars = routes.reduce((acc, route) => {
+          if(route.carId && !acc.includes(route.carId)) {
+            acc.push(route.carId);
+          }
+          return acc;
+        }, []);
+        const result = cars.map((carId) => {
+          const { car, carScheme: { seats } } = routes.find((route) => route.carId === carId);
+          const carRoutes = routes.filter((route) => carId === route.carId);
+          return { car, scheme: seats, carRoutes };
+        });
+        setCars(result);
       });
-      setCars(result);
-   });
- 
   }, [selectedWeekStart]);
 
   return (

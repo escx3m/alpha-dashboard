@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
@@ -11,6 +11,7 @@ import {
   startOfToday, endOfToday } from 'date-fns';
   import { useStaticState } from '@material-ui/pickers';
 import { isPassenger } from '../../../../helpers/constants';
+import { ApiContext } from '../../../../Routes';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -71,15 +72,11 @@ const TotalProfit = props => {
   const passengersIds = [];
   const currentPhones = [];
 
+  const { api } = useContext(ApiContext);
+
   useEffect(() => {
     setLoading(true);
-    axios
-      .get('http://localhost:9000/api/routes', {
-        params: {
-          startWeek: startOfDay(selectedDate),
-          endWeek: endOfDay(selectedDate)
-        }
-      })
+    api.getRoutes(startOfDay(selectedDate), endOfDay(selectedDate))
       .then(res => {
         const routes = res.data;
         const uniqueRoutes = routes.reduce((acc, route) => {
@@ -97,16 +94,12 @@ const TotalProfit = props => {
               passengersIds.push(passenger.id);
             }
           })
-        }); 
-        axios.get('http://localhost:9000/api/sms',{
-          params: {
-            ids: passengersIds, 
-          }
-        })
-        .then(res => {
-          setAlreadySendSms(res.data); 
-        })
-        .catch(e => console.log(e.toString()));
+        });
+        api.getSms(passengersIds)
+          .then(res => {
+            setAlreadySendSms(res.data); 
+          })
+          .catch(e => console.log(e.toString()));
         routes.forEach(route => route.passengers.forEach(passenger => {
           if (passenger.phone_2 != '') { 
             currentPhones.push(passenger.phone, passenger.phone_2)
@@ -114,16 +107,11 @@ const TotalProfit = props => {
             currentPhones.push(passenger.phone)
           }
         }));
-        axios
-          .get('http://localhost:9000/api/smssend',{
-              params: {
-                phones: currentPhones, 
-              }
-            })
-            .then(res => {
-              setAllSendSms(res.data); 
-            })
-            .catch(e => console.log(e.toString()));
+        api.getSmssend(currentPhones)
+          .then(res => {
+            setAllSendSms(res.data); 
+          })
+          .catch(e => console.log(e.toString()));
         setLoading(false);
       });
       

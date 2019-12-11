@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -16,11 +16,8 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import MoneyIcon from '@material-ui/icons/Money';
 import PaymentIcon from '@material-ui/icons/Payment';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
-import axios from 'axios';
-import {
-  startOfToday,
-  endOfToday,
-} from 'date-fns';
+import { startOfToday, endOfToday } from 'date-fns';
+import { ApiContext } from '../../../../Routes';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,24 +47,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
-
 const OnlineOffline = props => {
   
   const [allRoutes, setAllRoutes] = useState([]);
   const [startDay, setStartDay] = useState(startOfToday());
   const [endDay, setEndDay] = useState(endOfToday());
   const [loading, setLoading] = useState(false);
-  
+
+  const { api } = useContext(ApiContext);
+
   useEffect(() => {
     setLoading(true);
-    axios
-      .get('http://localhost:9000/api/routes', {
-        params: {
-          startWeek: startDay,
-          endWeek: endDay
-        }
-      })
+    api.getRoutes(startDay, endDay)
       .then(res => {
         setLoading(false);
         const routes = res.data;
@@ -180,31 +171,31 @@ const OnlineOffline = props => {
           <CircularProgress />
         </div>
       ) : (
-      <CardContent>
-        <div className={classes.chartContainer}>
-          <Doughnut
-            data={data}
-            options={options}
-          />
-        </div>
-        <div className={classes.stats}>
-          {devices.map(device => (
-            <div
-              className={classes.device}
-              key={device.title}
-            >
-              <span className={classes.deviceIcon}>{device.icon}</span>
-              <Typography variant="body1">{device.title}</Typography>
-              <Typography
-                style={{ color: device.color }}
-                variant="h2"
+        <CardContent>
+          <div className={classes.chartContainer}>
+            <Doughnut
+              data={data}
+              options={options}
+            />
+          </div>
+          <div className={classes.stats}>
+            {devices.map(device => (
+              <div
+                className={classes.device}
+                key={device.title}
               >
-                {device.value}
-              </Typography>
-            </div>
-          ))}
-        </div>
-      </CardContent>
+                <span className={classes.deviceIcon}>{device.icon}</span>
+                <Typography variant="body1">{device.title}</Typography>
+                <Typography
+                  style={{ color: device.color }}
+                  variant="h2"
+                >
+                  {device.value}
+                </Typography>
+              </div>
+            ))}
+          </div>
+        </CardContent>
       )}
     </Card>
   );

@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/styles';
 import {
   Button,
   TextField,
-  Link,
   Typography,
   Card
 } from '@material-ui/core';
@@ -88,7 +87,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignIn = props => {
-  const { history, login } = props;
+  const { history, login: loginFunc } = props;
   const classes = useStyles();
 
   const [formState, setFormState] = useState({
@@ -136,9 +135,10 @@ const SignIn = props => {
     password: 'alphatoursecret',
   };
   const handleSignIn = event => {
-    if (formState.values.login === usr.login && formState.values.password === usr.password) {
+    if (formState.values.login && formState.values.password) {
       event.preventDefault();
-      login();
+      const { login, password } = formState.values;
+      loginFunc(login, password);
       history.push('/');
     }
     event.preventDefault();
