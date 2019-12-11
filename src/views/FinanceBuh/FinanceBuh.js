@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import WeekFinanceTable from './weekFinance/WeekFinanceTable';
 import WeekFinanceHeader from './weekFinance/WeekFinanceHeader';
 import { Grid, makeStyles } from '@material-ui/core';
-import axios from 'axios';
 import { startOfWeek, endOfWeek } from 'date-fns';
 import { makeJSDateObject } from '../../helpers/helpers';
 import { ApiContext } from '../../Routes';
@@ -14,6 +13,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function WeekFinance() {
+  const { api } = useContext(ApiContext);
   const currentWeekStart = startOfWeek(makeJSDateObject(new Date()), { weekStartsOn: 1 });
   const [selectedWeekStart, setSelectedWeekStart] = useState(currentWeekStart);
   const [selectedDay, setSelectedDay] = useState(new Date());
@@ -30,8 +30,6 @@ function WeekFinance() {
     checkedAll: true,
   });
   let routesIds = [];
-
-  const { api } = useContext(ApiContext);
 
   useEffect(() => {
     api.getRoutes(selectedWeekStart, endOfWeek(selectedWeekStart, { weekStartsOn: 1 }))

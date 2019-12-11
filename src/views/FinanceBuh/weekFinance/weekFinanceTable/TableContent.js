@@ -130,7 +130,7 @@ function TableContent(props) {
             ? currentFinancesArray.slice(-1)[0].correction
             : '';
 
-          console.log(currentCorrection)
+
           const passengers = route.reduce((acc, r) => {
             const { passengers } = r;
             return acc.concat(
@@ -178,12 +178,12 @@ function TableContent(props) {
           const payToDriver = isNaN(payObj.all)
             ? notStandard
             : ownersId.has(carOwner)
-            ? payObj.all > passengersIncomeSum
-              ? payObj.all
-              : payObj.owner_id > passengersIncomeSum
-              ? passengersIncomeSum
-              : payObj.all
-            : payObj.all;
+              ? payObj.all > passengersIncomeSum
+                ? payObj.all
+                : payObj.owner_id > passengersIncomeSum
+                  ? passengersIncomeSum
+                  : payObj.all
+              : payObj.all;
 
           const totalToDriver = payToDriver - cash;
           const firmIncome = passengersIncomeSum - cash - totalToDriver;
@@ -217,15 +217,15 @@ function TableContent(props) {
             <Grid
               className={classes.overAll}
               container
-              item
               direction="row"
-              spacing={1}
-              xs='auto'
-              wrap='nowrap'
+              item
               key={`${k}`}
+              spacing={1}
               style={route.length === 1 ? { backgroundColor: 'orange' } : {}}
+              wrap="nowrap"
+              xs="auto"
             >
-              <Row rowdata={rowdata} finances={finances} setFinances={setFinances}/>
+              <Row  finances={finances} rowdata={rowdata} setFinances={setFinances}/>
             </Grid>
           );
         });

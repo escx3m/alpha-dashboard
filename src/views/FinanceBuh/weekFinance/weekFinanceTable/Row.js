@@ -1,15 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Grid, Card, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { eachDayOfInterval, format, endOfWeek, isSameDay } from 'date-fns';
+import { format, isSameDay } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import { makeJSDateObject } from '../../../../helpers/helpers';
 import { ApiContext } from '../../../../Routes';
-import {
-  payToDrivers,
-  cities,
-  notStandard
-} from '../../../../helpers/constants';
+import { cities } from '../../../../helpers/constants';
 
 const useStyles = makeStyles(theme => ({
   gridBorder: {
@@ -73,10 +69,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Row(props) {
-  const classes = useStyles();
-  const { api } = useContext(ApiContext);
-  console.log('api row ', api)
   const {
+    cash,
+    card,
     totalPassengers,
     k,
     route,
@@ -86,22 +81,29 @@ function Row(props) {
     carOwner,
     carDriver,
     office,
-    cash,
-    card,
     fromCity,
     toCity,
-    passengersIncomeSum,
     currentCorrection,
+    passengersIncomeSum,
     payToDriver,
     totalToDriver,
     firmIncome,
     startRouteId,
   } = props.rowdata;
+  const classes = useStyles();
+  const { api } = useContext(ApiContext);
   const { finances, setFinances } = props;
   const [sendCorrection, setSendCorrection] = useState(currentCorrection);
   const direction = cities[route[0].fromCityId] + '->' + cities[route[0].toCityId]; 
   const carOwnerString = `${carOwner.id} ${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`
   const carDriverString = `${carDriver.id} ${carDriver.surname} ${carDriver.name} ${carDriver.patronymic}`
+  
+  useEffect(() => {
+    setSendCorrection(currentCorrection) 
+  }, [currentCorrection])
+  
+  const totalSum = +card + +cash + +office + +sendCorrection
+  const totalFirm = totalSum - +cash - +totalToDriver
   const currentFinance = {
     startRouteId: +startRouteId,
     startRouteDate: route[0].fromTime,
@@ -114,22 +116,20 @@ function Row(props) {
     cash: +cash,
     office: +office,
     correction: +sendCorrection,
-    totalSum: +passengersIncomeSum,
+    totalSum: +totalSum,
     earned: +payToDriver,
     pay: +totalToDriver,
-    firm: +firmIncome,
+    firm: +totalFirm,
   }
-  useEffect(() => {
-    setSendCorrection(currentCorrection) 
-  }, [currentCorrection])
   return (
     <Grid
       className={classes.overAll}
       container
-      item
       direction="row"
+      item
       spacing={1}
-      wrap="nowrap">
+      wrap="nowrap"
+    >
       <Grid className={classes.gridBorder} item xs={1}>
         <Card
           className={
@@ -175,13 +175,13 @@ function Row(props) {
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
           <TextField 
-            value={sendCorrection}
             onChange={e => setSendCorrection(e.target.value)}
+            value={sendCorrection}
           />
         </Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{passengersIncomeSum}</Card>
+        <Card className={classes.cardInfo}>{currentFinance.totalSum}</Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>{payToDriver}</Card>
@@ -190,19 +190,19 @@ function Row(props) {
         <Card className={classes.cardInfo}>{totalToDriver}</Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{firmIncome}</Card>
+        <Card className={classes.cardInfo}>{currentFinance.firm}</Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
           <Button
             className={classes.btnSave}
+            color="primary"
             onClick={() => {
-                setFinances([...finances, currentFinance ])
-                api.addFinances(currentFinance)
-              }
-            }
+              setFinances([...finances, currentFinance])
+              api.addFinances(currentFinance)
+            }}
             variant="contained"
-            color="primary">
+          >
             Сохранить
           </Button>
         </Card>
