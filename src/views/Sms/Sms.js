@@ -12,7 +12,7 @@ import { Grid, Card, CardContent, CardHeader, Paper,
   ExpansionPanelDetails as ExpansionBody
 } from '@material-ui/core';
 import { 
-  isSameDay, differenceInHours, startOfDay, endOfDay, 
+  isSameDay, differenceInHours, startOfDay, endOfDay,
   startOfToday, endOfToday } from 'date-fns';
 import { ApiContext } from '../../Routes';
 
@@ -139,7 +139,7 @@ const Sms = () => {
           })
           .catch(e => console.log(e.toString()));
         routes.forEach(route => route.passengers.forEach(passenger => {
-          if (passenger.phone_2 != '') { 
+          if (passenger.phone_2 !== '' && passenger.phone_2 !== null) { 
             currentPhones.push(passenger.phone, passenger.phone_2)
           } else {
             currentPhones.push(passenger.phone)
@@ -218,96 +218,101 @@ const Sms = () => {
                           <Grid item xs={2} className={classes.gridCenter}><strong>Отправлено: {smsCount}</strong></Grid>
                         </Grid>
                         {expanded === `panel${i}` ?
-                        <Grid container item xs={12} direction="row">
-                          <Grid item xs={3}>Направление</Grid>
-                          <Grid item xs={3} className={classes.gridCenter}>Время рейса</Grid>
-                          <Grid item xs={3} className={classes.gridCenter}>СМС/Пассажиры</Grid>
-                          <Grid item xs={3}></Grid>
-                        </Grid>
-                        : ''}
+                          <Grid container item xs={12} direction="row">
+                            <Grid item xs={3}>Направление</Grid>
+                            <Grid item xs={3} className={classes.gridCenter}>Время рейса</Grid>
+                            <Grid item xs={3} className={classes.gridCenter}>СМС/Пассажиры</Grid>
+                            <Grid item xs={3}></Grid>
+                          </Grid>
+                          : ''
+                        }
                       </Grid>
                     </ExpansionHeader>
                     <ExpansionBody>
                       <Grid container >
-                      {currentRoutes.map((route, j) => {
-                        const routeDate = `0${new Date(route.fromTime).getDate()}`.slice(-2);
-                        const routeMonth = `0${new Date(route.fromTime).getMonth() + 1}`.slice(-2);
-                        const routeTime = new Date(route.fromTime);
-                        const totalPassengers = route.passengers.filter(passenger => passenger.state !== canceledState 
-                          && passenger.type === isPassenger).length;
-                        const correctPassengers = route.passengers.filter(passenger => passenger.state !== canceledState 
-                          && passenger.type === isPassenger);
-                        const routePassengers = route.passengers.filter(passenger => 
-                          passenger.state !== canceledState && passenger.type === isPassenger)
-                        const passengersCount = correctPassengers.length;
+                        {currentRoutes.map((route, j) => {
+                          const routeDate = `0${new Date(route.fromTime).getDate()}`.slice(-2);
+                          const routeMonth = `0${new Date(route.fromTime).getMonth() + 1}`.slice(-2);
+                          const routeTime = new Date(route.fromTime);
+                          const totalPassengers = route.passengers.filter(passenger => passenger.state !== canceledState 
+                            && passenger.type === isPassenger).length;
+                          const correctPassengers = route.passengers.filter(passenger => passenger.state !== canceledState 
+                            && passengersIdsAtTime.includes(passenger.id)
+                            && passenger.type === isPassenger);
+                          const routePassengers = route.passengers.filter(passenger => 
+                            passenger.state !== canceledState && passenger.type === isPassenger)
+                          const passengersCount = correctPassengers.length;
 
-                        return (
-                          passengersCount ?
-                          <Grid item xs={12} key={j}>
-                            <Expansion TransitionProps={{ unmountOnExit: true }} >
-                              <ExpansionHeader expandIcon={<ExpandMoreIcon />}>
-                                <Grid item xs={3}>{`${citiesName[route.fromCityId]} - ${citiesName[route.toCityId]}`}</Grid>
-                                <Grid item xs={3} className={classes.gridCenter}>
-                                  {routeDate + '.' + routeMonth + ' ' + `0${routeTime.getHours()}`.slice(-2) 
-                                    + ':' + `0${routeTime.getMinutes()}`.slice(-2)}
-                                </Grid>
-                                  <Grid item xs={3} className={classes.gridCenter}>{passengersCount} / {totalPassengers}</Grid>
-                                  <Grid item xs={3} className={classes.gridCenter}>
-                                    <Link href={`${routeIdTemplate}${route.id}`} target="_blank">Crmbus</Link>
-                                  </Grid>
-                              </ExpansionHeader>
-                              <ExpansionBody>
-                                <Grid container>
-                                  <Grid container className={classes.borderGrid}>
-                                    <Grid xs={4} item><strong>ФИО</strong></Grid>
-                                    <Grid xs={4} item className={classes.gridCenter}><strong>Номер</strong></Grid>
-                                  </Grid>
-                                  {
-                                    //correctPassengers.map((p, k) => {
-                                      //const fromCrmbus = selectedDateSendSms.filter(sendSms => 
-                                              //sendSms.phone === p.phone || sendSms.phone === p.phone_2)
-                                      //const sendTimeCrmBus = fromCrmbus.length > 0
-                                        //? (`0${new Date(fromCrmbus[0].sendTime).getHours()}`.slice(-2) + ':' 
-                                        //+ `0${new Date(fromCrmbus[0].sendTime).getMinutes()}`.slice(-2))
-                                        //: '';
-                                      //return (
-                                        //<Grid container className={classes.backgroundName} key={k}>
-                                          //<Grid xs={4} item className={classes.paddingGrid}>
-                                            //{p.surname + ' ' + p.name + ' ' + p.patronymic + ' '}
-                                          //</Grid>
-                                          //<Grid xs={4} item className={classes.gridCenter}>{p.phone}</Grid>
-                                            //<Grid xs={4} item className={classes.gridCenter}>{sendTimeCrmBus}</Grid>
-                                        //</Grid>
-                                      //)
-                                    routePassengers.map((p, k) => {
-                                      const fromCrmbus = selectedDateSendSms.filter(sendSms => 
-                                              sendSms.phone === p.phone || sendSms.phone === p.phone_2)
-                                      const sendTimeCrmBus = fromCrmbus.length > 0
-                                        ? (`0${new Date(fromCrmbus[0].sendTime).getDate()}`.slice(-2) + '.' 
-                                          + `0${new Date(fromCrmbus[0].sendTime).getMonth() + 1}`.slice(-2) + ' ' 
-                                          + `0${new Date(fromCrmbus[0].sendTime).getHours()}`.slice(-2) + ':' 
-                                          + `0${new Date(fromCrmbus[0].sendTime).getMinutes()}`.slice(-2))
-                                        : '';
-                                      return (
-                                        <Grid container className={classes.backgroundName} key={k}>
-                                          <Grid xs={4} item className={classes.paddingGrid}>
-                                            {p.surname + ' ' + p.name + ' ' + p.patronymic + ' '}
-                                          </Grid>
-                                          <Grid xs={4} container item direction="column" className={classes.gridCenter}>
-                                            <Grid item className={classes.gridCenter}>{p.phone}</Grid>
-                                            <Grid item className={classes.gridCenter}>{p.phone_2 ? p.phone_2 : ''}</Grid>
-                                          </Grid>
-                                          <Grid xs={4} item className={classes.gridCenter}>{sendTimeCrmBus}</Grid>
-                                        </Grid>
-                                      )
-                                  })}
-                                </Grid>
-                              </ExpansionBody>
-                            </Expansion>
-                          </Grid>
-                          : ''
-                        );
-                      })}
+                          console.log(smsTime)
+                          console.log('route passengers ', routePassengers)
+                          console.log('correct passengers ', correctPassengers)
+                          return (
+                            passengersCount ?
+                              <Grid item xs={12} key={j}>
+                                <Expansion TransitionProps={{ unmountOnExit: true }} >
+                                  <ExpansionHeader expandIcon={<ExpandMoreIcon />}>
+                                    <Grid item xs={3}>{`${citiesName[route.fromCityId]} - ${citiesName[route.toCityId]}`}</Grid>
+                                    <Grid item xs={3} className={classes.gridCenter}>
+                                      {routeDate + '.' + routeMonth + ' ' + `0${routeTime.getHours()}`.slice(-2) 
+                                        + ':' + `0${routeTime.getMinutes()}`.slice(-2)}
+                                    </Grid>
+                                      <Grid item xs={3} className={classes.gridCenter}>{passengersCount} / {totalPassengers}</Grid>
+                                      <Grid item xs={3} className={classes.gridCenter}>
+                                        <Link href={`${routeIdTemplate}${route.id}`} target="_blank">Crmbus</Link>
+                                      </Grid>
+                                  </ExpansionHeader>
+                                  <ExpansionBody>
+                                    <Grid container>
+                                      <Grid container className={classes.borderGrid}>
+                                        <Grid xs={4} item><strong>ФИО</strong></Grid>
+                                        <Grid xs={4} item className={classes.gridCenter}><strong>Номер</strong></Grid>
+                                      </Grid>
+                                      {
+                                        //correctPassengers.map((p, k) => {
+                                        //const fromCrmbus = selectedDateSendSms.filter(sendSms => 
+                                        //sendSms.phone === p.phone || sendSms.phone === p.phone_2)
+                                        //const sendTimeCrmBus = fromCrmbus.length > 0
+                                         //? (`0${new Date(fromCrmbus[0].sendTime).getHours()}`.slice(-2) + ':' 
+                                            //+ `0${new Date(fromCrmbus[0].sendTime).getMinutes()}`.slice(-2))
+                                            //: '';
+                                          //return (
+                                            //<Grid container className={classes.backgroundName} key={k}>
+                                              //<Grid xs={4} item className={classes.paddingGrid}>
+                                                //{p.surname + ' ' + p.name + ' ' + p.patronymic + ' '}
+                                              //</Grid>
+                                              //<Grid xs={4} item className={classes.gridCenter}>{p.phone}</Grid>
+                                                //<Grid xs={4} item className={classes.gridCenter}>{sendTimeCrmBus}</Grid>
+                                            //</Grid>
+                                          //)
+                                        correctPassengers.map((p, k) => {
+                                          const fromCrmbus = selectedDateSendSms.filter(sendSms => 
+                                                  sendSms.phone === p.phone || sendSms.phone === p.phone_2)
+                                          const sendTimeCrmBus = fromCrmbus.length > 0
+                                            ? (`0${new Date(fromCrmbus[0].sendTime).getDate()}`.slice(-2) + '.' 
+                                              + `0${new Date(fromCrmbus[0].sendTime).getMonth() + 1}`.slice(-2) + ' ' 
+                                              + `0${new Date(fromCrmbus[0].sendTime).getHours()}`.slice(-2) + ':' 
+                                              + `0${new Date(fromCrmbus[0].sendTime).getMinutes()}`.slice(-2))
+                                            : '';
+                                          return (
+                                            <Grid container className={classes.backgroundName} key={k}>
+                                              <Grid xs={4} item className={classes.paddingGrid}>
+                                                {p.surname + ' ' + p.name + ' ' + p.patronymic + ' '}
+                                              </Grid>
+                                              <Grid xs={4} container item direction="column" className={classes.gridCenter}>
+                                                <Grid item className={classes.gridCenter}>{p.phone}</Grid>
+                                                <Grid item className={classes.gridCenter}>{p.phone_2 ? p.phone_2 : ''}</Grid>
+                                              </Grid>
+                                              <Grid xs={4} item className={classes.gridCenter}>{sendTimeCrmBus}</Grid>
+                                            </Grid>
+                                          )
+                                      })}
+                                    </Grid>
+                                  </ExpansionBody>
+                                </Expansion>
+                              </Grid>
+                            : ''
+                          );
+                        })}
                       </Grid>
                     </ExpansionBody>
                   </Expansion>

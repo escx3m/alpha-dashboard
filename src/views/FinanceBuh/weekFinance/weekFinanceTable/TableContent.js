@@ -133,6 +133,7 @@ function TableContent(props) {
             ? currentFinancesArray.slice(-1)[0].correction
             : '';
           let rowdata  = {};
+          const carOwnerString = `${carOwner.id} ${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`
 
           if (financesIds.has(startRouteId)) {
             const financeRoute = finances.filter(finance => {
@@ -141,28 +142,28 @@ function TableContent(props) {
 
               return finance.startRouteId === startRouteId 
                 //&& isSameDay(new Date(finance.startRouteDate), new Date(selectedDay))
-            }).slice(-1);
+            }).slice(-1)[0];
             console.log('fin route ',financeRoute)
             rowdata = {
               k: k,
               route: financeRoute,
               selectedDay: selectedDay,
-              carTitle: financeRoute[0].carTitle.toString(),
+              carTitle: financeRoute.carTitle.toString(),
               carNumber: '',
-              carOwner: financeRoute[0].carOwner.toString(),
-              carDriver: financeRoute[0].carDriver.toString(),
-              totalPassengers: financeRoute[0].passengersTotal,
-              fromCity: financeRoute[0].direction[0],
-              toCity: financeRoute[0].direction[3],
-              cash: financeRoute[0].cash,
-              card: financeRoute[0].card, 
-              office: financeRoute[0].office,
-              passengersIncomeSum: financeRoute[0].totalSum,
-              currentCorrection: financeRoute[0].correction    ,
-              payToDriver: financeRoute[0].earned,
-              totalToDriver: financeRoute[0].pay,
-              firmIncome: financeRoute[0].firm,
-              startRouteId: financeRoute[0].startRouteId,
+              carOwner: JSON.stringify(financeRoute.carOwner),
+              carDriver: financeRoute.carDriver.toString(),
+              totalPassengers: financeRoute.passengersTotal,
+              fromCity: financeRoute.direction[0],
+              toCity: financeRoute.direction[3],
+              cash: financeRoute.cash,
+              card: financeRoute.card, 
+              office: financeRoute.office,
+              passengersIncomeSum: financeRoute.totalSum,
+              currentCorrection: financeRoute.correction    ,
+              payToDriver: financeRoute.earned,
+              totalToDriver: financeRoute.pay,
+              firmIncome: financeRoute.firm,
+              startRouteId: financeRoute.startRouteId,
             }; 
           } else {
             const passengers = route.reduce((acc, r) => {
@@ -221,14 +222,14 @@ function TableContent(props) {
 
             const totalToDriver = payToDriver - cash;
             const firmIncome = passengersIncomeSum - cash - totalToDriver;
-            
+
             rowdata = {
               k: k,
               route: route,
               selectedDay: selectedDay,
               carTitle: carTitle,
               carNumber: carNumber,
-              carOwner: carOwner,
+              carOwner: carOwnerString,
               carDriver: carDriver,
               totalPassengers: totalPassengers,
               fromCity: fromCity,
