@@ -37,14 +37,16 @@ function WeekFinance() {
         routesIds = res.data.map(({ id }) => id)
         setRoutes(res.data);
         const params = {
-          ids: routesIds
+          //ids: routesIds
+          ids: res.data.map(({ id }) => id)
         }
         api.getFinances(params)
           .then(res => {
             const { finances } = res.data;
-            console.log('finances ', finances)
+            console.log('finances pg', finances)
             setFinances(finances);
-          });
+          })
+          .catch(e => console.log(JSON.stringify(e)));
       });
   }, [selectedWeekStart]);
 

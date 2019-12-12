@@ -77,12 +77,13 @@ function Row(props) {
     carOwner,
     carDriver,
     currentCorrection,
+    fromCityId,
+    toCityId,
     k,
     fromTime,
     selectedDay,
     office,
-    directionDisplay,
-    directionSave,
+    direction,
     passengersIncomeSum,
     payToDriver,
     totalToDriver,
@@ -107,7 +108,8 @@ function Row(props) {
     carTitle: carTitle + ' ' + carNumber,
     carOwner: carOwner, 
     carDriver: carDriver,
-    direction: directionSave,
+    fromCityId: fromCityId,
+    toCityId: toCityId,
     passengersTotal: totalPassengers,
     card: +card || 0,
     cash: +cash || 0,
@@ -118,6 +120,7 @@ function Row(props) {
     pay: +totalToDriver || 0,
     firm: +totalFirm || 0,
   }
+
   return (
     <Grid
       className={classes.overAll}
@@ -154,7 +157,7 @@ function Row(props) {
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
-          {directionDisplay}
+          {direction}
         </Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>

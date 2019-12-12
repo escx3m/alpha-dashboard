@@ -15,6 +15,7 @@ import {
   payCash,
   payOffice,
   delivered,
+  ownersId,
 } from '../../../../helpers/constants';
 
 
@@ -82,11 +83,9 @@ function TableContent(props) {
   const classes = useStyles();
   const { routes, finances, setFinances, selectedDay } = props;
   const financesIds = new Set(finances.map(({ startRouteId }) => startRouteId))
-  console.log(' finances Ids ' ,financesIds)
-  const ownersId = new Set([7, 38, 52]);
   const currentRoutes = routes.filter(route =>
     isSameDay(
-      makeJSDateObject(new Date(new Date(route.fromTimeLocal).toUTCString())),
+      makeJSDateObject(new Date(new Date(route.fromTime).toUTCString())),
       selectedDay
     )
   );
@@ -130,24 +129,18 @@ function TableContent(props) {
           const directionDisplay = cities[route[0].fromCityId] + '->' + cities[route[0].toCityId]; 
           const directionSave = citiesName[route[0].fromCityId] + '->' + citiesName[route[0].toCityId]; 
           const startRouteId = route[0].id;
-          console.log('route ', route)
-          //console.log('start route id ', startRouteId)
+          console.log('route  ', route)
           const currentFinancesArray = finances.filter(finance => 
             finance.startRouteId === startRouteId);
-          const currentCorrection = currentFinancesArray.length 
-            ? currentFinancesArray.slice(-1)[0].correction
-            : '';
+          
           let rowdata  = {};
 
           if (financesIds.has(startRouteId)) {
             const financeRoute = finances.filter(finance => {
-              //console.log('finance date ',finance.startRouteDate, ' selected date ', selectedDay)
-              console.log('finance ',finance)
-
               return finance.startRouteId === startRouteId 
                 //&& isSameDay(new Date(finance.startRouteDate), new Date(selectedDay))
             }).slice(-1)[0];
-            console.log('fin route ',financeRoute)
+            const direction = `${cities[financeRoute.fromCityId]} -> ${cities[financeRoute.toCityId]}`
             rowdata = {
               k: k,
               fromTime: financeRoute.startRouteDate,
@@ -157,13 +150,14 @@ function TableContent(props) {
               carOwner: financeRoute.carOwner,
               carDriver: financeRoute.carDriver,
               totalPassengers: financeRoute.passengersTotal,
-              directionDisplay: financeRoute.direction[0],
-              directionSave: financeRoute.direction,
+              fromCityId: financeRoute.fromCityId,
+              toCityId: financeRoute.toCityId,
+              direction: direction,
               cash: financeRoute.cash,
               card: financeRoute.card, 
               office: financeRoute.office,
               passengersIncomeSum: financeRoute.totalSum,
-              currentCorrection: financeRoute.correction    ,
+              currentCorrection: financeRoute.correction,
               payToDriver: financeRoute.earned,
               totalToDriver: financeRoute.pay,
               firmIncome: financeRoute.firm,
@@ -176,9 +170,11 @@ function TableContent(props) {
                 passengers.filter(passenger => passenger.state === delivered && passenger.type === isPassenger)
               );
             }, []);
+            const currentCorrection = 0 
             const totalPassengers = passengers.length;
             const fromCity = cities[route[0].fromCityId][0];
             const toCity = cities[route[0].toCityId][0];
+            const direction = `${fromCity} -> ${toCity}`
             const fromToCityKey = `${fromCity}-${toCity} ${carScheme} ${totalPassengers}`;
             const toFromCityKey = `${toCity}-${fromCity} ${carScheme} ${totalPassengers}`;
             const payObj = payToDrivers.hasOwnProperty(fromToCityKey)
@@ -235,9 +231,10 @@ function TableContent(props) {
               carNumber: carNumber,
               carOwner: carOwnerString,
               carDriver: carDriverString,
+              fromCityId: +route[0].fromCityId,
+              toCityId: +route[0].toCityId,
               totalPassengers: totalPassengers,
-              directionDisplay: directionDisplay,
-              directionSave: directionSave,
+              direction: direction,
               cash: cash,
               card: card, 
               office: office,

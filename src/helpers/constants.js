@@ -1,3 +1,4 @@
+export const ownersId = new Set([7, 38, 52]);
 export const isPassenger = 1;
 export const wrongPricePassengerColor = "#8C8C8C";
 export const notStandardTripColor = "#8C8C8C";
