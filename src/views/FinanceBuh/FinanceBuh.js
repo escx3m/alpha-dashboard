@@ -37,21 +37,24 @@ function WeekFinance() {
         routesIds = res.data.map(({ id }) => id)
         setRoutes(res.data);
         const params = {
-          ids: routesIds
+          //ids: routesIds
+          ids: res.data.map(({ id }) => id)
         }
         api.getFinances(params)
           .then(res => {
             const { finances } = res.data;
+            console.log('finances pg', finances)
             setFinances(finances);
-          });
+          })
+          .catch(e => console.log(JSON.stringify(e)));
       });
   }, [selectedWeekStart]);
 
   return (
     <Grid className={classes.gridMargin} container direction="row"> 
       <Grid item xs={12}>
-        <WeekFinanceHeader 
-          loading={loading} 
+        <WeekFinanceHeader
+          loading={loading}
           setLoading={setLoading}
           selectedDay={selectedDay}
           setSelectedDay={setSelectedDay}
@@ -62,8 +65,8 @@ function WeekFinance() {
         />
       </Grid>
       <Grid className={classes.gridMargin} item xs={12}>
-        <WeekFinanceTable 
-          routes={routes} 
+        <WeekFinanceTable
+          routes={routes}
           finances={finances}
           setFinances={setFinances}
           loading={loading}

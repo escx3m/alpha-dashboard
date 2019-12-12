@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Calendar, useStaticState } from '@material-ui/pickers';
 import CachedIcon from '@material-ui/icons/Cached';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { cityShortNames as citiesName, isPassenger } from '../../helpers/constants';
+import { cityShortNames as citiesName, isPassenger, canceledState } from '../../helpers/constants';
 import axios from 'axios';
 import { Grid, Card, CardContent, CardHeader, Paper,
   IconButton, Link,
@@ -107,7 +107,6 @@ const Sms = () => {
     value: selectedDate, 
     onChange: e => {setSelectedDate(e)}
   });
-  const canceledState = 5;
   const passengersIds = [];
   const currentPhones = [];
 

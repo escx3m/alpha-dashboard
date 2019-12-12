@@ -5,7 +5,7 @@ import { format, isSameDay } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
 import { makeJSDateObject } from '../../../../helpers/helpers';
 import { ApiContext } from '../../../../Routes';
-import { cities } from '../../../../helpers/constants';
+import { cities, wrongPricePassenger } from '../../../../helpers/constants';
 
 const useStyles = makeStyles(theme => ({
   gridBorder: {
@@ -72,31 +72,29 @@ function Row(props) {
   const {
     cash,
     card,
-    totalPassengers,
-    k,
-    route,
-    selectedDay,
     carTitle,
     carNumber,
     carOwner,
     carDriver,
-    office,
-    fromCity,
-    toCity,
     currentCorrection,
+    fromCityId,
+    toCityId,
+    k,
+    fromTime,
+    selectedDay,
+    office,
+    direction,
     passengersIncomeSum,
     payToDriver,
     totalToDriver,
     firmIncome,
     startRouteId,
+    totalPassengers,
   } = props.rowdata;
   const classes = useStyles();
   const { api } = useContext(ApiContext);
   const { finances, setFinances } = props;
   const [sendCorrection, setSendCorrection] = useState(currentCorrection);
-  const direction = cities[route[0].fromCityId] + '->' + cities[route[0].toCityId]; 
-  const carOwnerString = `${carOwner.id} ${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`
-  const carDriverString = `${carDriver.id} ${carDriver.surname} ${carDriver.name} ${carDriver.patronymic}`
   
   useEffect(() => {
     setSendCorrection(currentCorrection) 
@@ -106,21 +104,23 @@ function Row(props) {
   const totalFirm = totalSum - +cash - +totalToDriver
   const currentFinance = {
     startRouteId: +startRouteId,
-    startRouteDate: route[0].fromTime,
+    startRouteDate: fromTime,
     carTitle: carTitle + ' ' + carNumber,
-    carOwner: carOwnerString, 
-    carDriver: carDriverString,
-    direction: direction,
+    carOwner: carOwner, 
+    carDriver: carDriver,
+    fromCityId: fromCityId,
+    toCityId: toCityId,
     passengersTotal: totalPassengers,
-    card: +card,
-    cash: +cash,
-    office: +office,
-    correction: +sendCorrection,
-    totalSum: +totalSum,
-    earned: +payToDriver,
-    pay: +totalToDriver,
-    firm: +totalFirm,
+    card: +card || 0,
+    cash: +cash || 0,
+    office: +office || 0,
+    correction: +sendCorrection || 0,
+    totalSum: +totalSum || 0,
+    earned: +payToDriver || 0,
+    pay: +totalToDriver || 0,
+    firm: +totalFirm || 0,
   }
+
   return (
     <Grid
       className={classes.overAll}
@@ -147,12 +147,12 @@ function Row(props) {
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
-          {`${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`}
+          {currentFinance.carOwner}
         </Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
-          {`${carDriver.surname} ${carDriver.name} ${carDriver.patronymic}`}
+          {currentFinance.carDriver}
         </Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
