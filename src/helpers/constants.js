@@ -1,5 +1,6 @@
 export const isPassenger = 1;
-export const wrongPricePassenger = "#8C8C8C";
+export const wrongPricePassengerColor = "#8C8C8C";
+export const notStandardTripColor = "#8C8C8C";
 export const delivered = 3;
 export const canceledState = 5;
 export const payNot = 1;

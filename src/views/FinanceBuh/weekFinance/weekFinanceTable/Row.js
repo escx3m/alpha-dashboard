@@ -78,11 +78,11 @@ function Row(props) {
     carDriver,
     currentCorrection,
     k,
-    route,
+    fromTime,
     selectedDay,
     office,
-    fromCity,
-    toCity,
+    directionDisplay,
+    directionSave,
     passengersIncomeSum,
     payToDriver,
     totalToDriver,
@@ -94,9 +94,6 @@ function Row(props) {
   const { api } = useContext(ApiContext);
   const { finances, setFinances } = props;
   const [sendCorrection, setSendCorrection] = useState(currentCorrection);
-  const direction = cities[route[0].fromCityId] + '->' + cities[route[0].toCityId]; 
-  const carOwnerString = `${carOwner.id} ${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`
-  const carDriverString = `${carDriver.id} ${carDriver.surname} ${carDriver.name} ${carDriver.patronymic}`
   
   useEffect(() => {
     setSendCorrection(currentCorrection) 
@@ -106,11 +103,11 @@ function Row(props) {
   const totalFirm = totalSum - +cash - +totalToDriver
   const currentFinance = {
     startRouteId: +startRouteId,
-    startRouteDate: route[0].fromTime,
+    startRouteDate: fromTime,
     carTitle: carTitle + ' ' + carNumber,
-    carOwner: carOwnerString, 
-    carDriver: carDriverString,
-    direction: direction,
+    carOwner: carOwner, 
+    carDriver: carDriver,
+    direction: directionSave,
     passengersTotal: totalPassengers,
     card: +card || 0,
     cash: +cash || 0,
@@ -147,17 +144,17 @@ function Row(props) {
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
-          {`${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`}
+          {currentFinance.carOwner}
         </Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
-          {`${carDriver.surname} ${carDriver.name} ${carDriver.patronymic}`}
+          {currentFinance.carDriver}
         </Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
-          {direction}
+          {directionDisplay}
         </Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>

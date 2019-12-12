@@ -7,6 +7,7 @@ import { makeJSDateObject } from '../../../../helpers/helpers';
 import {
   payToDrivers,
   cities,
+  citiesName,
   notStandard,
   isPassenger,
   payNot,
@@ -104,6 +105,8 @@ function TableContent(props) {
         const carNumber = carRoutes[0].car.number;
         const carOwner = carRoutes[0].car.owner;
         const carDriver = carRoutes[0].driver.user;
+        const carOwnerString = `${carOwner.id} ${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`
+        const carDriverString = `${carDriver.id} ${carDriver.surname} ${carDriver.name} ${carDriver.patronymic}`
         const carScheme = carRoutes[0].carScheme.seats;
         const resultRoutes = [];
         const copy = [...carRoutes];
@@ -124,6 +127,8 @@ function TableContent(props) {
           }
         }
         return resultRoutes.map((route, k) => {
+          const directionDisplay = cities[route[0].fromCityId] + '->' + cities[route[0].toCityId]; 
+          const directionSave = citiesName[route[0].fromCityId] + '->' + citiesName[route[0].toCityId]; 
           const startRouteId = route[0].id;
           console.log('route ', route)
           //console.log('start route id ', startRouteId)
@@ -133,7 +138,6 @@ function TableContent(props) {
             ? currentFinancesArray.slice(-1)[0].correction
             : '';
           let rowdata  = {};
-          const carOwnerString = `${carOwner.id} ${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`
 
           if (financesIds.has(startRouteId)) {
             const financeRoute = finances.filter(finance => {
@@ -146,15 +150,15 @@ function TableContent(props) {
             console.log('fin route ',financeRoute)
             rowdata = {
               k: k,
-              route: financeRoute,
+              fromTime: financeRoute.startRouteDate,
               selectedDay: selectedDay,
               carTitle: financeRoute.carTitle.toString(),
               carNumber: '',
-              carOwner: JSON.stringify(financeRoute.carOwner),
-              carDriver: financeRoute.carDriver.toString(),
+              carOwner: financeRoute.carOwner,
+              carDriver: financeRoute.carDriver,
               totalPassengers: financeRoute.passengersTotal,
-              fromCity: financeRoute.direction[0],
-              toCity: financeRoute.direction[3],
+              directionDisplay: financeRoute.direction[0],
+              directionSave: financeRoute.direction,
               cash: financeRoute.cash,
               card: financeRoute.card, 
               office: financeRoute.office,
@@ -225,15 +229,15 @@ function TableContent(props) {
 
             rowdata = {
               k: k,
-              route: route,
+              fromTime: route[0].fromTime,
               selectedDay: selectedDay,
               carTitle: carTitle,
               carNumber: carNumber,
               carOwner: carOwnerString,
-              carDriver: carDriver,
+              carDriver: carDriverString,
               totalPassengers: totalPassengers,
-              fromCity: fromCity,
-              toCity: toCity,
+              directionDisplay: directionDisplay,
+              directionSave: directionSave,
               cash: cash,
               card: card, 
               office: office,
@@ -243,7 +247,7 @@ function TableContent(props) {
               totalToDriver: totalToDriver,
               firmIncome: firmIncome,
               startRouteId: startRouteId,
-              }; 
+            }; 
           }
           return (
             <Grid
