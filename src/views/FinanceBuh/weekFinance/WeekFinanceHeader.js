@@ -1,5 +1,4 @@
 import React from 'react';
-import WeekPicker from './weekFinanceHeader/WeekPicker';
 import { Grid } from '@material-ui/core';
 import DatePickerANTD from './weekFinanceHeader/datepickerANTD';
 

@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import PeopleIcon from '@material-ui/icons/PeopleOutlined';
-import axios from 'axios';
-import {
-  startOfToday,
-  endOfToday,
-} from 'date-fns';
+import { startOfToday, endOfToday } from 'date-fns';
+import { ApiContext } from '../../../../Routes';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    height: '100%'
-  },
   content: {
     alignItems: 'center',
     display: 'flex'
@@ -58,29 +50,27 @@ const TotalUsers = props => {
   const [endDay, setEndDay] = useState(endOfToday());
   const [loading, setLoading] = useState(false);
 
+  const { api } = useContext(ApiContext);
+
   useEffect(() => {
     setLoading(true);
-    axios
-      .get('http://localhost:9000/api/routes', {
-        params: {
-          startWeek: startDay,
-          endWeek: endDay
-        }
-      })
+    api.getRoutes(startDay, endDay)
       .then(res => {
         setLoading(false);
         const routes = res.data;
-        const uniqueRoutes = routes.reduce((acc, route) => []);
         setAllRoutes(routes);
       });
   }, [startDay]);
 
-  const passengersPresent = allRoutes
-  .reduce((acc, route) => {
-    const passengersPresent = route.passengers.filter(
-      passenger => {
-        return passenger.state === 2 || passenger.state === 3 && new Date(passenger.attached_to_route_time) >= startDay && new Date(passenger.attached_to_route_time) <= endDay
-      }).length; 
+  const passengersPresent = allRoutes.reduce((acc, route) => {
+    const passengersType = 1;
+    const passengersPresent = route.passengers.filter(passenger => {
+      return passenger.state !== 5
+      // (passenger.state === 2 || passenger.state === 3)\
+        && new Date(passenger.attached_to_route_time) >= startDay
+        && new Date(passenger.attached_to_route_time) <= endDay
+        && passenger.type === passengersType
+    }).length; 
     
     return acc + passengersPresent;
   }, 0);
@@ -88,51 +78,49 @@ const TotalUsers = props => {
   return (
     <Card
       {...rest}
-      className={clsx(classes.root, className)}
     >
       {loading ? (
         <div className={classes.progress}>
           <CircularProgress />
         </div>
       ) : (
-      <CardContent>
-        <Grid
-          container
-          justify="space-between"
-        >
-          <Grid item>
+        <CardContent>
+          <Grid
+            container
+            justify="space-between"
+          >
+            <Grid item>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                gutterBottom
+                variant="body2"
+              >
+                Записанных пассажиров
+              </Typography>
+              <Typography variant="h3">{passengersPresent}</Typography>
+            </Grid>
+            <Grid item>
+              <Avatar className={classes.avatar}>
+                <PeopleIcon className={classes.icon} />
+              </Avatar>
+            </Grid>
+          </Grid>
+          <div className={classes.difference}>
             <Typography
-              className={classes.title}
-              color="textSecondary"
-              gutterBottom
+              className={classes.differenceValue}
               variant="body2"
             >
-              Записанных пассажиров
+              16%
             </Typography>
-            <Typography variant="h3">{passengersPresent}</Typography>
-          </Grid>
-          <Grid item>
-            <Avatar className={classes.avatar}>
-              <PeopleIcon className={classes.icon} />
-            </Avatar>
-          </Grid>
-        </Grid>
-        <div className={classes.difference}>
-          <ArrowUpwardIcon className={classes.differenceIcon} />
-          <Typography
-            className={classes.differenceValue}
-            variant="body2"
-          >
-            16%
-          </Typography>
-          <Typography
-            className={classes.caption}
-            variant="caption"
-          >
-            Since last month
-          </Typography>
-        </div>
-      </CardContent>
+            <Typography
+              className={classes.caption}
+              variant="caption"
+            >
+              Since last month
+            </Typography>
+          </div>
+        </CardContent>
       )}
     </Card>
   );

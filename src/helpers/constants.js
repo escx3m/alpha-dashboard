@@ -18,6 +18,7 @@ export const cities = {
   "1797" : "МВ",
   "8748" : "Зим",
   "1042266" : "Ольг",
+  "1014887": 'Солод',
 };
 export const cityShortNames = {
   "10" : "ВЛГ",
@@ -33,6 +34,7 @@ export const cityShortNames = {
   "1797" : "МВД",
   "8748" : "ЗМВ",
   "1042266" : "ОЛГ",
+  "1014887": "СОЛ",
  
 };
 export const citiesName = {
@@ -88,7 +90,8 @@ export const citiesName = {
   '1030609': 'Аушигер',
   '1031804': 'Городовиковск',
   '1053557': 'Внуково',
-  '1054308': 'Домодедово'
+  '1054308': 'Домодедово',
+  '1014887': 'Солодушино',
 };
 export const payToDrivers = {
   'no passengers' : {
