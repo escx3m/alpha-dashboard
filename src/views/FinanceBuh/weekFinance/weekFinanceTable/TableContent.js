@@ -8,7 +8,6 @@ import { makeJSDateObject } from '../../../../helpers/helpers';
 import {
   payToDrivers,
   cities,
-  citiesName,
   notStandard,
   isPassenger,
   payNot,

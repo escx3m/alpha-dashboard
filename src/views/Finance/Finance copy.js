@@ -155,31 +155,34 @@ const Report = () => {
         <Grid style={{ marginTop: '50px' }}>
           <Card className={classes.card}>
             <CardHeader
-              title="Прибыль по направлениям"
               action={
                 <IconButton aria-label="settings">
                   <CachedIcon />
                 </IconButton>
               }
+              title="Прибыль по направлениям"
             />
             <CardContent style={{ textAlign: 'center' }}>
               <div>
                 <Grid container spacing={3}>
                   <Grid item xs={4}>
                     <FormControl
+                      className={classes.formControl}
                       variant="outlined"
-                      className={classes.formControl}>
+                    >
                       <InputLabel
+                        id="demo-simple-select-outlined-label"
                         ref={inputLabel}
-                        id="demo-simple-select-outlined-label">
+                      >
                         Откуда
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-outlined-label"
+                        labelWidth={labelWidth}
                         id="demo-simple-select-outlined"
-                        value={age}
                         onChange={handleChange}
-                        labelWidth={labelWidth}>
+                        value={age}
+                      >
                         <MenuItem value="">
                           <em>None</em>
                         </MenuItem>
@@ -204,7 +207,8 @@ const Report = () => {
                         id="demo-simple-select-outlined"
                         value={age}
                         onChange={handleChange}
-                        labelWidth={labelWidth}>
+                        labelWidth={labelWidth}
+                      >
                         <MenuItem value="">
                           <em>None</em>
                         </MenuItem>
