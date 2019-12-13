@@ -55,7 +55,7 @@ function TableContent (props) {
         {
           eachDayOfInterval({ start, end })
             .map((currentDay, i) => {
-              const currentRoutes = carRoutes.filter(route => isSameDay(makeJSDateObject(new Date(new Date(route.fromTimeLocal).toUTCString())), currentDay));
+              const currentRoutes = carRoutes.filter(route => isSameDay(makeJSDateObject(new Date(route.fromTime)), currentDay));
               return (
                 currentRoutes.length > 0 ? 
                   <Grid className={classes.gridBorder} item xs={1} key={i}>
