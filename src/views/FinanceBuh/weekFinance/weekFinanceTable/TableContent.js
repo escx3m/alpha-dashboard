@@ -84,10 +84,7 @@ function TableContent(props) {
   const { routes, finances, setFinances, selectedDay } = props;
   const financesIds = new Set(finances.map(({ startRouteId }) => startRouteId))
   const currentRoutes = routes.filter(route =>
-    isSameDay(
-      makeJSDateObject(new Date(new Date(route.fromTime).toUTCString())),
-      selectedDay
-    )
+    isSameDay(new Date(route.fromTime), selectedDay)
   );
   const cars = currentRoutes.reduce((acc, route) => {
     if (route.carId && !acc.includes(route.carId)) {
@@ -112,12 +109,11 @@ function TableContent(props) {
     <Grid container spacing={1}>
       {cars.map((carId, i) => {
         const carRoutes = currentRoutes.filter(route => route.carId === carId);
-        const carTitle = carRoutes[0].car.title;
         const carNumber = carRoutes[0].car.number;
         const carOwner = carRoutes[0].car.owner;
         const carDriver = carRoutes[0].driver.user;
-        const carOwnerString = `${carOwner.id} ${carOwner.surname} ${carOwner.name} ${carOwner.patronymic}`
-        const carDriverString = `${carDriver.id} ${carDriver.surname} ${carDriver.name} ${carDriver.patronymic}`
+        const carOwnerString = `${carOwner.id} ${carOwner.surname} ${carOwner.name[0]}. ${carOwner.patronymic[0]}.`
+        const carDriverString = `${carDriver.id} ${carDriver.surname} ${carDriver.name[0]}. ${carDriver.patronymic[0]}.`
         const carScheme = carRoutes[0].carScheme.seats;
         const resultRoutes = [];
         const copy = [...carRoutes];
@@ -150,8 +146,7 @@ function TableContent(props) {
               k: k,
               fromTime: financeRoute.startRouteDate,
               selectedDay: selectedDay,
-              carTitle: financeRoute.carTitle.toString(),
-              carNumber: '',
+              carTitle: financeRoute.carTitle,
               carOwner: financeRoute.carOwner,
               carDriver: financeRoute.carDriver,
               totalPassengers: financeRoute.passengersTotal,
@@ -241,8 +236,7 @@ function TableContent(props) {
               k: k,
               fromTime: route[0].fromTime,
               selectedDay: selectedDay,
-              carTitle: carTitle,
-              carNumber: carNumber,
+              carTitle: carNumber,
               carOwner: carOwnerString,
               carDriver: carDriverString,
               fromCityId: +route[0].fromCityId,
@@ -289,7 +283,7 @@ function TableContent(props) {
         });
       })}
       <Grid className={classes.overAll} container item  wrap="nowrap" spacing={1}>
-        <Grid className={classes.gridBorder} item xs={5}>
+        <Grid className={classes.gridBorder} item xs={4}>
           <Card className={classes.cardDate}>
             {format(selectedDay, 'd MMM', { locale: ruLocale })}
           </Card>

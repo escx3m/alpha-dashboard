@@ -73,7 +73,6 @@ function Row(props) {
     cash,
     card,
     carTitle,
-    carNumber,
     carOwner,
     carDriver,
     currentCorrection,
@@ -105,7 +104,7 @@ function Row(props) {
   const currentFinance = {
     startRouteId: +startRouteId,
     startRouteDate: fromTime,
-    carTitle: carTitle + ' ' + carNumber,
+    carTitle: carTitle,
     carOwner: carOwner, 
     carDriver: carDriver,
     fromCityId: fromCityId,
@@ -142,7 +141,7 @@ function Row(props) {
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
-          {carTitle} {carNumber}
+          {carTitle}
         </Card>
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
