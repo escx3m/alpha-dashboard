@@ -1,6 +1,19 @@
 import React from 'react';
-import { Grid, Card } from '@material-ui/core';
+import { Grid, Card, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { DirectionsCar,
+         AirlineSeatReclineExtra, 
+         CompareArrows, 
+         AirlineSeatReclineNormal, 
+         Payment, 
+         Money, 
+         Business, 
+         Edit, 
+         AccountBalance, 
+         AccountBox,
+         Poll,
+         AssignmentReturned,
+         AssignmentTurnedIn } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   borderCard: {
@@ -18,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize:'16px',
+    fontSize:'12px',
   },
   cardToday: {
     background: '#3f51b5',
@@ -43,21 +56,21 @@ function TableHeader (props) {
       xs='auto'
       wrap='nowrap'
     >
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Дата</Card></Grid> 
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Авт, г/н</Card></Grid> 
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Владелец</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Водитель</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Направление</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Пассажиров</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Картой</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Наличные</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Офис</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Корректировка</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Всего</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Начислено</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Выдача</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>Фирма</Card></Grid>
-      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}>кнопка</Card></Grid>
+
+      <Grid item xs={1} className={classes.borderCard}> <Card className={classes.card}><Tooltip title="Авт, г/н"><DirectionsCar /></Tooltip></Card></Grid> 
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}><Tooltip title="Владелец"><AccountBox /></Tooltip></Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}><Tooltip title="Водитель"><AirlineSeatReclineExtra /></Tooltip></Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}><Tooltip title="Направление"><CompareArrows /></Tooltip></Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}><Tooltip title="Пассажиров"><AirlineSeatReclineNormal /></Tooltip></Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}><Tooltip title="Картой"><Payment /></Tooltip></Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}><Tooltip title="Наличные"><Money /></Tooltip></Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}><Tooltip title="Офис"><Business /></Tooltip></Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}><Tooltip title="Корректировка"><Edit /></Tooltip></Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}><Tooltip title="Всего"><Poll /></Tooltip></Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}><Tooltip title="Начислено"><AssignmentTurnedIn /></Tooltip></Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}><Tooltip title="Выдача"><AssignmentReturned /></Tooltip></Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}><Tooltip title="Фирма"><AccountBalance /></Tooltip></Card></Grid>
+      <Grid item xs={1} className={classes.borderCard}><Card className={classes.card}></Card></Grid>
     </Grid>
   );
 }
