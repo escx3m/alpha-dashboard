@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme => ({
       fontSize: '12px',
     },
   },
-
   gridBorder: {
     border: '1px solid #969696'
   },
@@ -22,26 +21,8 @@ const useStyles = makeStyles(theme => ({
     color: 'black',
     height: 25
   },
-  cardTotal: {
-    background: '#F6F6F6',
-    color: 'black',
-    height: 25,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: 24
-  },
   singleRoute: {},
   pairRoute: {},
-  notRoad: {
-    background: '#F6F6F6',
-    height: 25
-  },
-  hasRoad: {
-    background: '#99D954',
-    color: 'black',
-    height: 25
-  },
   cardInfo: {
     height: '50px',
     fontSize: '12px',
@@ -49,20 +30,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center'
-  },
-  cardDate: {
-    height: '50px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  cardToday: {
-    height: '50px',
-    background: '#3f51b5',
-    color: 'white',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
   },
   overAll: {
     marginLeft: '1px'
@@ -125,7 +92,17 @@ function Row(props) {
     pay: +totalToDriver || 0,
     firm: +totalFirm || 0,
   }
-
+  const totalPerDay = {
+    passengers: 0,
+    card: 0,
+    cash: 0,
+    office: 0,
+    correction: 0,
+    tripSum: 0,
+    toDriver: 0,
+    giveToDriver: 0,
+    firm: 0
+  };
   return (
     <Grid
       className={classes.overAll}

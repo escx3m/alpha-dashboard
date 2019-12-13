@@ -27,49 +27,18 @@ const useStyles = makeStyles(theme => ({
     color: 'black',
     height: 25
   },
-  cardTotal: {
-    background: '#F6F6F6',
-    color: 'black', height: 25,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: 24
-  },
   singleRoute: {},
   pairRoute: {},
-  notRoad: {
-    background: '#F6F6F6',
-    height: 25
-  },
-  hasRoad: {
-    background: '#99D954',
-    color: 'black',
-    height: 25
-  },
   cardInfo: {
     height: '50px',
-    fontSize: '13px',
+    fontSize: '12px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center'
   },
-  cardDate: {
-    height: '50px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  cardToday: {
-    height: '50px',
-    background: '#3f51b5',
-    color: 'white',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   overAll: {
-    // marginLeft: '1px'
+    marginLeft: '1px'
   },
   btnSave: {
     width: '45px',
@@ -263,7 +232,6 @@ function TableContent(props) {
 
           return (
             <Grid
-              className={classes.overAll}
               container
               direction="row"
               item
@@ -278,7 +246,18 @@ function TableContent(props) {
           );
         });
       })}
-      <Grid className={classes.overAll} container item  wrap="nowrap" spacing={1}>
+      <Grid
+             container
+             direction="row"
+             item
+             spacing={1}
+             wrap="nowrap"
+             xs="auto"
+            className={classes.overAll}
+        >
+      <Grid className={classes.gridBorder} item xs={4}>
+          <Card className={classes.cardInfo}><strong>ИТОГО</strong></Card>
+        </Grid>
         <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.passengers}</Card>
         </Grid>
