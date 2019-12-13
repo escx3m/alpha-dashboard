@@ -9,7 +9,10 @@ const CarsLoadHeader = (props) => {
 
   return (
 
-  <Grid container direction="row" item xs={12}> 
+  <Grid container 
+        direction="row" 
+        item xs={12}
+        spacing={1}> 
     <Grid item xs={3}>
       <ChooseSchema checkState={ checkState } setCheckState={ setCheckState } />
     </Grid>

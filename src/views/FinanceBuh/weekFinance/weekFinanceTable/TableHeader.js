@@ -33,14 +33,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     fontSize:'12px',
   },
-  cardToday: {
-    background: '#3f51b5',
-    color: 'white',
-    height: 50,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 }));
 
 function TableHeader (props) {

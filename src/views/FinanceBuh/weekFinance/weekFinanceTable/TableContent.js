@@ -253,7 +253,7 @@ function TableContent(props) {
              spacing={1}
              wrap="nowrap"
              xs="auto"
-            className={classes.overAll}
+             className={classes.overAll}
         >
       <Grid className={classes.gridBorder} item xs={4}>
           <Card className={classes.cardInfo}><strong>ИТОГО</strong></Card>
