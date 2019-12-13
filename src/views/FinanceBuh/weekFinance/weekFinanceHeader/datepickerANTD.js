@@ -10,6 +10,7 @@ import { startOfWeek } from 'date-fns';
 const StyledDatePicker = styled(DatePicker)`
   .ant-input-lg {
     height: 50px;
+    width: 150px;
     padding: 12px 11px;
     font-size: 16px;
     border-color: #3f51b5;
@@ -59,7 +60,7 @@ const DatePickerANTD = (props) => {
         size={size}
         format="DD-MM-YYYY"
         placeholder={['ДАТА']}
-        defaultValue={startDay && [moment(selectedDay), moment(selectedDay)]} 
+        defaultValue={moment(new Date (), 'DD-MM-YYYY')}
       />
     </div>
   );

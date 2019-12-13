@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center'
   },
   overAll: {
-    marginLeft: '1px'
+    // marginLeft: '1px'
   },
   btnSave: {
     width: '45px',
@@ -111,8 +111,8 @@ function TableContent(props) {
         const carNumber = carRoutes[0].car.number;
         const carOwner = carRoutes[0].car.owner;
         const carDriver = carRoutes[0].driver.user;
-        const carOwnerString = `${carOwner.surname} ${carOwner.name[0]}. ${carOwner.patronymic[0]}.`
-        const carDriverString = `${carDriver.surname} ${carDriver.name[0]}. ${carDriver.patronymic[0]}.`
+        const carOwnerString = `${carOwner.surname} ${carOwner.name[0]} ${carOwner.patronymic[0]}`
+        const carDriverString = `${carDriver.surname} ${carDriver.name[0]} ${carDriver.patronymic[0]}`
         const carScheme = carRoutes[0].carScheme.seats;
         const resultRoutes = [];
         const copy = [...carRoutes];
@@ -279,11 +279,6 @@ function TableContent(props) {
         });
       })}
       <Grid className={classes.overAll} container item  wrap="nowrap" spacing={1}>
-        <Grid className={classes.gridBorder} item xs={4}>
-          <Card className={classes.cardDate}>
-            {format(selectedDay, 'd MMM', { locale: ruLocale })}
-          </Card>
-        </Grid>
         <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.passengers}</Card>
         </Grid>

@@ -8,6 +8,12 @@ import { ApiContext } from '../../../../Routes';
 import { cities, wrongPricePassenger } from '../../../../helpers/constants';
 
 const useStyles = makeStyles(theme => ({
+   "@global": {
+    ".MuiInput-root": {
+      fontSize: '12px',
+    },
+  },
+
   gridBorder: {
     border: '1px solid #969696'
   },
@@ -38,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   cardInfo: {
     height: '50px',
-    fontSize: '13px',
+    fontSize: '12px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -128,17 +134,8 @@ function Row(props) {
       item
       spacing={1}
       wrap="nowrap"
+      xs='auto'
     >
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card
-          className={
-            isSameDay(makeJSDateObject(new Date()), selectedDay)
-              ? classes.cardToday
-              : classes.cardDate
-          }>
-          {format(selectedDay, 'd MMM', { locale: ruLocale })}
-        </Card>
-      </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
           {carTitle}
@@ -173,9 +170,10 @@ function Row(props) {
       </Grid>
       <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
-          <TextField 
+          <TextField
             onChange={e => setSendCorrection(e.target.value)}
             value={sendCorrection}
+            inputProps={{ style: {textAlign: 'center', width: '40px'} }}
           />
         </Card>
       </Grid>
