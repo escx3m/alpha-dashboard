@@ -43,7 +43,6 @@ function WeekFinance() {
         api.getFinances(params)
           .then(res => {
             const { finances } = res.data;
-            console.log('finances pg', finances)
             setFinances(finances);
           })
           .catch(e => console.log(JSON.stringify(e)));

@@ -1,10 +1,9 @@
 import React  from 'react';
-import { Grid, Card, Button, TextField } from '@material-ui/core';
+import { Grid, Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { isSameDay, format } from 'date-fns';
 import { ruLocale } from 'date-fns/locale/ru'
 import Row from './Row';
-import { makeJSDateObject } from '../../../../helpers/helpers';
 import {
   payToDrivers,
   cities,
@@ -112,8 +111,8 @@ function TableContent(props) {
         const carNumber = carRoutes[0].car.number;
         const carOwner = carRoutes[0].car.owner;
         const carDriver = carRoutes[0].driver.user;
-        const carOwnerString = `${carOwner.id} ${carOwner.surname} ${carOwner.name[0]}. ${carOwner.patronymic[0]}.`
-        const carDriverString = `${carDriver.id} ${carDriver.surname} ${carDriver.name[0]}. ${carDriver.patronymic[0]}.`
+        const carOwnerString = `${carOwner.surname} ${carOwner.name[0]}. ${carOwner.patronymic[0]}.`
+        const carDriverString = `${carDriver.surname} ${carDriver.name[0]}. ${carDriver.patronymic[0]}.`
         const carScheme = carRoutes[0].carScheme.seats;
         const resultRoutes = [];
         const copy = [...carRoutes];
@@ -190,7 +189,9 @@ function TableContent(props) {
               ? payToDrivers[fromToCityKey]
               : payToDrivers.hasOwnProperty(toFromCityKey)
                 ? payToDrivers[toFromCityKey]
-                : payToDrivers['no passengers'];
+                : totalPassengers > 0 
+                  ? notStandard
+                  : payToDrivers['no passengers'];
 
             const passengersIncome = passengers.reduce(
               (acc, passenger) => {
@@ -221,14 +222,9 @@ function TableContent(props) {
             const passengersIncomeSum = card + cash + office + currentCorrection;
             const payToDriver = isNaN(payObj.all)
               ? notStandard
-              : ownersId.has(carOwner)
-                ? payObj.all > passengersIncomeSum
-                  ? payObj.all
-                  : payObj.owner_id > passengersIncomeSum
-                    ? passengersIncomeSum
-                    : payObj.all
+              : ownersId.has(+carOwner.id)
+                ? payObj.owner_id 
                 : payObj.all;
-
             const totalToDriver = payToDriver - cash;
             const firmIncome = passengersIncomeSum - cash - totalToDriver;
 
