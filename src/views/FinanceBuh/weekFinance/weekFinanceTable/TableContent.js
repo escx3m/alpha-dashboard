@@ -84,10 +84,7 @@ function TableContent(props) {
   const { routes, finances, setFinances, selectedDay } = props;
   const financesIds = new Set(finances.map(({ startRouteId }) => startRouteId))
   const currentRoutes = routes.filter(route =>
-    isSameDay(
-      makeJSDateObject(new Date(new Date(route.fromTime).toUTCString())),
-      selectedDay
-    )
+    isSameDay(new Date(route.fromTime), selectedDay)
   );
   const cars = currentRoutes.reduce((acc, route) => {
     if (route.carId && !acc.includes(route.carId)) {
