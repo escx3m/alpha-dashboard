@@ -266,6 +266,7 @@ const Sms = () => {
                                       <Grid container className={classes.borderGrid}>
                                         <Grid xs={4} item><strong>ФИО</strong></Grid>
                                         <Grid xs={4} item className={classes.gridCenter}><strong>Номер</strong></Grid>
+                                        <Grid xs={4} item className={classes.gridCenter}><strong>Дата/Время</strong></Grid>
                                       </Grid>
                                       {
                                         //correctPassengers.map((p, k) => {
