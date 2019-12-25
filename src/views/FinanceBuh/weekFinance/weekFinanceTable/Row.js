@@ -248,7 +248,7 @@ function Row(props) {
             onClick={e => {
               setFinances([...finances, currentFinance]);
               api.addFinances(currentFinance);
-              e.target.style.backgroundColor = 'green';
+              e.currentTarget.style.backgroundColor = 'green';
             }}
             variant="contained"
           >
