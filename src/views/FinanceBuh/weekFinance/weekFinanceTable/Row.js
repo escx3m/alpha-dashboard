@@ -245,9 +245,10 @@ function Row(props) {
           <Button
             className={classes.btnSave}
             color="primary"
-            onClick={() => {
+            onClick={e => {
               setFinances([...finances, currentFinance]);
               api.addFinances(currentFinance);
+              e.target.style.backgroundColor = 'green';
             }}
             variant="contained"
           >
