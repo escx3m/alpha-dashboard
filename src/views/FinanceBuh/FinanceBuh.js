@@ -5,16 +5,18 @@ import { Grid, makeStyles } from '@material-ui/core';
 import { startOfWeek, endOfWeek } from 'date-fns';
 import { makeJSDateObject } from '../../helpers/helpers';
 import { ApiContext } from '../../Routes';
-                 
+
 const useStyles = makeStyles(theme => ({
   gridMargin: {
-    marginTop:'30px',
+    marginTop: '30px'
   }
 }));
 
 function WeekFinance() {
   const { api } = useContext(ApiContext);
-  const currentWeekStart = startOfWeek(makeJSDateObject(new Date()), { weekStartsOn: 1 });
+  const currentWeekStart = startOfWeek(makeJSDateObject(new Date()), {
+    weekStartsOn: 1
+  });
   const [selectedWeekStart, setSelectedWeekStart] = useState(currentWeekStart);
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [routes, setRoutes] = useState([]);
@@ -35,20 +37,25 @@ function WeekFinance() {
     checked11: false,
     checked12: false,
     checked13: false,
-    checkedAll: true,
+    checkedAll: true
   });
   let routesIds = [];
 
   useEffect(() => {
-    api.getRoutes(selectedWeekStart, endOfWeek(selectedWeekStart, { weekStartsOn: 1 }))
+    api
+      .getRoutes(
+        selectedWeekStart,
+        endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
+      )
       .then(res => {
-        routesIds = res.data.map(({ id }) => id)
+        routesIds = res.data.map(({ id }) => id);
         setRoutes(res.data);
         const params = {
           //ids: routesIds
           ids: res.data.map(({ id }) => id)
-        }
-        api.getFinances(params)
+        };
+        api
+          .getFinances(params)
           .then(res => {
             const { finances } = res.data;
             setFinances(finances);
@@ -58,29 +65,40 @@ function WeekFinance() {
   }, [selectedWeekStart]);
 
   return (
-    <Grid className={classes.gridMargin} container direction="row"> 
-      <Grid item xs={12}>
+    <Grid
+      className={classes.gridMargin}
+      container
+      direction="row"
+    >
+      <Grid
+        item
+        xs={12}
+      >
         <WeekFinanceHeader
-          loading={loading}
-          setLoading={setLoading}
-          selectedDay={selectedDay}
-          setSelectedDay={setSelectedDay}
-          selectedWeekStart={selectedWeekStart}
-          setSelectedWeekStart={setSelectedWeekStart}
           checkState={checkState}
+          loading={loading}
+          selectedDay={selectedDay}
+          selectedWeekStart={selectedWeekStart}
           setCheckState={setCheckState}
+          setLoading={setLoading}
+          setSelectedDay={setSelectedDay}
+          setSelectedWeekStart={setSelectedWeekStart}
         />
       </Grid>
-      <Grid className={classes.gridMargin} item xs={12}>
+      <Grid
+        className={classes.gridMargin}
+        item
+        xs={12}
+      >
         <WeekFinanceTable
-          routes={routes}
+          checkState={checkState}
           finances={finances}
-          setFinances={setFinances}
           loading={loading}
+          routes={routes}
           selectedDay={selectedDay}
           selectedWeekStart={selectedWeekStart}
+          setFinances={setFinances}
           setSelectedWeekStart={setSelectedWeekStart}
-          checkState={checkState}
         />
       </Grid>
     </Grid>
