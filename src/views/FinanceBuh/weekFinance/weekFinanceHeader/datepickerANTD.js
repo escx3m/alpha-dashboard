@@ -28,12 +28,26 @@ const StyledDatePicker = styled(DatePicker)`
   }
 `;
 
-const DatePickerANTD = (props) => {
-  const { startDay, endDay, setStartDay, setEndDay, selectedWeekStart, setSelectedWeekStart, selectedDay, setSelectedDay } = props;
-  const currentWeekStart = startOfWeek(makeJSDateObject(new Date()), { weekStartsOn: 1 });
-  const handleThisDay = () => {new Date(); setSelectedWeekStart(new Date(), 1)};
-  const handleSelectDay= () => new Date();
-  const  [size, setSize] = useState('large');
+const DatePickerANTD = props => {
+  const {
+    startDay,
+    endDay,
+    setStartDay,
+    setEndDay,
+    selectedWeekStart,
+    setSelectedWeekStart,
+    selectedDay,
+    setSelectedDay
+  } = props;
+  const currentWeekStart = startOfWeek(makeJSDateObject(new Date()), {
+    weekStartsOn: 1
+  });
+  const handleThisDay = () => {
+    new Date();
+    setSelectedWeekStart(new Date(), 1);
+  };
+  const handleSelectDay = () => new Date();
+  const [size, setSize] = useState('large');
   const handleThisWeek = () => setSelectedWeekStart(currentWeekStart, 1);
 
   const handleSizeChange = e => {
@@ -42,28 +56,31 @@ const DatePickerANTD = (props) => {
   const handleDateChange = val => {
     setStartDay(val[0]);
     setEndDay(val[1]);
-    return (
-      [moment(startDay), moment(endDay)]
-    );
+    return [moment(startDay), moment(endDay)];
   };
   function onChange(date, dateString) {
-    if (startOfWeek(makeJSDateObject(new Date(date)), { weekStartsOn: 1 }) !== currentWeekStart) {
-      setSelectedWeekStart(startOfWeek(makeJSDateObject(new Date(date)),  { weekStartsOn: 1 }));
+    if (
+      startOfWeek(makeJSDateObject(new Date(date)), { weekStartsOn: 1 }) !==
+      currentWeekStart
+    ) {
+      setSelectedWeekStart(
+        startOfWeek(makeJSDateObject(new Date(date)), { weekStartsOn: 1 })
+      );
     }
     setSelectedDay(makeJSDateObject(new Date(date)));
   }
   return (
     <div>
       <StyledDatePicker
-        showToday
-        onChange={onChange}
-        size={size}
+        defaultValue={moment(new Date(), 'DD-MM-YYYY')}
         format="DD-MM-YYYY"
+        onChange={onChange}
         placeholder={['ДАТА']}
-        defaultValue={moment(new Date (), 'DD-MM-YYYY')}
+        showToday
+        size={size}
       />
     </div>
   );
-}
+};
 
 export default DatePickerANTD;

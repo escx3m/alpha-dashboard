@@ -1,8 +1,8 @@
-import React  from 'react';
+import React from 'react';
 import { Grid, Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { isSameDay, format } from 'date-fns';
-import { ruLocale } from 'date-fns/locale/ru'
+import { ruLocale } from 'date-fns/locale/ru';
 import Row from './Row';
 import {
   payToDrivers,
@@ -14,12 +14,11 @@ import {
   payCash,
   payOffice,
   delivered,
-  ownersId,
+  ownersId
 } from '../../../../helpers/constants';
 
-
 const useStyles = makeStyles(theme => ({
-  gridBorder: { 
+  gridBorder: {
     border: '1px solid #969696'
   },
   card: {
@@ -49,8 +48,8 @@ const useStyles = makeStyles(theme => ({
 
 function TableContent(props) {
   const classes = useStyles();
-  const { routes, finances, setFinances, selectedDay } = props;
-  const financesIds = new Set(finances.map(({ startRouteId }) => startRouteId))
+  const { routes, finances, setFinances, selectedDay, checkState } = props;
+  const financesIds = new Set(finances.map(({ startRouteId }) => startRouteId));
   const currentRoutes = routes.filter(route =>
     isSameDay(new Date(route.fromTime), selectedDay)
   );
@@ -74,14 +73,21 @@ function TableContent(props) {
   };
 
   return (
-    <Grid container spacing={1}>
+    <Grid
+      container
+      spacing={1}
+    >
       {cars.map((carId, i) => {
         const carRoutes = currentRoutes.filter(route => route.carId === carId);
         const carNumber = carRoutes[0].car.number;
         const carOwner = carRoutes[0].car.owner;
         const carDriver = carRoutes[0].driver.user;
-        const carOwnerString = `${carOwner.surname} ${carOwner.name[0]} ${carOwner.patronymic[0]}`
-        const carDriverString = `${carDriver.surname} ${carDriver.name[0]} ${carDriver.patronymic[0]}`
+        const carOwnerString = `${carOwner.surname} ${carOwner.name[0]} ${
+          carOwner.patronymic[0]
+        }`;
+        const carDriverString = `${carDriver.surname} ${carDriver.name[0]} ${
+          carDriver.patronymic[0]
+        }`;
         const carScheme = carRoutes[0].carScheme.seats;
         const resultRoutes = [];
         const copy = [...carRoutes];
@@ -103,13 +109,15 @@ function TableContent(props) {
         }
         return resultRoutes.map((route, k) => {
           const startRouteId = route[0].id;
-          let rowdata  = {};
+          let rowdata = {};
 
           if (financesIds.has(startRouteId)) {
-            const financeRoute = finances.filter(finance => 
-              finance.startRouteId === startRouteId 
-            ).slice(-1)[0];
-            const direction = `${cities[financeRoute.fromCityId]} -> ${cities[financeRoute.toCityId]}`
+            const financeRoute = finances
+              .filter(finance => finance.startRouteId === startRouteId)
+              .slice(-1)[0];
+            const direction = `${cities[financeRoute.fromCityId]} -> ${
+              cities[financeRoute.toCityId]
+            }`;
             rowdata = {
               k: k,
               fromTime: financeRoute.startRouteDate,
@@ -122,15 +130,15 @@ function TableContent(props) {
               toCityId: financeRoute.toCityId,
               direction: direction,
               cash: financeRoute.cash,
-              card: financeRoute.card, 
+              card: financeRoute.card,
               office: financeRoute.office,
               passengersIncomeSum: financeRoute.totalSum,
               currentCorrection: financeRoute.correction,
               payToDriver: financeRoute.earned,
               totalToDriver: financeRoute.pay,
               firmIncome: financeRoute.firm,
-              startRouteId: financeRoute.startRouteId,
-            }; 
+              startRouteId: financeRoute.startRouteId
+            };
             totalPerDay.passengers += +financeRoute.passengersTotal;
             totalPerDay.cash += +financeRoute.cash;
             totalPerDay.card += +financeRoute.card;
@@ -144,21 +152,25 @@ function TableContent(props) {
             const passengers = route.reduce((acc, r) => {
               const { passengers } = r;
               return acc.concat(
-                passengers.filter(passenger => passenger.state === delivered && passenger.type === isPassenger)
+                passengers.filter(
+                  passenger =>
+                    passenger.state === delivered &&
+                    passenger.type === isPassenger
+                )
               );
             }, []);
-            const currentCorrection = 0 
+            const currentCorrection = 0;
             const totalPassengers = passengers.length;
             const fromCity = cities[route[0].fromCityId][0];
             const toCity = cities[route[0].toCityId][0];
-            const direction = `${fromCity} -> ${toCity}`
+            const direction = `${fromCity} -> ${toCity}`;
             const fromToCityKey = `${fromCity}-${toCity} ${carScheme} ${totalPassengers}`;
             const toFromCityKey = `${toCity}-${fromCity} ${carScheme} ${totalPassengers}`;
             const payObj = payToDrivers.hasOwnProperty(fromToCityKey)
               ? payToDrivers[fromToCityKey]
               : payToDrivers.hasOwnProperty(toFromCityKey)
                 ? payToDrivers[toFromCityKey]
-                : totalPassengers > 0 
+                : totalPassengers > 0
                   ? notStandard
                   : payToDrivers['no passengers'];
 
@@ -188,11 +200,12 @@ function TableContent(props) {
               { cash: 0, card: 0, office: 0 }
             );
             const { cash, card, office } = passengersIncome;
-            const passengersIncomeSum = card + cash + office + currentCorrection;
+            const passengersIncomeSum =
+              card + cash + office + currentCorrection;
             const payToDriver = isNaN(payObj.all)
               ? notStandard
               : ownersId.has(+carOwner.id)
-                ? payObj.owner_id 
+                ? payObj.owner_id
                 : payObj.all;
             const totalToDriver = payToDriver - cash;
             const firmIncome = passengersIncomeSum - cash - totalToDriver;
@@ -209,16 +222,16 @@ function TableContent(props) {
               totalPassengers: totalPassengers,
               direction: direction,
               cash: cash,
-              card: card, 
+              card: card,
               office: office,
               passengersIncomeSum: passengersIncomeSum,
               currentCorrection: currentCorrection,
               payToDriver: payToDriver,
               totalToDriver: totalToDriver,
               firmIncome: firmIncome,
-              startRouteId: startRouteId,
-            }; 
-          
+              startRouteId: startRouteId
+            };
+
             totalPerDay.passengers += +totalPassengers;
             totalPerDay.cash += +cash;
             totalPerDay.card += +card;
@@ -241,53 +254,98 @@ function TableContent(props) {
               wrap="nowrap"
               xs="auto"
             >
-              <Row finances={finances} rowdata={rowdata} setFinances={setFinances} />
+              <Row
+                checkState={checkState}
+                finances={finances}
+                rowdata={rowdata}
+                setFinances={setFinances}
+              />
             </Grid>
           );
         });
       })}
       <Grid
-             container
-             direction="row"
-             item
-             spacing={1}
-             wrap="nowrap"
-             xs="auto"
-             className={classes.overAll}
+        className={classes.overAll}
+        container
+        direction="row"
+        item
+        spacing={1}
+        wrap="nowrap"
+        xs="auto"
+      >
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={4}
         >
-      <Grid className={classes.gridBorder} item xs={4}>
-          <Card className={classes.cardInfo}><strong>ИТОГО</strong></Card>
-        </Grid>
-        <Grid className={classes.gridBorder} item xs={1}>
-          <Card className={classes.cardInfo}>{totalPerDay.passengers}</Card>
-        </Grid>
-        <Grid className={classes.gridBorder} item xs={1}>
-          <Card className={classes.cardInfo}>{totalPerDay.card}</Card>
-        </Grid>
-        <Grid className={classes.gridBorder} item xs={1}>
-          <Card className={classes.cardInfo}>{totalPerDay.office}</Card>
-        </Grid>
-        <Grid className={classes.gridBorder} item xs={1}>
-          <Card className={classes.cardInfo}>{totalPerDay.cash}</Card>
-        </Grid>
-        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>
-            {totalPerDay.correction}
+            <strong>ИТОГО</strong>
           </Card>
         </Grid>
-        <Grid className={classes.gridBorder} item xs={1}>
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{totalPerDay.passengers}</Card>
+        </Grid>
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{totalPerDay.card}</Card>
+        </Grid>
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{totalPerDay.office}</Card>
+        </Grid>
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{totalPerDay.cash}</Card>
+        </Grid>
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{totalPerDay.correction}</Card>
+        </Grid>
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
           <Card className={classes.cardInfo}>{totalPerDay.tripSum}</Card>
         </Grid>
-        <Grid className={classes.gridBorder} item xs={1}>
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
           <Card className={classes.cardInfo}>{totalPerDay.toDriver}</Card>
         </Grid>
-        <Grid className={classes.gridBorder} item xs={1}>
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
           <Card className={classes.cardInfo}>{totalPerDay.giveToDriver}</Card>
         </Grid>
-        <Grid className={classes.gridBorder} item xs={2}>
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={2}
+        >
           <Card className={classes.cardInfo}>{totalPerDay.firm}</Card>
         </Grid>
-      </Grid>      
+      </Grid>
     </Grid>
   );
 }

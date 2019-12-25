@@ -8,10 +8,10 @@ import { ApiContext } from '../../../../Routes';
 import { cities, wrongPricePassenger } from '../../../../helpers/constants';
 
 const useStyles = makeStyles(theme => ({
-   "@global": {
-    ".MuiInput-root": {
-      fontSize: '12px',
-    },
+  '@global': {
+    '.MuiInput-root': {
+      fontSize: '12px'
+    }
   },
   gridBorder: {
     border: '1px solid #969696'
@@ -61,24 +61,24 @@ function Row(props) {
     totalToDriver,
     firmIncome,
     startRouteId,
-    totalPassengers,
+    totalPassengers
   } = props.rowdata;
   const classes = useStyles();
   const { api } = useContext(ApiContext);
-  const { finances, setFinances } = props;
+  const { finances, setFinances, checkState } = props;
   const [sendCorrection, setSendCorrection] = useState(currentCorrection);
-  
+
   useEffect(() => {
-    setSendCorrection(currentCorrection) 
-  }, [currentCorrection])
-  
-  const totalSum = +card + +cash + +office + +sendCorrection
-  const totalFirm = totalSum - +cash - +totalToDriver
+    setSendCorrection(currentCorrection);
+  }, [currentCorrection]);
+
+  const totalSum = +card + +cash + +office + +sendCorrection;
+  const totalFirm = totalSum - +cash - +totalToDriver;
   const currentFinance = {
     startRouteId: +startRouteId,
     startRouteDate: fromTime,
     carTitle: carTitle,
-    carOwner: carOwner, 
+    carOwner: carOwner,
     carDriver: carDriver,
     fromCityId: fromCityId,
     toCityId: toCityId,
@@ -90,8 +90,8 @@ function Row(props) {
     totalSum: +totalSum || 0,
     earned: +payToDriver || 0,
     pay: +totalToDriver || 0,
-    firm: +totalFirm || 0,
-  }
+    firm: +totalFirm || 0
+  };
   const totalPerDay = {
     passengers: 0,
     card: 0,
@@ -111,76 +111,150 @@ function Row(props) {
       item
       spacing={1}
       wrap="nowrap"
-      xs='auto'
+      xs="auto"
     >
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>
-          {carTitle}
-        </Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>
-          {currentFinance.carOwner}
-        </Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>
-          {currentFinance.carDriver}
-        </Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>
-          {direction}
-        </Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{totalPassengers}</Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{card}</Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{cash}</Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{office}</Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>
-          <TextField
-            onChange={e => setSendCorrection(e.target.value)}
-            value={sendCorrection}
-            inputProps={{ style: {textAlign: 'center', width: '40px'} }}
-          />
-        </Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{currentFinance.totalSum}</Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{payToDriver}</Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{totalToDriver}</Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
-        <Card className={classes.cardInfo}>{currentFinance.firm}</Card>
-      </Grid>
-      <Grid className={classes.gridBorder} item xs={1}>
+      {(checkState.checkedAll || checkState.checkedCar) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{carTitle}</Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedOwner) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{currentFinance.carOwner}</Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedDriver) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{currentFinance.carDriver}</Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedDirection) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{direction}</Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedPassengers) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{totalPassengers}</Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedCard) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{card}</Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedCash) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{cash}</Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedOffice) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{office}</Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedCorrection) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>
+            <TextField
+              inputProps={{ style: { textAlign: 'center', width: '40px' } }}
+              onChange={e => setSendCorrection(e.target.value)}
+              value={sendCorrection}
+            />
+          </Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedSum) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{currentFinance.totalSum}</Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedAccrued) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{payToDriver}</Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedPayment) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{totalToDriver}</Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedProfit) && (
+        <Grid
+          className={classes.gridBorder}
+          item
+          xs={1}
+        >
+          <Card className={classes.cardInfo}>{currentFinance.firm}</Card>
+        </Grid>
+      )}
+      <Grid
+        className={classes.gridBorder}
+        item
+        xs={1}
+      >
         <Card className={classes.cardInfo}>
           <Button
             className={classes.btnSave}
             color="primary"
             onClick={() => {
-              setFinances([...finances, currentFinance])
-              api.addFinances(currentFinance)
+              setFinances([...finances, currentFinance]);
+              api.addFinances(currentFinance);
             }}
             variant="contained"
           >
             Сохранить
           </Button>
         </Card>
-      </Grid> 
+      </Grid>
     </Grid>
   );
 }

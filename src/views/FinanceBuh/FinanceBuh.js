@@ -22,19 +22,19 @@ function WeekFinance() {
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
   const [checkState, setCheckState] = React.useState({
-    checked1: false,
-    checked2: false,
-    checked3: false,
-    checked4: false,
-    checked5: false,
-    checked6: false,
-    checked7: false,
-    checked8: false,
-    checked9: false,
-    checked10: false,
-    checked11: false,
-    checked12: false,
-    checked13: false,
+    checkedCar: false,
+    checkedOwner: false,
+    checkedDriver: false,
+    checkedDirection: false,
+    checkedPassengers: false,
+    checkedCard: false,
+    checkedCash: false,
+    checkedOffice: false,
+    checkedCorrection: false,
+    checkedSum: false,
+    checkedAccrued: false,
+    checkedPayment: false,
+    checkedProfit: false,
     checkedAll: true,
   });
   let routesIds = [];

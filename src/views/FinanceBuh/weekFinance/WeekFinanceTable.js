@@ -13,24 +13,25 @@ const WeekFinanceTable = ({
   selectedDay
 }) => ( 
   loading 
-  ? <CircularProgress />
-  : <Grid container direction="row">
-      <Grid container item xs={12}>
-        <TableHeader 
-          selectedWeekStart={selectedWeekStart}
-        />
+    ? <CircularProgress />
+    : <Grid container direction="row">
+        <Grid container item xs={12}>
+          <TableHeader 
+            selectedWeekStart={selectedWeekStart}
+            checkState={checkState}
+          />
+        </Grid>
+        <Grid container item xs={12}>
+          <TableContent 
+            routes={routes}
+            finances={finances}
+            setFinances={setFinances}
+            selectedWeekStart={selectedWeekStart}
+            selectedDay={selectedDay}
+            checkState={checkState}
+          />
+        </Grid>
       </Grid>
-      <Grid container item xs={12}>
-        <TableContent 
-          routes={routes}
-          finances={finances}
-          setFinances={setFinances}
-          selectedWeekStart={selectedWeekStart}
-          selectedDay={selectedDay}
-          checkState={checkState}
-        />
-      </Grid>
-    </Grid>
 );
 
 export default WeekFinanceTable;
