@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import DatePickerANTD from './weekFinanceHeader/datepickerANTD';
 import ChooseBox from './weekFinanceHeader/chooseBox';
 
@@ -27,6 +27,18 @@ const WeekFinanceHeader = props => {
           checkState={checkState}
           setCheckState={setCheckState}
         />
+      </Grid>
+
+      <Grid
+        item
+        xs={1}
+      >
+        <Button
+          color="primary"
+          variant="contained"
+        >
+          Экспорт
+        </Button>
       </Grid>
     </Grid>
   );

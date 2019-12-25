@@ -47,7 +47,7 @@ const DatePickerANTD = props => {
     setSelectedWeekStart(new Date(), 1);
   };
   const handleSelectDay = () => new Date();
-  const [size, setSize] = useState('large');
+  const [size, setSize] = useState('default');
   const handleThisWeek = () => setSelectedWeekStart(currentWeekStart, 1);
 
   const handleSizeChange = e => {
