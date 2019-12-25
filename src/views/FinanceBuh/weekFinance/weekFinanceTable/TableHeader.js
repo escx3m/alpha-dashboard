@@ -65,138 +65,162 @@ function TableHeader(props) {
           </Card>
         </Grid>
       )}
-      {(checkState.checkedAll || checkState.checkedOwner) && (<Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
-        <Card className={classes.card}>
-          <Tooltip title="Владелец">
-            <AccountBox />
-          </Tooltip>
-        </Card>
-      </Grid>)}
-      {(checkState.checkedAll || checkState.checkedDriver) && (<Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
-        <Card className={classes.card}>
-          <Tooltip title="Водитель">
-            <AirlineSeatReclineExtra />
-          </Tooltip>
-        </Card>
-      </Grid>)}
-      {(checkState.checkedAll || checkState.checkedDirection) && (<Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
-        <Card className={classes.card}>
-          <Tooltip title="Направление">
-            <CompareArrows />
-          </Tooltip>
-        </Card>
-      </Grid>)}
-      {(checkState.checkedAll || checkState.checkedPassengers) && (<Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
-        <Card className={classes.card}>
-          <Tooltip title="Пассажиров">
-            <AirlineSeatReclineNormal />
-          </Tooltip>
-        </Card>
-      </Grid>)}
-      {(checkState.checkedAll || checkState.checkedCard) && (<Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
-        <Card className={classes.card}>
-          <Tooltip title="Картой">
-            <Payment />
-          </Tooltip>
-        </Card>
-      </Grid>)}
-      {(checkState.checkedAll || checkState.checkedCash) && (<Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
-        <Card className={classes.card}>
-          <Tooltip title="Наличные">
-            <Money />
-          </Tooltip>
-        </Card>
-      </Grid>)}
-      {(checkState.checkedAll || checkState.checkedOffice) && (<Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
-        <Card className={classes.card}>
-          <Tooltip title="Офис">
-            <Business />
-          </Tooltip>
-        </Card>
-      </Grid>)}
-      {(checkState.checkedAll || checkState.checkedCorrection) && (<Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
-        <Card className={classes.card}>
-          <Tooltip title="Корректировка">
-            <Edit />
-          </Tooltip>
-        </Card>
-      </Grid>)}
-      {(checkState.checkedAll || checkState.checkedSum) && (<Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
-        <Card className={classes.card}>
-          <Tooltip title="Всего">
-            <Poll />
-          </Tooltip>
-        </Card>
-      </Grid>)}
-      {(checkState.checkedAll || checkState.checkedAccrued) && (<Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
-        <Card className={classes.card}>
-          <Tooltip title="Начислено">
-            <AssignmentTurnedIn />
-          </Tooltip>
-        </Card>
-      </Grid>)}
-      {(checkState.checkedAll || checkState.checkedPayment) && (<Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
-        <Card className={classes.card}>
-          <Tooltip title="Выдача">
-            <AssignmentReturned />
-          </Tooltip>
-        </Card>
-      </Grid>)}
-      {(checkState.checkedAll || checkState.checkedProfit) && (<Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
-        <Card className={classes.card}>
-          <Tooltip title="Фирма">
-            <AccountBalance />
-          </Tooltip>
-        </Card>
-      </Grid>)}
+      {(checkState.checkedAll || checkState.checkedOwner) && (
+        <Grid
+          className={classes.borderCard}
+          item
+          xs={1}
+        >
+          <Card className={classes.card}>
+            <Tooltip title="Владелец">
+              <AccountBox />
+            </Tooltip>
+          </Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedDriver) && (
+        <Grid
+          className={classes.borderCard}
+          item
+          xs={1}
+        >
+          <Card className={classes.card}>
+            <Tooltip title="Водитель">
+              <AirlineSeatReclineExtra />
+            </Tooltip>
+          </Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedDirection) && (
+        <Grid
+          className={classes.borderCard}
+          item
+          xs={1}
+        >
+          <Card className={classes.card}>
+            <Tooltip title="Направление">
+              <CompareArrows />
+            </Tooltip>
+          </Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedPassengers) && (
+        <Grid
+          className={classes.borderCard}
+          item
+          xs={1}
+        >
+          <Card className={classes.card}>
+            <Tooltip title="Пассажиров">
+              <AirlineSeatReclineNormal />
+            </Tooltip>
+          </Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedCard) && (
+        <Grid
+          className={classes.borderCard}
+          item
+          xs={1}
+        >
+          <Card className={classes.card}>
+            <Tooltip title="Картой">
+              <Payment />
+            </Tooltip>
+          </Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedCash) && (
+        <Grid
+          className={classes.borderCard}
+          item
+          xs={1}
+        >
+          <Card className={classes.card}>
+            <Tooltip title="Наличные">
+              <Money />
+            </Tooltip>
+          </Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedOffice) && (
+        <Grid
+          className={classes.borderCard}
+          item
+          xs={1}
+        >
+          <Card className={classes.card}>
+            <Tooltip title="Офис">
+              <Business />
+            </Tooltip>
+          </Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedCorrection) && (
+        <Grid
+          className={classes.borderCard}
+          item
+          xs={1}
+        >
+          <Card className={classes.card}>
+            <Tooltip title="Корректировка">
+              <Edit />
+            </Tooltip>
+          </Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedSum) && (
+        <Grid
+          className={classes.borderCard}
+          item
+          xs={1}
+        >
+          <Card className={classes.card}>
+            <Tooltip title="Всего">
+              <Poll />
+            </Tooltip>
+          </Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedAccrued) && (
+        <Grid
+          className={classes.borderCard}
+          item
+          xs={1}
+        >
+          <Card className={classes.card}>
+            <Tooltip title="Начислено">
+              <AssignmentTurnedIn />
+            </Tooltip>
+          </Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedPayment) && (
+        <Grid
+          className={classes.borderCard}
+          item
+          xs={1}
+        >
+          <Card className={classes.card}>
+            <Tooltip title="Выдача">
+              <AssignmentReturned />
+            </Tooltip>
+          </Card>
+        </Grid>
+      )}
+      {(checkState.checkedAll || checkState.checkedProfit) && (
+        <Grid
+          className={classes.borderCard}
+          item
+          xs={1}
+        >
+          <Card className={classes.card}>
+            <Tooltip title="Фирма">
+              <AccountBalance />
+            </Tooltip>
+          </Card>
+        </Grid>
+      )}
       <Grid
         className={classes.borderCard}
         item
