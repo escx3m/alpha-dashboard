@@ -57,7 +57,8 @@
     "styled-components": "^4.4.1",
     "underscore": "^1.9.1",
     "uuid": "^3.3.2",
-    "validate.js": "^0.13.1"
+    "validate.js": "^0.13.1",
+    "xlsexport": "^1.5.2"
   },
   "devDependencies": {
     "eslint": "5.16.0",

@@ -206,9 +206,10 @@ const Sms = () => {
 
                 return (
                   <Expansion 
+                    defaultExpanded={true}
                     key={i} 
-                    expanded={expanded === `panel${i}`} 
-                    onChange={handleChange(`panel${i}`)}
+                    // expanded={expanded === `panel${i}`} 
+                    // onChange={handleChange(`panel${i}`)}
                     TransitionProps={{ unmountOnExit: true }} 
                   >
                     <ExpansionHeader expandIcon={<ExpandMoreIcon />}>
@@ -249,7 +250,7 @@ const Sms = () => {
                           return (
                             passengersCount ?
                               <Grid item xs={12} key={j}>
-                                <Expansion TransitionProps={{ unmountOnExit: true }} >
+                                <Expansion TransitionProps={{ unmountOnExit: true }} defaultExpanded={true} >
                                   <ExpansionHeader expandIcon={<ExpandMoreIcon />}>
                                     <Grid item xs={3}>{`${citiesName[route.fromCityId]} - ${citiesName[route.toCityId]}`}</Grid>
                                     <Grid item xs={3} className={classes.gridCenter}>
@@ -268,23 +269,7 @@ const Sms = () => {
                                         <Grid xs={4} item className={classes.gridCenter}><strong>Номер</strong></Grid>
                                         <Grid xs={4} item className={classes.gridCenter}><strong>Дата/Время</strong></Grid>
                                       </Grid>
-                                      {
-                                        //correctPassengers.map((p, k) => {
-                                        //const fromCrmbus = selectedDateSendSms.filter(sendSms => 
-                                        //sendSms.phone === p.phone || sendSms.phone === p.phone_2)
-                                        //const sendTimeCrmBus = fromCrmbus.length > 0
-                                         //? (`0${new Date(fromCrmbus[0].sendTime).getHours()}`.slice(-2) + ':' 
-                                            //+ `0${new Date(fromCrmbus[0].sendTime).getMinutes()}`.slice(-2))
-                                            //: '';
-                                          //return (
-                                            //<Grid container className={classes.backgroundName} key={k}>
-                                              //<Grid xs={4} item className={classes.paddingGrid}>
-                                                //{p.surname + ' ' + p.name + ' ' + p.patronymic + ' '}
-                                              //</Grid>
-                                              //<Grid xs={4} item className={classes.gridCenter}>{p.phone}</Grid>
-                                                //<Grid xs={4} item className={classes.gridCenter}>{sendTimeCrmBus}</Grid>
-                                            //</Grid>
-                                          //)
+                                     {
                                         correctPassengers.map((p, k) => {
                                           const fromCrmbus = selectedDateSendSms.filter(sendSms => 
                                                   sendSms.phone === p.phone || sendSms.phone === p.phone_2)

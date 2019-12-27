@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { isSameDay, format } from 'date-fns';
-import { ruLocale } from 'date-fns/locale/ru';
 import Row from './Row';
+import XlsExport from 'xlsexport';
 import {
   payToDrivers,
   cities,
@@ -50,6 +50,8 @@ function TableContent(props) {
   const classes = useStyles();
   const { routes, finances, setFinances, selectedDay, checkState } = props;
   const financesIds = new Set(finances.map(({ startRouteId }) => startRouteId));
+  let financesData = [];
+  // const [financesData, setFinancesData] = useState([]);
   const currentRoutes = routes.filter(route =>
     isSameDay(new Date(route.fromTime), selectedDay)
   );
@@ -73,10 +75,7 @@ function TableContent(props) {
   };
 
   return (
-    <Grid
-      container
-      spacing={1}
-    >
+    <Grid container spacing={1}>
       {cars.map((carId, i) => {
         const carRoutes = currentRoutes.filter(route => route.carId === carId);
         const carNumber = carRoutes[0].car.number;
@@ -243,6 +242,23 @@ function TableContent(props) {
             totalPerDay.firm += +firmIncome;
           }
 
+          // financesData.push({
+          //   'Авт, г/н': rowdata.carTitle,
+          //   Владелец: rowdata.carOwner,
+          //   Водитель: rowdata.carDriver,
+          //   Направление: `${cities[rowdata.fromCityId]} - ${
+          //     cities[rowdata.toCityId]
+          //   }`,
+          //   Пассажиров: rowdata.totalPassengers || '0',
+          //   Картой: rowdata.card || '0',
+          //   Наличными: rowdata.cash || '0',
+          //   Офис: rowdata.office || '0',
+          //   Корректировка: rowdata.correction || '0',
+          //   Сумма: rowdata.passengersIncomeSum || '0',
+          //   Начислено: rowdata.payToDriver || '0',
+          //   Выдача: rowdata.totalToDriver || '0',
+          //   Фирма: rowdata.firmIncome || '0'
+          // });
           return (
             <Grid
               container
@@ -252,13 +268,13 @@ function TableContent(props) {
               spacing={1}
               style={route.length === 1 ? { backgroundColor: 'orange' } : {}}
               wrap="nowrap"
-              xs="auto"
-            >
+              xs="auto">
               <Row
                 checkState={checkState}
                 finances={finances}
                 rowdata={rowdata}
                 setFinances={setFinances}
+                financesData={financesData}
               />
             </Grid>
           );
@@ -271,78 +287,44 @@ function TableContent(props) {
         item
         spacing={1}
         wrap="nowrap"
-        xs="auto"
-      >
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={4}
-        >
+        xs="auto">
+        <button
+          onClick={() => {
+            const exp = new XlsExport(financesData, 'data');
+            exp.exportToXLS('test.xls');
+          }}>
+          Excel
+        </button>
+        <Grid className={classes.gridBorder} item xs={4}>
           <Card className={classes.cardInfo}>
             <strong>ИТОГО</strong>
           </Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.passengers}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.card}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.office}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.cash}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.correction}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.tripSum}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.toDriver}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.giveToDriver}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={2}
-        >
+        <Grid className={classes.gridBorder} item xs={2}>
           <Card className={classes.cardInfo}>{totalPerDay.firm}</Card>
         </Grid>
       </Grid>

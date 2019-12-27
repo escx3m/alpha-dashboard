@@ -3,7 +3,7 @@ import { Grid, Card, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { format, isSameDay } from 'date-fns';
 import ruLocale from 'date-fns/locale/ru';
-import { makeJSDateObject } from '../../../../helpers/helpers';
+import { makeJSDateObject, findIndexOfObject } from '../../../../helpers/helpers';
 import { ApiContext } from '../../../../Routes';
 import { cities, wrongPricePassenger } from '../../../../helpers/constants';
 
@@ -42,6 +42,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Row(props) {
+  const classes = useStyles();
+  const { api } = useContext(ApiContext);
   const {
     cash,
     card,
@@ -63,10 +65,10 @@ function Row(props) {
     startRouteId,
     totalPassengers
   } = props.rowdata;
-  const classes = useStyles();
-  const { api } = useContext(ApiContext);
-  const { finances, setFinances, checkState } = props;
+
+  const { finances, setFinances, financesData, checkState } = props;
   const [sendCorrection, setSendCorrection] = useState(currentCorrection);
+  const [expandAll, setExpandAll] = useState(true);
 
   useEffect(() => {
     setSendCorrection(currentCorrection);
@@ -92,17 +94,27 @@ function Row(props) {
     pay: +totalToDriver || 0,
     firm: +totalFirm || 0
   };
-  const totalPerDay = {
-    passengers: 0,
-    card: 0,
-    cash: 0,
-    office: 0,
-    correction: 0,
-    tripSum: 0,
-    toDriver: 0,
-    giveToDriver: 0,
-    firm: 0
-  };
+
+  financesData.push({
+    startRouteId: currentFinance.startRouteId,
+    startRouteDate: currentFinance.fromTimeLocal,
+    'Авт, г/н': currentFinance.carTitle,
+    Владелец: currentFinance.carOwner,
+    Водитель: currentFinance.carDriver,
+    Направление: `${cities[currentFinance.fromCityId]} - ${
+      cities[currentFinance.toCityId]
+    }`,
+    Пассажиров: currentFinance.passengersTotal || '0',
+    Картой: currentFinance.card || '0',
+    Наличными: currentFinance.cash || '0',
+    Офис: currentFinance.office || '0',
+    Корректировка: currentFinance.correction || '0',
+    Сумма: currentFinance.totalSum || '0',
+    Начислено: currentFinance.earned || '0',
+    Выдача: currentFinance.pay || '0',
+    Фирма: currentFinance.firm || '0'
+  });
+
   return (
     <Grid
       className={classes.overAll}
@@ -245,9 +257,14 @@ function Row(props) {
           <Button
             className={classes.btnSave}
             color="primary"
-            onClick={() => {
+            onClick={e => {
+              const indexOfOldElement = findIndexOfObject(financesData, currentFinance.startRouteId, currentFinance.startRouteId)
+              financesData.splice(indexOfOldElement, 1)
               setFinances([...finances, currentFinance]);
               api.addFinances(currentFinance);
+              e.currentTarget.style.backgroundColor = 'green';
+              console.log('save ==== ', financesData);
+
             }}
             variant="contained"
           >
