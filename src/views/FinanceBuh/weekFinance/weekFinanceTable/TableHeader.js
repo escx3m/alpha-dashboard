@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Card, Tooltip } from '@material-ui/core';
+import { Grid, Card, Tooltip, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   DirectionsCar,
@@ -34,6 +34,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '12px'
+  },
+  btnSave: {
+    width: '45px',
+    height: '40px',
+    fontSize: '9px'
   }
 }));
 
@@ -226,7 +231,16 @@ function TableHeader(props) {
         item
         xs={1}
       >
-        <Card className={classes.card} />
+        <Card className={classes.card}>
+          <Button
+            className={classes.btnSave}
+            color="primary"
+            onclick="xls.exportToXLS('export.xls')"
+            variant="contained"
+          >
+            Экспорт
+          </Button>{' '}
+        </Card>
       </Grid>
     </Grid>
   );
