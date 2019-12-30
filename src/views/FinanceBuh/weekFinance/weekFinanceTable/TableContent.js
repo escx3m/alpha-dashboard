@@ -1,8 +1,7 @@
 import React from 'react';
 import { Grid, Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { isSameDay, format } from 'date-fns';
-import { ruLocale } from 'date-fns/locale/ru';
+import { isSameDay } from 'date-fns';
 import Row from './Row';
 import {
   payToDrivers,
@@ -161,8 +160,8 @@ function TableContent(props) {
             }, []);
             const currentCorrection = 0;
             const totalPassengers = passengers.length;
-            const fromCity = cities[route[0].fromCityId][0];
-            const toCity = cities[route[0].toCityId][0];
+            const fromCity = cities[route[0].fromCityId] ? cities[route[0].fromCityId][0] : 'Неизвестно';
+            const toCity = cities[route[0].toCityId] ? cities[route[0].toCityId][0] : 'Неизвестно';
             const direction = `${fromCity} -> ${toCity}`;
             const fromToCityKey = `${fromCity}-${toCity} ${carScheme} ${totalPassengers}`;
             const toFromCityKey = `${toCity}-${fromCity} ${carScheme} ${totalPassengers}`;

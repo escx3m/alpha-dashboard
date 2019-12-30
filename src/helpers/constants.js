@@ -105,7 +105,8 @@ export const citiesName = {
 };
 export const payToDrivers = {
   'no passengers': {
-    all: 0
+    all: 0,
+    owner_id: 0
   },
   'Э-МВ 4 1': {
     all: 4000,

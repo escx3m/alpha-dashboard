@@ -67,13 +67,19 @@ function Row(props) {
   const { api } = useContext(ApiContext);
   const { finances, setFinances, checkState } = props;
   const [sendCorrection, setSendCorrection] = useState(currentCorrection);
+  const [sendEarned, setSendEarned] = useState(payToDriver);
 
   useEffect(() => {
     setSendCorrection(currentCorrection);
   }, [currentCorrection]);
 
+  useEffect(() => {
+    setSendEarned(payToDriver);
+  }, [payToDriver]);
+
+  const totalPay = +sendEarned - +cash;
   const totalSum = +card + +cash + +office + +sendCorrection;
-  const totalFirm = totalSum - +cash - +totalToDriver;
+  const totalFirm = +totalSum - +cash - +totalPay;
   const currentFinance = {
     startRouteId: +startRouteId,
     startRouteDate: fromTime,
@@ -88,21 +94,11 @@ function Row(props) {
     office: +office || 0,
     correction: +sendCorrection || 0,
     totalSum: +totalSum || 0,
-    earned: +payToDriver || 0,
-    pay: +totalToDriver || 0,
+    earned: +sendEarned || 0,
+    pay: +totalPay || 0,
     firm: +totalFirm || 0
   };
-  const totalPerDay = {
-    passengers: 0,
-    card: 0,
-    cash: 0,
-    office: 0,
-    correction: 0,
-    tripSum: 0,
-    toDriver: 0,
-    giveToDriver: 0,
-    firm: 0
-  };
+  
   return (
     <Grid
       className={classes.overAll}
@@ -155,7 +151,7 @@ function Row(props) {
           item
           xs={1}
         >
-          <Card className={classes.cardInfo}>{totalPassengers}</Card>
+          <Card className={classes.cardInfo}>{currentFinance.passengersTotal}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedCard) && (
@@ -164,7 +160,7 @@ function Row(props) {
           item
           xs={1}
         >
-          <Card className={classes.cardInfo}>{card}</Card>
+          <Card className={classes.cardInfo}>{currentFinance.card}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedCash) && (
@@ -173,7 +169,7 @@ function Row(props) {
           item
           xs={1}
         >
-          <Card className={classes.cardInfo}>{cash}</Card>
+          <Card className={classes.cardInfo}>{currentFinance.cash}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedOffice) && (
@@ -182,7 +178,7 @@ function Row(props) {
           item
           xs={1}
         >
-          <Card className={classes.cardInfo}>{office}</Card>
+          <Card className={classes.cardInfo}>{currentFinance.office}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedCorrection) && (
@@ -215,7 +211,14 @@ function Row(props) {
           item
           xs={1}
         >
-          <Card className={classes.cardInfo}>{payToDriver}</Card>
+          {/* <Card className={classes.cardInfo}>{payToDriver}</Card> */}
+          <Card className={classes.cardInfo}>
+            <TextField
+              inputProps={{ style: { textAlign: 'center', width: '40px' } }}
+              onChange={e => setSendEarned(e.target.value)}
+              value={sendEarned}
+            />
+          </Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedPayment) && (
@@ -224,7 +227,7 @@ function Row(props) {
           item
           xs={1}
         >
-          <Card className={classes.cardInfo}>{totalToDriver}</Card>
+          <Card className={classes.cardInfo}>{currentFinance.pay}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedProfit) && (
