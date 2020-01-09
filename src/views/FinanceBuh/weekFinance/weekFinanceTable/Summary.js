@@ -21,19 +21,34 @@ const useStyles = makeStyles(theme => ({
   },
   overAll: {
     marginLeft: '1px'
+  },
+  btnSave: {
+    width: '45px',
+    height: '40px',
+    fontSize: '9px'
   }
 }));
 
-const PackageRow = props => {
+const Summary = props => {
   const classes = useStyles();
-  const { dateTimeStr, directionStr, index, ownerStr, cargo } = props;
+  const {
+    message,
+    count,
+    card,
+    cash,
+    office,
+    correction,
+    total,
+    earned,
+    pay,
+    firm
+  } = props;
   return (
     <Grid
       className={classes.overAll}
       container
       direction="row"
       item
-      key={index}
       spacing={1}
       wrap="nowrap"
       xs="auto"
@@ -41,10 +56,10 @@ const PackageRow = props => {
       <Grid
         className={classes.gridBorder}
         item
-        xs={1}
+        xs={4}
       >
         <Card className={classes.cardInfo}>
-          <strong>Посылка</strong>
+          <strong>{message}</strong>
         </Card>
       </Grid>
       <Grid
@@ -52,94 +67,66 @@ const PackageRow = props => {
         item
         xs={1}
       >
-        <Card className={classes.cardInfo}>{dateTimeStr}</Card>
+        <Card className={classes.cardInfo}>{count}</Card>
       </Grid>
       <Grid
         className={classes.gridBorder}
         item
         xs={1}
       >
-        <Card className={classes.cardInfo}>{ownerStr}</Card>
+        <Card className={classes.cardInfo}>{card}</Card>
       </Grid>
       <Grid
         className={classes.gridBorder}
         item
         xs={1}
       >
-        <Card className={classes.cardInfo}>{directionStr}</Card>
+        <Card className={classes.cardInfo}>{cash}</Card>
       </Grid>
       <Grid
         className={classes.gridBorder}
         item
         xs={1}
       >
-        <Card className={classes.cardInfo}>{}</Card>
+        <Card className={classes.cardInfo}>{office}</Card>
       </Grid>
       <Grid
         className={classes.gridBorder}
         item
         xs={1}
       >
-        <Card className={classes.cardInfo}>{cargo.total}</Card>
+        <Card className={classes.cardInfo}>{correction}</Card>
       </Grid>
       <Grid
         className={classes.gridBorder}
         item
         xs={1}
       >
-        <Card className={classes.cardInfo}>{cargo.cash}</Card>
+        <Card className={classes.cardInfo}>{total}</Card>
       </Grid>
       <Grid
         className={classes.gridBorder}
         item
         xs={1}
       >
-        <Card className={classes.cardInfo}>{}</Card>
+        <Card className={classes.cardInfo}>{earned}</Card>
       </Grid>
       <Grid
         className={classes.gridBorder}
         item
         xs={1}
       >
-        <Card className={classes.cardInfo}>{}</Card>
+        <Card className={classes.cardInfo}>{pay}</Card>
       </Grid>
       <Grid
         className={classes.gridBorder}
         item
-        xs={1}
+        xs={2}
       >
-        <Card className={classes.cardInfo}>{cargo.cash}</Card>
-      </Grid>
-      <Grid
-        className={classes.gridBorder}
-        item
-        xs={1}
-      >
-        <Card className={classes.cardInfo}>{cargo.earned}</Card>
-      </Grid>
-      <Grid
-        className={classes.gridBorder}
-        item
-        xs={1}
-      >
-        <Card className={classes.cardInfo}>{cargo.pay}</Card>
-      </Grid>
-      <Grid
-        className={classes.gridBorder}
-        item
-        xs={1}
-      >
-        <Card className={classes.cardInfo}>{cargo.firm}</Card>
-      </Grid>
-      <Grid
-        className={classes.gridBorder}
-        item
-        xs={1}
-      >
-        <Card className={classes.cardInfo}>{}</Card>
+        <Card className={classes.cardInfo}>{firm}</Card>
       </Grid>
     </Grid>
   );
 };
 
-export default PackageRow;
+export default Summary;
