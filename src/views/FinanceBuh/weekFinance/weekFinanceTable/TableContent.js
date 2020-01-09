@@ -3,6 +3,7 @@ import { Grid, Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { isSameDay } from 'date-fns';
 import Row from './Row';
+import PackageRow from './Package'
 import {
   payToDrivers,
   cities,
@@ -13,7 +14,8 @@ import {
   payCash,
   payOffice,
   delivered,
-  ownersId
+  ownersId,
+  isCargo
 } from '../../../../helpers/constants';
 
 const useStyles = makeStyles(theme => ({
@@ -59,6 +61,24 @@ function TableContent(props) {
     return acc;
   }, []);
 
+  const cargos = currentRoutes.reduce((acc, route) => {
+    route.passengers.forEach(passenger => {
+      if (passenger.type === isCargo && passenger.state === delivered) {
+        acc.push({ 
+          ...passenger, 
+          dateTime: route.fromTime, 
+          owner: route.car.owner,
+          cash: passenger.price,
+          fromCityId: route.fromCityId,
+          toCityId: route.toCityId
+        });
+      }
+    });
+    return acc;
+  }, []);
+
+  console.log('cargos === ', cargos);
+
   const totalPerDay = {
     passengers: 0,
     card: 0,
@@ -72,10 +92,7 @@ function TableContent(props) {
   };
 
   return (
-    <Grid
-      container
-      spacing={1}
-    >
+    <Grid container spacing={1}>
       {cars.map((carId, i) => {
         const carRoutes = currentRoutes.filter(route => route.carId === carId);
         const carNumber = carRoutes[0].car.number;
@@ -148,6 +165,8 @@ function TableContent(props) {
             totalPerDay.giveToDriver += +financeRoute.pay;
             totalPerDay.firm += +financeRoute.firm;
           } else {
+            
+
             const passengers = route.reduce((acc, r) => {
               const { passengers } = r;
               return acc.concat(
@@ -160,8 +179,12 @@ function TableContent(props) {
             }, []);
             const currentCorrection = 0;
             const totalPassengers = passengers.length;
-            const fromCity = cities[route[0].fromCityId] ? cities[route[0].fromCityId][0] : 'Неизвестно';
-            const toCity = cities[route[0].toCityId] ? cities[route[0].toCityId][0] : 'Неизвестно';
+            const fromCity = cities[route[0].fromCityId]
+              ? cities[route[0].fromCityId][0]
+              : 'Неизвестно';
+            const toCity = cities[route[0].toCityId]
+              ? cities[route[0].toCityId][0]
+              : 'Неизвестно';
             const direction = `${fromCity} -> ${toCity}`;
             const fromToCityKey = `${fromCity}-${toCity} ${carScheme} ${totalPassengers}`;
             const toFromCityKey = `${toCity}-${fromCity} ${carScheme} ${totalPassengers}`;
@@ -251,8 +274,7 @@ function TableContent(props) {
               spacing={1}
               style={route.length === 1 ? { backgroundColor: 'orange' } : {}}
               wrap="nowrap"
-              xs="auto"
-            >
+              xs="auto">
               <Row
                 checkState={checkState}
                 finances={finances}
@@ -270,81 +292,54 @@ function TableContent(props) {
         item
         spacing={1}
         wrap="nowrap"
-        xs="auto"
-      >
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={4}
-        >
+        xs="auto">
+        <Grid className={classes.gridBorder} item xs={4}>
           <Card className={classes.cardInfo}>
             <strong>ИТОГО</strong>
           </Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.passengers}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.card}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.office}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.cash}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.correction}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.tripSum}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.toDriver}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{totalPerDay.giveToDriver}</Card>
         </Grid>
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={2}
-        >
+        <Grid className={classes.gridBorder} item xs={2}>
           <Card className={classes.cardInfo}>{totalPerDay.firm}</Card>
         </Grid>
       </Grid>
+      {cargos.map((cargo, index) => {
+        const time = {
+          hours: new Date(cargo.dateTime).getHours().toString(),
+          minutes: new Date(cargo.dateTime).getMinutes().toString()
+        };
+        
+        const dateTimeStr = `0${time.hours}`.slice(-2) + ':' + `0${time.minutes}`.slice(-2);
+        const directionStr = `${cities[cargo.fromCityId]}` + '->' + `${cities[cargo.toCityId]}`;
+        const ownerStr = `${cargo.owner.surname} ${cargo.owner.name} ${cargo.owner.patronymic}`;
+
+        return (
+          <PackageRow cargo={cargo} index={index} dateTimeStr={dateTimeStr} directionStr={directionStr} ownerStr={ownerStr}/>
+        )
+      })}
     </Grid>
   );
 }
