@@ -73,7 +73,7 @@ const PackageRow = props => {
         item
         xs={1}
       >
-        <Card className={classes.cardInfo}>{cargo.cash}</Card>
+        <Card className={classes.cardInfo}>{}</Card>
       </Grid>
       <Grid
         className={classes.gridBorder}
@@ -87,7 +87,7 @@ const PackageRow = props => {
         item
         xs={1}
       >
-        <Card className={classes.cardInfo}>{cargo.earned}</Card>
+        <Card className={classes.cardInfo}>{cargo.cash}</Card>
       </Grid>
       <Grid
         className={classes.gridBorder}
@@ -101,28 +101,28 @@ const PackageRow = props => {
         item
         xs={1}
       >
+        <Card className={classes.cardInfo}>{}</Card>
+      </Grid>
+      <Grid
+        className={classes.gridBorder}
+        item
+        xs={1}
+      >
+        <Card className={classes.cardInfo}>{ownerStr}</Card>
+      </Grid>
+      <Grid
+        className={classes.gridBorder}
+        item
+        xs={1}
+      >
+        <Card className={classes.cardInfo}>{cargo.earned}</Card>
+      </Grid>
+      <Grid
+        className={classes.gridBorder}
+        item
+        xs={1}
+      >
         <Card className={classes.cardInfo}>{cargo.pay}</Card>
-      </Grid>
-      <Grid
-        className={classes.gridBorder}
-        item
-        xs={1}
-      >
-        <Card className={classes.cardInfo}>{ownerStr}</Card>
-      </Grid>
-      <Grid
-        className={classes.gridBorder}
-        item
-        xs={1}
-      >
-        <Card className={classes.cardInfo}>{ownerStr}</Card>
-      </Grid>
-      <Grid
-        className={classes.gridBorder}
-        item
-        xs={1}
-      >
-        <Card className={classes.cardInfo}>{ownerStr}</Card>
       </Grid>
       <Grid
         className={classes.gridBorder}

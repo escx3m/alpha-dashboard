@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { isSameDay } from 'date-fns';
@@ -68,7 +68,7 @@ function TableContent(props) {
           ...passenger, 
           dateTime: route.fromTime, 
           owner: route.car.owner,
-          cash: passenger.price,
+          cash: +passenger.price,
           fromCityId: route.fromCityId,
           toCityId: route.toCityId
         });
@@ -76,7 +76,6 @@ function TableContent(props) {
     });
     return acc;
   }, []);
-
   console.log('cargos === ', cargos);
 
   const totalPerDay = {
@@ -90,6 +89,16 @@ function TableContent(props) {
     giveToDriver: 0,
     firm: 0
   };
+  const [daySum, setDaySum] = useState({
+    card: 0,
+    cash: 0,
+    office: 0,
+    correction: 0,
+    total: 0,
+    earned: 0,
+    pay: 0,
+    firm: 0
+  });
 
   return (
     <Grid container spacing={1}>
@@ -331,10 +340,9 @@ function TableContent(props) {
           hours: new Date(cargo.dateTime).getHours().toString(),
           minutes: new Date(cargo.dateTime).getMinutes().toString()
         };
-        
         const dateTimeStr = `0${time.hours}`.slice(-2) + ':' + `0${time.minutes}`.slice(-2);
         const directionStr = `${cities[cargo.fromCityId]}` + '->' + `${cities[cargo.toCityId]}`;
-        const ownerStr = `${cargo.owner.surname} ${cargo.owner.name} ${cargo.owner.patronymic}`;
+        const ownerStr = `${cargo.owner.surname} ${cargo.owner.name[0]}. ${cargo.owner.patronymic[0]}.`;
 
         return (
           <PackageRow cargo={cargo} index={index} dateTimeStr={dateTimeStr} directionStr={directionStr} ownerStr={ownerStr}/>
