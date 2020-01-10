@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ExpansionChild = props => {
+  const [open, setOpen] = useState(false);
   const classes = useStyles();
   const {
     correctPassengers,
@@ -38,12 +39,17 @@ const ExpansionChild = props => {
     routeDate,
     routeMonth,
     routeTime,
-    routeIdTemplate
+    routeIdTemplate,
+    openAll,
+    expanded
   } = props;
 
   return (
     <div>
-      <Expansion TransitionProps={{ unmountOnExit: true }}>
+      <Expansion
+        expanded={openAll || open}
+        onChange={() => setOpen(expanded ? false : !open)}
+        TransitionProps={{ unmountOnExit: true }}>
         <ExpansionHeader expandIcon={<ExpandMoreIcon />}>
           <Grid
             item

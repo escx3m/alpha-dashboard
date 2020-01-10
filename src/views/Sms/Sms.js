@@ -230,6 +230,7 @@ const Sms = () => {
                   <ExpansionParent
                     currentRoutes={currentRoutes}
                     expanded={expanded}
+                    openAll={openAll}
                     passengersIdsAtTime={passengersIdsAtTime}
                     routeIdTemplate={routeIdTemplate}
                     selectedDateSendSms={selectedDateSendSms}
