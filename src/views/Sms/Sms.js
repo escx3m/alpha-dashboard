@@ -4,7 +4,6 @@ import { Calendar, useStaticState } from '@material-ui/pickers';
 import CachedIcon from '@material-ui/icons/Cached';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { cityShortNames as citiesName, isPassenger, canceledState } from '../../helpers/constants';
-import axios from 'axios';
 import { Grid, Card, CardContent, CardHeader, Paper,
   IconButton, Link,
   ExpansionPanel as Expansion,

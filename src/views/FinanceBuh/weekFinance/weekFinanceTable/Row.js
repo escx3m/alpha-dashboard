@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Grid, Card, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { format, isSameDay } from 'date-fns';
-import ruLocale from 'date-fns/locale/ru';
-import { makeJSDateObject } from '../../../../helpers/helpers';
 import { ApiContext } from '../../../../Routes';
-import { cities, wrongPricePassenger } from '../../../../helpers/constants';
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -21,8 +17,6 @@ const useStyles = makeStyles(theme => ({
     color: 'black',
     height: 25
   },
-  singleRoute: {},
-  pairRoute: {},
   cardInfo: {
     height: '50px',
     fontSize: '12px',
@@ -51,15 +45,10 @@ function Row(props) {
     currentCorrection,
     fromCityId,
     toCityId,
-    k,
     fromTime,
-    selectedDay,
     office,
     direction,
-    passengersIncomeSum,
     payToDriver,
-    totalToDriver,
-    firmIncome,
     startRouteId,
     totalPassengers
   } = props.rowdata;

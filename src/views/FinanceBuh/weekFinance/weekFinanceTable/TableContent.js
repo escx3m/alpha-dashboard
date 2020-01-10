@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { isSameDay } from 'date-fns';
@@ -69,9 +69,9 @@ function TableContent(props) {
           ...passenger,
           dateTime: route.fromTime,
           owner: route.car.owner,
-          cash: +passenger.price,
-          office: 0,
-          card: 0,
+          cash: passenger.price_status === payCash ? +passenger.price : 0,
+          office: passenger.price_status === payOffice ? +passenger.price : 0,
+          card: passenger.price_status === payCard ? +passenger.price : 0,
           firm: +passenger.price > 599 ? 100 : +passenger.price > 149 ? 50 : 0,
           earned: 0,
           fromCityId: route.fromCityId,
@@ -119,7 +119,6 @@ function TableContent(props) {
     firm: 0
   };
 
-  console.log('day sum = ', daySum);
   return (
     <Grid
       container
@@ -283,7 +282,6 @@ function TableContent(props) {
               firmIncome: firmIncome,
               startRouteId: startRouteId
             };
-
             totalPerDay.passengers += +totalPassengers;
             totalPerDay.cash += +cash;
             totalPerDay.card += +card;
@@ -340,6 +338,9 @@ function TableContent(props) {
         const ownerStr = `${cargo.owner.surname} ${cargo.owner.name[0]}. ${
           cargo.owner.patronymic[0]
         }.`;
+        const senderStr = `${cargo.surname ? cargo.surname : ''} ${cargo.name ? cargo.name[0]+'.': ''} ${cargo.patronymic ? cargo.patronymic[0]+'.' : ''}`;
+
+        cargo.total = cargo.cash + cargo.card + cargo.office;
         cargo.earned = cargo.cash - cargo.firm;
         cargo.pay = cargo.earned - cargo.cash;
         totalPerDayPackages.cash += cargo.cash;
@@ -353,6 +354,8 @@ function TableContent(props) {
             directionStr={directionStr}
             index={index}
             ownerStr={ownerStr}
+            senderStr={senderStr}
+            checkState={checkState}
           />
         );
       })}
@@ -368,7 +371,6 @@ function TableContent(props) {
       ) : (
         ''
       )}
-      
       {((daySum.count += +totalPerDay.passengers + +cargos.length),
         (daySum.card += +totalPerDay.card),
         (daySum.cash += +totalPerDay.cash + +totalPerDayPackages.cash),
