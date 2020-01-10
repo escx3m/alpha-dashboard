@@ -356,17 +356,6 @@ function TableContent(props) {
           />
         );
       })}
-      {
-        ((daySum.count += +totalPerDay.passengers + +cargos.length),
-        (daySum.card += +totalPerDay.card),
-        (daySum.cash += +totalPerDay.cash + +totalPerDayPackages.cash),
-        (daySum.office += +totalPerDay.office),
-        (daySum.correction += +totalPerDay.correction),
-        (daySum.total += +totalPerDay.tripSum),
-        (daySum.earned += +totalPerDay.toDriver + +totalPerDayPackages.earned),
-        (daySum.pay += +totalPerDay.giveToDriver+ +totalPerDayPackages.pay),
-        (daySum.firm += +totalPerDay.firm + +totalPerDayPackages.firm))
-      }
       {cargos.length > 0 ? (
         <Summary
           count={cargos.length}
@@ -379,6 +368,16 @@ function TableContent(props) {
       ) : (
         ''
       )}
+      
+      {((daySum.count += +totalPerDay.passengers + +cargos.length),
+        (daySum.card += +totalPerDay.card),
+        (daySum.cash += +totalPerDay.cash + +totalPerDayPackages.cash),
+        (daySum.office += +totalPerDay.office),
+        (daySum.correction += +totalPerDay.correction),
+        (daySum.total += +totalPerDay.tripSum),
+        (daySum.earned += +totalPerDay.toDriver + +totalPerDayPackages.earned),
+        (daySum.pay += +totalPerDay.giveToDriver+ +totalPerDayPackages.pay),
+        (daySum.firm += +totalPerDay.firm + +totalPerDayPackages.firm)),
       <Summary
         count={daySum.count}
         card={daySum.card}
@@ -387,11 +386,11 @@ function TableContent(props) {
         count={daySum.count}
         earned={daySum.earned}
         firm={daySum.firm}
-        message="Итоги за день"
+        message={"Итоги за день"}
         office={daySum.office}
         pay={daySum.pay}
         total={daySum.total}
-      />
+      />}
     </Grid>
   );
 }
