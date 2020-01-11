@@ -128,10 +128,6 @@ const ExpansionParent = props => {
                   passenger.type === isPassenger
               );
               const passengersCount = correctPassengers.length;
-
-              // console.log(smsTime);
-              // console.log('route passengers ', routePassengers);
-              // console.log('correct passengers ', correctPassengers);
               return passengersCount ? (
                 <Grid
                   item
