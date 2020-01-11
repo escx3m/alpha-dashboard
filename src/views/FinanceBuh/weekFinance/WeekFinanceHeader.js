@@ -28,6 +28,11 @@ const WeekFinanceHeader = props => {
           setCheckState={setCheckState}
         />
       </Grid>
+
+      <Grid
+        item
+        xs={1}
+      />
     </Grid>
   );
 };
