@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar, CircularProgress } from '@material-ui/core';
 import TextsmsIcon from '@material-ui/icons/Textsms';
-
-import axios from 'axios';
 import { 
   startOfDay, endOfDay, isSameDay, 
   startOfToday, endOfToday } from 'date-fns';
