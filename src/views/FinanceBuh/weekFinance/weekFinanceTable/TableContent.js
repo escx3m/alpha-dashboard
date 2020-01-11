@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { isSameDay } from 'date-fns';
 import Row from './Row';
 import Summary from './Summary';
@@ -19,37 +18,7 @@ import {
   isCargo
 } from '../../../../helpers/constants';
 
-const useStyles = makeStyles(theme => ({
-  gridBorder: {
-    border: '1px solid #969696'
-  },
-  card: {
-    background: '#F6F6F6',
-    color: 'black',
-    height: 25
-  },
-  singleRoute: {},
-  pairRoute: {},
-  cardInfo: {
-    height: '50px',
-    fontSize: '12px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center'
-  },
-  overAll: {
-    marginLeft: '1px'
-  },
-  btnSave: {
-    width: '45px',
-    height: '40px',
-    fontSize: '9px'
-  }
-}));
-
 function TableContent(props) {
-  const classes = useStyles();
   const { routes, finances, setFinances, selectedDay, checkState } = props;
   const financesIds = new Set(finances.map(({ startRouteId }) => startRouteId));
   const currentRoutes = routes.filter(route =>
@@ -334,7 +303,7 @@ function TableContent(props) {
         const dateTimeStr =
           `0${time.hours}`.slice(-2) + ':' + `0${time.minutes}`.slice(-2);
         const directionStr =
-          `${cities[cargo.fromCityId]}` + '->' + `${cities[cargo.toCityId]}`;
+          `${cities[cargo.fromCityId]} -> ${cities[cargo.toCityId]}`;
         const ownerStr = `${cargo.owner.surname} ${cargo.owner.name[0]}. ${
           cargo.owner.patronymic[0]
         }.`;
@@ -379,13 +348,12 @@ function TableContent(props) {
         (daySum.total += +totalPerDay.tripSum),
         (daySum.earned += +totalPerDay.toDriver + +totalPerDayPackages.earned),
         (daySum.pay += +totalPerDay.giveToDriver+ +totalPerDayPackages.pay),
-        (daySum.firm += +totalPerDay.firm + +totalPerDayPackages.firm)),
+        (daySum.firm += +totalPerDay.firm + +totalPerDayPackages.firm))}
       <Summary
         count={daySum.count}
         card={daySum.card}
         cash={daySum.cash}
         correction={daySum.correction}
-        count={daySum.count}
         earned={daySum.earned}
         firm={daySum.firm}
         message={"Итоги за день"}

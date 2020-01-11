@@ -50,13 +50,8 @@ const Sidebar = props => {
     },
     {
       title: 'Отчеты',
-      href: '/report', 
+      href: '/report',
       icon: <InsertChartIcon />
-    },
-    {
-      title: 'Финансы',
-      href: '/finance',
-      icon: <MoneyIcon />
     },
     {
       title: 'Финансы бухгалтер',

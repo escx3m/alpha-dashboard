@@ -14,13 +14,12 @@ import {
   Dashboard as DashboardView,
   MonitoringCar as MonitoringCarView,
   UserList as UserListView,
-  Finance as FinanceView,
   FinanceBuh as FinanceBuhView,
   Report as ReportView,
   Account as AccountView,
   Settings as SettingsView,
   SignIn as SignInView,
-  Sms as SmsView,
+  Sms as SmsView
 } from './views';
 
 const token = localStorage.getItem('token');
@@ -30,7 +29,7 @@ const api = new Api({ token, refreshToken });
 export const ApiContext = createContext({});
 
 const fakeAuth = {
-  isAuthenticated: token ? true :false,
+  isAuthenticated: token ? true : false,
   async authenticate(loginRequest, cb) {
     await api.login(loginRequest);
     fakeAuth.isAuthenticated = true;
@@ -74,16 +73,15 @@ const Routes = () => {
     const loginRequest = {
       login,
       password
-    }
+    };
     fakeAuth.authenticate(loginRequest, () => {
       history.replace(from);
     });
   };
   const logout = () => {
     fakeAuth.signout(() => {
-      history.push("/");
+      history.push('/');
     });
-
   };
   return (
     <ApiContext.Provider value={{ api }}>
@@ -92,90 +90,82 @@ const Routes = () => {
           <RouteWithLayout
             component={DashboardView}
             exact
-            logout={logout}
             layout={MainLayout}
+            logout={logout}
             path="/dashboard"
           />
         </PrivateRoute>
         <Route path="/sign-in">
           <RouteWithLayout
-            login={login}
-            logout={logout}
             component={SignInView}
             exact
             layout={MainLayout}
+            login={login}
+            logout={logout}
             path="/sign-in"
           />
         </Route>
         <PrivateRoute path="/users">
           <RouteWithLayout
             component={UserListView}
-            logout={logout}
             exact
             layout={MainLayout}
+            logout={logout}
             path="/users"
           />
         </PrivateRoute>
         <PrivateRoute path="/monitoringcar">
           <RouteWithLayout
             component={MonitoringCarView}
-            logout={logout}
             exact
             layout={MainLayout}
+            logout={logout}
             path="/monitoringcar"
           />
         </PrivateRoute>
         <PrivateRoute path="/sms">
           <RouteWithLayout
             component={SmsView}
-            logout={logout}
             exact
             layout={MainLayout}
+            logout={logout}
             path="/sms"
           />
         </PrivateRoute>
-        <PrivateRoute path="/finance">
-          <RouteWithLayout
-            logout={logout}
-            component={FinanceView}
-            exact
-            layout={MainLayout}
-            path="/finance"
-          />
-        </PrivateRoute>
+
         <PrivateRoute path="/financebuh">
           <RouteWithLayout
-            logout={logout}
             component={FinanceBuhView}
             exact
             layout={MainLayout}
+            logout={logout}
             path="/financebuh"
           />
-          </PrivateRoute>
+        </PrivateRoute>
         <PrivateRoute path="/report">
           <RouteWithLayout
-            logout={logout}
             component={ReportView}
             exact
             layout={MainLayout}
+            logout={logout}
             path="/report"
           />
         </PrivateRoute>
         <PrivateRoute path="/account">
           <RouteWithLayout
-            logout={logout}
             component={AccountView}
             exact
             layout={MainLayout}
+            logout={logout}
             path="/account"
           />
         </PrivateRoute>
         <PrivateRoute path="/settings">
           <RouteWithLayout
-            logout={logout}
             component={SettingsView}
             exact
             layout={MainLayout}
+            logout={logout}
             path="/settings"
           />
         </PrivateRoute>

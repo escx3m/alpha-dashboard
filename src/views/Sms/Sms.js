@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/styles';
 import { Calendar, useStaticState } from '@material-ui/pickers';
 import CachedIcon from '@material-ui/icons/Cached';
 import {
-  cityShortNames as citiesName,
   isPassenger,
   canceledState
 } from '../../helpers/constants';

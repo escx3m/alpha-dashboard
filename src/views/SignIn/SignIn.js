@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link as RouterLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
-import {
-  Button,
-  TextField,
-  Typography,
-  Card
-} from '@material-ui/core';
+import { Button, TextField, Typography, Card } from '@material-ui/core';
 import CloudIcon from '@material-ui/icons/Cloud';
 
 const schema = {
@@ -107,10 +102,6 @@ const SignIn = props => {
     }));
   }, [formState.values]);
 
-  const handleBack = () => {
-    history.goBack();
-  };
-
   const handleChange = event => {
     event.persist();
 
@@ -130,10 +121,6 @@ const SignIn = props => {
     }));
   };
 
-  const usr = {
-    login: 'admin',
-    password: 'alphatoursecret',
-  };
   const handleSignIn = event => {
     if (formState.values.login && formState.values.password) {
       event.preventDefault();
@@ -142,7 +129,6 @@ const SignIn = props => {
       history.push('/');
     }
     event.preventDefault();
-    
   };
 
   const hasError = field =>
@@ -153,15 +139,21 @@ const SignIn = props => {
       <div className={classes.form}>
         <div className={classes.logoText}>
           <img
-            className={classes.imgLogo}
             alt="Logo"
+            className={classes.imgLogo}
             src="/images/avatars/alphatour.png"
           />
         </div>
         <Card className={classes.cardLogin}>
-          <form className={classes.form} onSubmit={handleSignIn}>
+          <form
+            className={classes.form}
+            onSubmit={handleSignIn}
+          >
             <div className={classes.cloudAlpha}>
-              <Typography className={classes.title} variant="h2">
+              <Typography
+                className={classes.title}
+                variant="h2"
+              >
                 <CloudIcon className={classes.iconCloud} /> Альфа-Тур
               </Typography>
             </div>
@@ -169,9 +161,7 @@ const SignIn = props => {
               className={classes.textField}
               error={hasError('login')}
               fullWidth
-              helperText={
-                hasError('login') ? formState.errors.login[0] : null
-              }
+              helperText={hasError('login') ? formState.errors.login[0] : null}
               label="Логин"
               name="login"
               onChange={handleChange}

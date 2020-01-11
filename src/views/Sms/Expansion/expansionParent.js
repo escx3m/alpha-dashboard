@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
-  cityShortNames as citiesName,
   isPassenger,
   canceledState
 } from '../../../helpers/constants';
