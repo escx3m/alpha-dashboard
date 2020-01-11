@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Grid } from '@material-ui/core';
 import { isSameDay } from 'date-fns';
 import Row from './Row';
 import Summary from './Summary';
 import PackageRow from './Package';
+import { ApiContext } from '../../../../Routes';
 import {
   payToDrivers,
   cities,
@@ -19,25 +20,26 @@ import {
 } from '../../../../helpers/constants';
 
 function TableContent(props) {
+  const { api } = useContext(ApiContext);
   const { routes, finances, setFinances, selectedDay, checkState } = props;
+  const [packages, setPackages] = useState([]);
   const financesIds = new Set(finances.map(({ startRouteId }) => startRouteId));
   const currentRoutes = routes.filter(route =>
     isSameDay(new Date(route.fromTime), selectedDay)
   );
-  const cars = currentRoutes.reduce((acc, route) => {
-    if (route.carId && !acc.includes(route.carId)) {
-      acc.push(route.carId);
-    }
-    return acc;
-  }, []);
 
   const cargos = currentRoutes.reduce((acc, route) => {
     route.passengers.forEach(passenger => {
       if (passenger.type === isCargo && passenger.state === delivered) {
         acc.push({
           ...passenger,
+          packageId: passenger.id,
+          routeId: passenger.route_id,
           dateTime: route.fromTime,
+          ownerId: route.car.owner.id,
           owner: route.car.owner,
+          phone: passenger.phone,
+          phone_2: passenger.phone_2,
           cash: passenger.price_status === payCash ? +passenger.price : 0,
           office: passenger.price_status === payOffice ? +passenger.price : 0,
           card: passenger.price_status === payCard ? +passenger.price : 0,
@@ -51,6 +53,32 @@ function TableContent(props) {
     return acc;
   }, []);
   console.log('cargos === ', cargos);
+
+  const packagesIds = cargos.reduce((acc, cargo) => {
+    acc.push(cargo.packageId);
+    return acc;
+  }, []);
+
+  const cars = currentRoutes.reduce((acc, route) => {
+    if (route.carId && !acc.includes(route.carId)) {
+      acc.push(route.carId);
+    }
+    return acc;
+  }, []);
+
+  useEffect(() => {
+    const params = {
+      ids: packagesIds
+    }
+    api.getPackages(params)
+      .then(res => {
+        const { packages } = res.data;
+        setPackages(packages);
+      })
+      .catch(e => console.log(e));
+  }, [selectedDay]);
+
+  console.log(' state packages ', packages)
 
   const totalPerDay = {
     passengers: 0,
@@ -290,7 +318,7 @@ function TableContent(props) {
         count={totalPerDay.passengers}
         earned={totalPerDay.toDriver}
         firm={totalPerDay.firm}
-        message={"Итоги по пассажирам"}
+        message={'Итоги по пассажирам'}
         office={totalPerDay.office}
         pay={totalPerDay.giveToDriver}
         total={totalPerDay.tripSum}
@@ -302,13 +330,17 @@ function TableContent(props) {
         };
         const dateTimeStr =
           `0${time.hours}`.slice(-2) + ':' + `0${time.minutes}`.slice(-2);
-        const directionStr =
-          `${cities[cargo.fromCityId]} -> ${cities[cargo.toCityId]}`;
+        const directionStr = `${cities[cargo.fromCityId]} -> ${
+          cities[cargo.toCityId]
+        }`;
         const ownerStr = `${cargo.owner.surname} ${cargo.owner.name[0]}. ${
           cargo.owner.patronymic[0]
         }.`;
-        const senderStr = `${cargo.surname ? cargo.surname : ''} ${cargo.name ? cargo.name[0]+'.': ''} ${cargo.patronymic ? cargo.patronymic[0]+'.' : ''}`;
-
+        const senderStr = `${cargo.surname ? cargo.surname : ''} ${
+          cargo.name ? cargo.name[0] + '.' : ''
+        } ${cargo.patronymic ? cargo.patronymic[0] + '.' : ''}`;
+        cargo.sender = senderStr;
+        cargo.owner = ownerStr;
         cargo.total = cargo.cash + cargo.card + cargo.office;
         cargo.earned = cargo.cash - cargo.firm;
         cargo.pay = cargo.earned - cargo.cash;
@@ -319,48 +351,53 @@ function TableContent(props) {
         return (
           <PackageRow
             cargo={cargo}
+            checkState={checkState}
             dateTimeStr={dateTimeStr}
             directionStr={directionStr}
             index={index}
             ownerStr={ownerStr}
             senderStr={senderStr}
-            checkState={checkState}
+            packages={packages}
+            setPackages={setPackages}
           />
         );
       })}
       {cargos.length > 0 ? (
         <Summary
-          count={cargos.length}
           cash={totalPerDayPackages.cash}
+          count={cargos.length}
           earned={totalPerDayPackages.earned}
           firm={totalPerDayPackages.firm}
-          message={"Итоги для посылок"}
+          message={'Итоги для посылок'}
           pay={totalPerDayPackages.pay}
         />
       ) : (
         ''
       )}
-      {((daySum.count += +totalPerDay.passengers + +cargos.length),
+      {
+        ((daySum.count += +totalPerDay.passengers + +cargos.length),
         (daySum.card += +totalPerDay.card),
         (daySum.cash += +totalPerDay.cash + +totalPerDayPackages.cash),
         (daySum.office += +totalPerDay.office),
         (daySum.correction += +totalPerDay.correction),
         (daySum.total += +totalPerDay.tripSum),
         (daySum.earned += +totalPerDay.toDriver + +totalPerDayPackages.earned),
-        (daySum.pay += +totalPerDay.giveToDriver+ +totalPerDayPackages.pay),
-        (daySum.firm += +totalPerDay.firm + +totalPerDayPackages.firm))}
+        (daySum.pay += +totalPerDay.giveToDriver + +totalPerDayPackages.pay),
+        (daySum.firm += +totalPerDay.firm + +totalPerDayPackages.firm))
+      }
       <Summary
-        count={daySum.count}
         card={daySum.card}
         cash={daySum.cash}
         correction={daySum.correction}
+        count={daySum.count}
         earned={daySum.earned}
         firm={daySum.firm}
-        message={"Итоги за день"}
+        message={'Итоги за день'}
         office={daySum.office}
         pay={daySum.pay}
         total={daySum.total}
-      />}
+      />
+      }
     </Grid>
   );
 }
