@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Calendar, useStaticState } from '@material-ui/pickers';
+import {
+  Calendar,
+  useStaticState,
+  MuiPickersUtilsProvider,
+  DatePicker
+} from '@material-ui/pickers';
 import CachedIcon from '@material-ui/icons/Cached';
 import {
   isPassenger,
@@ -12,7 +17,7 @@ import {
   CardContent,
   CardHeader,
   Paper,
-  IconButton,
+  IconButton
 } from '@material-ui/core';
 import {
   isSameDay,
@@ -24,6 +29,18 @@ import {
 } from 'date-fns';
 import { ApiContext } from '../../Routes';
 import ExpansionParent from './Expansion/expansionParent';
+import ruLocale from 'date-fns/locale/ru';
+import { RuLocalizedUtils } from '../../helpers/helpers';
+
+const localeMap = {
+  ru: ruLocale
+};
+const localeFormatMap = {
+  ru: 'd MMM yyyy'
+};
+const localeUtilsMap = {
+  ru: RuLocalizedUtils
+};
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,6 +56,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Sms = () => {
+  const [locale, setLocale] = useState('ru');
   const classes = useStyles();
   const [openAll, setOpenAll] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -156,10 +174,16 @@ const Sms = () => {
           xs={3}
         >
           <Paper>
-            <Calendar
-              style={{ overflow: 'hidden' }}
-              {...pickerProps}
-            />
+            <MuiPickersUtilsProvider
+              locale={localeMap[locale]}
+              utils={localeUtilsMap[locale]}
+            >
+              <Calendar
+                format={localeFormatMap[locale]}
+                style={{ overflow: 'hidden' }}
+                {...pickerProps}
+              />
+            </MuiPickersUtilsProvider>
           </Paper>
         </Grid>
         <Grid
