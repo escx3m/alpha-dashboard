@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ExpansionChild = props => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const classes = useStyles();
   const {
     correctPassengers,
@@ -39,16 +39,14 @@ const ExpansionChild = props => {
     routeDate,
     routeMonth,
     routeTime,
-    routeIdTemplate,
-    openAll,
-    expanded
+    routeIdTemplate
   } = props;
 
   return (
     <div>
       <Expansion
-        expanded={openAll || open}
-        onChange={() => setOpen(expanded ? false : !open)}
+        expanded={open}
+        onChange={() => setOpen(open ? false : !open)}
         TransitionProps={{ unmountOnExit: true }}>
         <ExpansionHeader expandIcon={<ExpandMoreIcon />}>
           <Grid

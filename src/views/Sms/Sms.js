@@ -14,7 +14,6 @@ import {
   CardHeader,
   Paper,
   IconButton,
-  Button
 } from '@material-ui/core';
 import {
   isSameDay,
@@ -44,16 +43,12 @@ const Sms = () => {
   const classes = useStyles();
   const [openAll, setOpenAll] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [expanded, setExpanded] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [allRoutes, setAllRoutes] = useState([]);
   const [uniqueRoutes, setUniqueRoutes] = useState([]);
   const [allSendSms, setAllSendSms] = useState([]);
   const [alreadySendSms, setAlreadySendSms] = useState([]);
   const routeIdTemplate = 'http://crmbus.ru/#/company/6/route/'; //route.id
-  const handleChange = panel => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
   const handleToday = () =>
     setSelectedDate(startOfToday(), setSelectedDate(endOfToday()));
   const { pickerProps, wrapperProps } = useStaticState({
@@ -153,15 +148,6 @@ const Sms = () => {
 
   return (
     <div className={classes.root}>
-      <Button
-        className={classes.btnOpenClose}
-        color="primary"
-        onClick={() => setOpenAll(!openAll)}
-        size="small"
-        variant="contained"
-      >
-        CLICK
-      </Button>
       <Grid
         container
         spacing={3}
@@ -229,7 +215,6 @@ const Sms = () => {
                 return (
                   <ExpansionParent
                     currentRoutes={currentRoutes}
-                    expanded={expanded}
                     openAll={openAll}
                     passengersIdsAtTime={passengersIdsAtTime}
                     routeIdTemplate={routeIdTemplate}

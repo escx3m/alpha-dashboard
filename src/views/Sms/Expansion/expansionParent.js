@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ExpansionParent = props => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const classes = useStyles();
   const {
     smsTime,
@@ -32,15 +32,13 @@ const ExpansionParent = props => {
     routeIdTemplate,
     selectedDateSendSms,
     passengersIdsAtTime,
-    i,
-    expanded,
-    openAll
+    i
   } = props;
   return (
     <div>
       <Expansion
-        expanded={openAll || open}
-        onChange={() => setOpen(expanded ? false : !open)}
+        expanded={open}
+        onChange={() => setOpen(open ? false : !open)}
         TransitionProps={{ unmountOnExit: true }}>
         <ExpansionHeader expandIcon={<ExpandMoreIcon />}>
           <Grid container>
@@ -65,7 +63,7 @@ const ExpansionParent = props => {
                 <strong>Отправлено: {smsCount}</strong>
               </Grid>
             </Grid>
-            {expanded === `panel${i}` ? (
+            {open === `panel${i}` ? (
               <Grid
                 container
                 direction="row"
@@ -137,7 +135,6 @@ const ExpansionParent = props => {
                   <ExpansionChild
                     correctPassengers={correctPassengers}
                     j={j}
-                    openAll={openAll}
                     passengersCount={passengersCount}
                     passengersIdsAtTime={passengersIdsAtTime}
                     route={route}
