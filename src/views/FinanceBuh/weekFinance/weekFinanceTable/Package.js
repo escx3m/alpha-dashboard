@@ -36,9 +36,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PackageRow = props => {
-  const classes = useStyles();
-  const { api } = useContext(ApiContext);
-
   const {
     dateTimeStr,
     directionStr,
@@ -46,10 +43,13 @@ const PackageRow = props => {
     ownerStr,
     senderStr,
     cargo,
-    packages,
-    setPackages,
+    parcels,
+    setParcels,
     checkState
   } = props;
+  console.log('props = ', props)
+  const classes = useStyles();
+  const { api } = useContext(ApiContext);
   const [sendEarned, setSendEarned] = useState(cargo.earned);
 
   useEffect(() => {
@@ -243,7 +243,7 @@ const PackageRow = props => {
             className={classes.btnSave}
             color="primary"
             onClick={e => {
-              setPackages([...packages, currentPackage]);
+              setParcels([...parcels, currentPackage]);
               api.addPackages(currentPackage);
               e.currentTarget.style.backgroundColor = 'green';
             }}

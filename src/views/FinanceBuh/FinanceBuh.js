@@ -21,6 +21,7 @@ function WeekFinance() {
   const [selectedDay, setSelectedDay] = useState(new Date());
   const [routes, setRoutes] = useState([]);
   const [finances, setFinances] = useState([]);
+  const [parcels, setParcels] = useState([]);
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
   const [checkState, setCheckState] = React.useState({
@@ -51,7 +52,6 @@ function WeekFinance() {
         routesIds = res.data.map(({ id }) => id);
         setRoutes(res.data);
         const params = {
-          //ids: routesIds
           ids: res.data.map(({ id }) => id)
         };
         api
@@ -61,6 +61,14 @@ function WeekFinance() {
             setFinances(finances);
           })
           .catch(e => console.log(JSON.stringify(e)));
+      });
+    api
+      .getPackages(
+        selectedWeekStart,
+        endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
+      )
+      .then(res => {
+        setParcels(res.data.packages);
       });
   }, [selectedWeekStart]);
 
@@ -94,10 +102,12 @@ function WeekFinance() {
           checkState={checkState}
           finances={finances}
           loading={loading}
+          parcels={parcels}
           routes={routes}
           selectedDay={selectedDay}
           selectedWeekStart={selectedWeekStart}
           setFinances={setFinances}
+          setParcels={setParcels}
           setSelectedWeekStart={setSelectedWeekStart}
         />
       </Grid>

@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Grid } from '@material-ui/core';
 import { isSameDay } from 'date-fns';
 import Row from './Row';
 import Summary from './Summary';
 import PackageRow from './Package';
-import { ApiContext } from '../../../../Routes';
 import {
   payToDrivers,
   cities,
@@ -20,9 +19,7 @@ import {
 } from '../../../../helpers/constants';
 
 function TableContent(props) {
-  const { api } = useContext(ApiContext);
-  const { routes, finances, setFinances, selectedDay, checkState } = props;
-  const [packages, setPackages] = useState([]);
+  const { routes, finances, setFinances, parcels, setParcels, selectedDay, checkState } = props;
   const financesIds = new Set(finances.map(({ startRouteId }) => startRouteId));
   const currentRoutes = routes.filter(route =>
     isSameDay(new Date(route.fromTime), selectedDay)
@@ -52,12 +49,6 @@ function TableContent(props) {
     });
     return acc;
   }, []);
-  console.log('cargos === ', cargos);
-
-  const packagesIds = cargos.reduce((acc, cargo) => {
-    acc.push(cargo.packageId);
-    return acc;
-  }, []);
 
   const cars = currentRoutes.reduce((acc, route) => {
     if (route.carId && !acc.includes(route.carId)) {
@@ -65,20 +56,8 @@ function TableContent(props) {
     }
     return acc;
   }, []);
-
-  useEffect(() => {
-    const params = {
-      ids: packagesIds
-    }
-    api.getPackages(params)
-      .then(res => {
-        const { packages } = res.data;
-        setPackages(packages);
-      })
-      .catch(e => console.log(e));
-  }, [selectedDay]);
-
-  console.log(' state packages ', packages)
+  
+  const packagesIds = new Set(parcels.map(({ packageId }) => packageId))
 
   const totalPerDay = {
     passengers: 0,
@@ -117,10 +96,7 @@ function TableContent(props) {
   };
 
   return (
-    <Grid
-      container
-      spacing={1}
-    >
+    <Grid container spacing={1}>
       {cars.map((carId, i) => {
         const carRoutes = currentRoutes.filter(route => route.carId === carId);
         const carNumber = carRoutes[0].car.number;
@@ -299,8 +275,7 @@ function TableContent(props) {
               spacing={1}
               style={route.length === 1 ? { backgroundColor: 'orange' } : {}}
               wrap="nowrap"
-              xs="auto"
-            >
+              xs="auto">
               <Row
                 checkState={checkState}
                 finances={finances}
@@ -324,43 +299,74 @@ function TableContent(props) {
         total={totalPerDay.tripSum}
       />
       {cargos.map((cargo, index) => {
-        const time = {
-          hours: new Date(cargo.dateTime).getHours().toString(),
-          minutes: new Date(cargo.dateTime).getMinutes().toString()
-        };
-        const dateTimeStr =
-          `0${time.hours}`.slice(-2) + ':' + `0${time.minutes}`.slice(-2);
-        const directionStr = `${cities[cargo.fromCityId]} -> ${
-          cities[cargo.toCityId]
-        }`;
-        const ownerStr = `${cargo.owner.surname} ${cargo.owner.name[0]}. ${
-          cargo.owner.patronymic[0]
-        }.`;
-        const senderStr = `${cargo.surname ? cargo.surname : ''} ${
-          cargo.name ? cargo.name[0] + '.' : ''
-        } ${cargo.patronymic ? cargo.patronymic[0] + '.' : ''}`;
-        cargo.sender = senderStr;
-        cargo.owner = ownerStr;
-        cargo.total = cargo.cash + cargo.card + cargo.office;
-        cargo.earned = cargo.cash - cargo.firm;
-        cargo.pay = cargo.earned - cargo.cash;
-        totalPerDayPackages.cash += cargo.cash;
-        totalPerDayPackages.earned += cargo.earned;
-        totalPerDayPackages.pay += cargo.pay;
-        totalPerDayPackages.firm += cargo.firm;
-        return (
-          <PackageRow
-            cargo={cargo}
-            checkState={checkState}
-            dateTimeStr={dateTimeStr}
-            directionStr={directionStr}
-            index={index}
-            ownerStr={ownerStr}
-            senderStr={senderStr}
-            packages={packages}
-            setPackages={setPackages}
-          />
-        );
+        if (packagesIds.has(cargo.packageId)) {
+          const currentPackage = parcels.filter(packageInstance => packageInstance.packageId === cargo.packageId).slice(-1)[0]
+          const time = {
+            hours: new Date(currentPackage.dateTime).getHours().toString(),
+            minutes: new Date(currentPackage.dateTime).getMinutes().toString()
+          };
+          const dateTimeStr = `0${time.hours}`.slice(-2) + ':' + `0${time.minutes}`.slice(-2);
+          const directionStr = `${cities[currentPackage.fromCityId]} -> ${
+            cities[currentPackage.toCityId]
+          }`;
+          const ownerStr = currentPackage.ownerStr;
+          const senderStr = currentPackage.senderStr;
+          totalPerDayPackages.cash += currentPackage.cash;
+          totalPerDayPackages.earned += currentPackage.earned;
+          totalPerDayPackages.pay += currentPackage.pay;
+          totalPerDayPackages.firm += currentPackage.firm;
+          return (
+            <PackageRow
+              cargo={currentPackage}
+              checkState={checkState}
+              dateTimeStr={dateTimeStr}
+              directionStr={directionStr}
+              index={index}
+              ownerStr={ownerStr}
+              senderStr={senderStr}
+              parcels={parcels}
+              setParcels={setParcels}
+            />
+          );
+        } else {
+          const time = {
+            hours: new Date(cargo.dateTime).getHours().toString(),
+            minutes: new Date(cargo.dateTime).getMinutes().toString()
+          };
+          const dateTimeStr =
+            `0${time.hours}`.slice(-2) + ':' + `0${time.minutes}`.slice(-2);
+          const directionStr = `${cities[cargo.fromCityId]} -> ${
+            cities[cargo.toCityId]
+          }`;
+          const ownerStr = `${cargo.owner.surname} ${cargo.owner.name[0]}. ${
+            cargo.owner.patronymic[0]
+          }.`;
+          const senderStr = `${cargo.surname ? cargo.surname : ''} ${
+            cargo.name ? cargo.name[0] + '.' : ''
+          } ${cargo.patronymic ? cargo.patronymic[0] + '.' : ''}`;
+          cargo.sender = senderStr;
+          cargo.owner = ownerStr;
+          cargo.total = cargo.cash + cargo.card + cargo.office;
+          cargo.earned = cargo.cash - cargo.firm;
+          cargo.pay = cargo.earned - cargo.cash;
+          totalPerDayPackages.cash += cargo.cash;
+          totalPerDayPackages.earned += cargo.earned;
+          totalPerDayPackages.pay += cargo.pay;
+          totalPerDayPackages.firm += cargo.firm;
+          return (
+            <PackageRow
+              cargo={cargo}
+              checkState={checkState}
+              dateTimeStr={dateTimeStr}
+              directionStr={directionStr}
+              index={index}
+              ownerStr={ownerStr}
+              senderStr={senderStr}
+              parcels={parcels}
+              setParcels={setParcels}
+            />
+          );
+        }
       })}
       {cargos.length > 0 ? (
         <Summary
@@ -383,8 +389,7 @@ function TableContent(props) {
         (daySum.total += +totalPerDay.tripSum),
         (daySum.earned += +totalPerDay.toDriver + +totalPerDayPackages.earned),
         (daySum.pay += +totalPerDay.giveToDriver + +totalPerDayPackages.pay),
-        (daySum.firm += +totalPerDay.firm + +totalPerDayPackages.firm))
-      }
+        (daySum.firm += +totalPerDay.firm + +totalPerDayPackages.firm)) && 
       <Summary
         card={daySum.card}
         cash={daySum.cash}

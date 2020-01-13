@@ -22,6 +22,8 @@ const WeekFinanceTable = ({
   routes,
   finances,
   setFinances,
+  parcels,
+  setParcels,
   loading,
   selectedWeekStart,
   checkState,
@@ -55,10 +57,12 @@ const WeekFinanceTable = ({
         <TableContent
           checkState={checkState}
           finances={finances}
+          parcels={parcels}
           routes={routes}
           selectedDay={selectedDay}
           selectedWeekStart={selectedWeekStart}
           setFinances={setFinances}
+          setParcels={setParcels}
         />
       </Grid>
     </Grid>

@@ -108,9 +108,12 @@ export default class Api {
     return this.client.post('http://localhost:9000/api/board/finances', data);
   }
 
-  getPackages(params) {
+  getPackages(startDate, endDate) {
     return this.client.get('http://localhost:9000/api/board/packages', {
-      params
+      params: {
+        startDate,
+        endDate
+      }
     });
   }
 
