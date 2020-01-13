@@ -235,7 +235,7 @@ function TableHeader(props) {
           <Button
             className={classes.btnSave}
             color="primary"
-            onclick="xls.exportToXLS('export.xls')"
+            onClick="xls.exportToXLS('export.xls')"
             variant="contained"
           >
             Экспорт
