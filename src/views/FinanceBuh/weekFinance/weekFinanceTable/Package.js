@@ -47,7 +47,6 @@ const PackageRow = props => {
     setParcels,
     checkState
   } = props;
-  console.log('props = ', props)
   const classes = useStyles();
   const { api } = useContext(ApiContext);
   const [sendEarned, setSendEarned] = useState(cargo.earned);

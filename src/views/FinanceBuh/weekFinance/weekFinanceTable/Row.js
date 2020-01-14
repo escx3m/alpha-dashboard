@@ -50,7 +50,9 @@ function Row(props) {
     direction,
     payToDriver,
     startRouteId,
-    totalPassengers
+    totalPassengers,
+    totalPerDay,
+    setTotalPerDay
   } = props.rowdata;
   const classes = useStyles();
   const { api } = useContext(ApiContext);
