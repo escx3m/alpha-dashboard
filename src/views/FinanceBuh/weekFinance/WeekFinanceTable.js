@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TableHeader from './weekFinanceTable/TableHeader';
 import TableContent from './weekFinanceTable/TableContent';
 import { Grid, CircularProgress, makeStyles } from '@material-ui/core';
@@ -30,6 +30,7 @@ const WeekFinanceTable = ({
   selectedDay
 }) => {
   const classes = useStyles();
+  const [exportData, setExportData] = useState([]);
   return loading ? (
     <CircularProgress />
   ) : (
@@ -46,6 +47,7 @@ const WeekFinanceTable = ({
       >
         <TableHeader
           checkState={checkState}
+          exportData={exportData}
           selectedWeekStart={selectedWeekStart}
         />
       </Grid>
@@ -56,11 +58,13 @@ const WeekFinanceTable = ({
       >
         <TableContent
           checkState={checkState}
+          exportData={exportData}
           finances={finances}
           parcels={parcels}
           routes={routes}
           selectedDay={selectedDay}
           selectedWeekStart={selectedWeekStart}
+          setExportData={setExportData}
           setFinances={setFinances}
           setParcels={setParcels}
         />

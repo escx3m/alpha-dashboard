@@ -37,15 +37,15 @@ const useStyles = makeStyles(theme => ({
 
 const PackageRow = props => {
   const {
+    cargo,
+    checkState,
     dateTimeStr,
     directionStr,
     index,
     ownerStr,
     senderStr,
-    cargo,
     parcels,
-    setParcels,
-    checkState
+    setParcels
   } = props;
   console.log('props = ', props)
   const classes = useStyles();

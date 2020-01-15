@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Card, Tooltip, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import xlsExport  from 'xlsexport'
 import {
   DirectionsCar,
   AirlineSeatReclineExtra,
@@ -43,8 +44,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function TableHeader(props) {
-  const { checkState } = props;
+  const { checkState, exportData } = props;
   const classes = useStyles();
+  const xls = new xlsExport(exportData, 'test.xls');
 
   return (
     <Grid
@@ -235,7 +237,7 @@ function TableHeader(props) {
           <Button
             className={classes.btnSave}
             color="primary"
-            onClick="xls.exportToXLS('export.xls')"
+            onClick={() => xls.exportToXLS('export.xls')}
             variant="contained"
           >
             Экспорт

@@ -36,7 +36,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Row(props) {
-  const {
+  const { 
+    key,
     cash,
     card,
     carTitle,
@@ -51,7 +52,7 @@ function Row(props) {
     payToDriver,
     startRouteId,
     totalPassengers
-  } = props.rowdata;
+  } = props;
   const classes = useStyles();
   const { api } = useContext(ApiContext);
   const { finances, setFinances, checkState } = props;
@@ -95,6 +96,7 @@ function Row(props) {
       direction="row"
       item
       spacing={1}
+      key={key}
       wrap="nowrap"
       xs="auto"
     >
