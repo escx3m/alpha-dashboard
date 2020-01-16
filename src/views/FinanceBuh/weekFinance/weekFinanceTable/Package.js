@@ -41,13 +41,14 @@ const PackageRow = props => {
     checkState,
     dateTimeStr,
     directionStr,
+    exportData,
+    setExportData,
     index,
     ownerStr,
     senderStr,
     parcels,
     setParcels
   } = props;
-  console.log('props = ', props)
   const classes = useStyles();
   const { api } = useContext(ApiContext);
   const [sendEarned, setSendEarned] = useState(cargo.earned);
@@ -62,6 +63,7 @@ const PackageRow = props => {
 
   const currentPackage = {
     packageId: cargo.packageId,
+    carNumber: cargo.carNumber,
     routeId: cargo.routeId,
     ownerId: cargo.ownerId,
     ownerStr: ownerStr,
@@ -87,7 +89,7 @@ const PackageRow = props => {
       container
       direction="row"
       item
-      key={`${index}`}
+      key={`pkg${index}`}
       spacing={1}
       wrap="nowrap"
       xs="auto"
@@ -244,6 +246,30 @@ const PackageRow = props => {
             color="primary"
             onClick={e => {
               setParcels([...parcels, currentPackage]);
+              setExportData(() => {
+                const exportCopy = exportData.filter(data => data.packageId !== currentPackage.packageId)
+                const currentPackageToExport = {
+                  Тип: 'Посылка',
+                  Время_рейса: new Date(currentPackage.dateTime).toLocaleString(),
+                  Номер_машины: currentPackage.carNumber,
+                  Владелец: currentPackage.ownerStr,
+                  Водитель: currentPackage.senderStr,
+                  Направление: currentPackage.directionStr,
+                  Пассажиров: 1,
+                  Карта: currentPackage.card,
+                  Наличные: currentPackage.cash,
+                  Офис: currentPackage.office,
+                  Корректировка: '',
+                  Всего: currentPackage.total,
+                  Начислено: currentPackage.earned,
+                  Выдача: currentPackage.pay,
+                  Фирма: currentPackage.firm,
+                  startRouteId: currentPackage.routeId,
+                  packageId: currentPackage.packageId
+                }
+                return [...exportCopy, currentPackageToExport]
+              })
+              console.log('currentPackage == ', currentPackage)
               api.addPackages(currentPackage);
               e.currentTarget.style.backgroundColor = 'green';
             }}

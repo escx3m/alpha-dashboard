@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Grid, Card, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { ApiContext } from '../../../../Routes';
+import { citiesName } from '../../../../helpers/constants';
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Row(props) {
-  const { 
+  const {
     key,
     cash,
     card,
@@ -49,13 +50,18 @@ function Row(props) {
     fromTime,
     office,
     direction,
+    isSingleRoute,
     payToDriver,
     startRouteId,
-    totalPassengers
+    totalPassengers,
+    finances,
+    setFinances,
+    checkState,
+    exportData,
+    setExportData
   } = props;
   const classes = useStyles();
   const { api } = useContext(ApiContext);
-  const { finances, setFinances, checkState } = props;
   const [sendCorrection, setSendCorrection] = useState(currentCorrection);
   const [sendEarned, setSendEarned] = useState(payToDriver);
 
@@ -86,9 +92,10 @@ function Row(props) {
     totalSum: +totalSum || 0,
     earned: +sendEarned || 0,
     pay: +totalPay || 0,
-    firm: +totalFirm || 0
+    firm: +totalFirm || 0,
+    isSingleRoute: isSingleRoute
   };
-  
+
   return (
     <Grid
       className={classes.overAll}
@@ -98,86 +105,51 @@ function Row(props) {
       spacing={1}
       key={key}
       wrap="nowrap"
-      xs="auto"
-    >
+      xs="auto">
       {(checkState.checkedAll || checkState.checkedCar) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{carTitle}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedOwner) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{currentFinance.carOwner}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedDriver) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{currentFinance.carDriver}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedDirection) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{direction}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedPassengers) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
-          <Card className={classes.cardInfo}>{currentFinance.passengersTotal}</Card>
+        <Grid className={classes.gridBorder} item xs={1}>
+          <Card className={classes.cardInfo}>
+            {currentFinance.passengersTotal}
+          </Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedCard) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{currentFinance.card}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedCash) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{currentFinance.cash}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedOffice) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{currentFinance.office}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedCorrection) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>
             <TextField
               inputProps={{ style: { textAlign: 'center', width: '40px' } }}
@@ -188,21 +160,12 @@ function Row(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedSum) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{currentFinance.totalSum}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedAccrued) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
-          {/* <Card className={classes.cardInfo}>{payToDriver}</Card> */}
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>
             <TextField
               inputProps={{ style: { textAlign: 'center', width: '40px' } }}
@@ -213,39 +176,52 @@ function Row(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedPayment) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{currentFinance.pay}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedProfit) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item xs={1}>
           <Card className={classes.cardInfo}>{currentFinance.firm}</Card>
         </Grid>
       )}
-      <Grid
-        className={classes.gridBorder}
-        item
-        xs={1}
-      >
+      <Grid className={classes.gridBorder} item xs={1}>
         <Card className={classes.cardInfo}>
           <Button
             className={classes.btnSave}
             color="primary"
             onClick={e => {
               setFinances([...finances, currentFinance]);
+              setExportData(() => {
+                const exportCopy = exportData.filter(
+                  data => data.startRouteId !== currentFinance.startRouteId
+                );
+                const currentFinanceToExport = {
+                  Тип: currentFinance.isSingleRoute,
+                  Время_рейса: currentFinance.fromTime,
+                  Номер_машины: currentFinance.carTitle,
+                  Владелец: currentFinance.carOwner,
+                  Водитель: currentFinance.carDriver,
+                  Направление: `${citiesName[currentFinance.fromCityId]} - ${
+                    citiesName[currentFinance.toCityId]
+                  }`,
+                  Пассажиров: currentFinance.passengersTotal,
+                  Карта: currentFinance.card,
+                  Наличные: currentFinance.cash,
+                  Офис: currentFinance.office,
+                  Корректировка: currentFinance.correction,
+                  Всего: currentFinance.totalSum,
+                  Начислено: currentFinance.earned,
+                  Выдача: currentFinance.pay,
+                  Фирма: currentFinance.firm,
+                  startRouteId: currentFinance.startRouteId
+                };
+                return [...exportCopy, currentFinanceToExport];
+              });
               api.addFinances(currentFinance);
               e.currentTarget.style.backgroundColor = 'green';
             }}
-            variant="contained"
-          >
+            variant="contained">
             Сохранить
           </Button>
         </Card>

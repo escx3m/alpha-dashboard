@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 import { isSameDay } from 'date-fns';
 import Row from './Row';
@@ -19,6 +19,7 @@ function TableContent(props) {
       if (passenger.type === isCargo && passenger.state === delivered) {
         acc.push({
           ...passenger,
+          carNumber: route.car.number,
           packageId: passenger.id,
           routeId: passenger.route_id,
           dateTime: route.fromTime,
@@ -109,7 +110,7 @@ function TableContent(props) {
         copy.splice(0, 1);
       }
     }
-    return resultRoutes.map((route, k) => {
+    resultRoutes.map((route, k) => {
       const startRouteId = route[0].id;
       let rowdata = {};
 
@@ -140,14 +141,14 @@ function TableContent(props) {
           startRouteId: financeRoute.startRouteId,
           isSingleRoute: route.length === 1 ? true : false
         };
-        totalPerDayRoutes.passengers += +financeRoute.passengersTotal;
+        totalPerDayRoutes.count += +financeRoute.passengersTotal;
         totalPerDayRoutes.cash += +financeRoute.cash;
         totalPerDayRoutes.card += +financeRoute.card;
         totalPerDayRoutes.office += +financeRoute.office;
         totalPerDayRoutes.correction += +financeRoute.correction;
-        totalPerDayRoutes.tripSum += +financeRoute.totalSum;
-        totalPerDayRoutes.toDriver += +financeRoute.earned;
-        totalPerDayRoutes.giveToDriver += +financeRoute.pay;
+        totalPerDayRoutes.total += +financeRoute.totalSum;
+        totalPerDayRoutes.earned += +financeRoute.earned;
+        totalPerDayRoutes.pay += +financeRoute.pay;
         totalPerDayRoutes.firm += +financeRoute.firm;
 
       } else {
@@ -249,19 +250,21 @@ function TableContent(props) {
       }
       dataArray.push({
         Тип: rowdata.isSingleRoute ? 'Одиночный' : 'Парный',
+        Время_рейса: new Date(rowdata.fromTime).toLocaleString(),
         Номер_машины: rowdata.carTitle,
         Владелец: rowdata.carOwner,
         Водитель: rowdata.carDriver,
         Направление: `${citiesName[rowdata.fromCityId]} - ${citiesName[rowdata.toCityId]}`,
-        Пассажиров: rowdata.totalPassengers,
-        Карта: rowdata.card,
-        Наличные: rowdata.cash,
-        Офис: rowdata.office,
-        Корректировка: rowdata.currentCorrection,
-        Всего: rowdata.passengersIncomeSum,
-        Начислено: rowdata.payToDriver,
-        Выдача: rowdata.totalToDriver,
-        Фирма: rowdata.firmIncome
+        Пассажиров: rowdata.totalPassengers || 0,
+        Карта: rowdata.card || 0,
+        Наличные: rowdata.cash || 0,
+        Офис: rowdata.office || 0,
+        Корректировка: rowdata.currentCorrection || 0,
+        Всего: rowdata.passengersIncomeSum || 0,
+        Начислено: rowdata.payToDriver || 0,
+        Выдача: rowdata.totalToDriver || 0,
+        Фирма: rowdata.firmIncome || 0,
+        startRouteId: rowdata.startRouteId
       });
       localDataRoutes.push({
         carTitle: rowdata.carTitle,
@@ -288,18 +291,19 @@ function TableContent(props) {
   });
   dataArray.push({
     Тип: 'Итоги по рейсам',
+    НужнаЕщеСтрока: '',
     Номер_машины: '',
     Владелец: '',
     Водитель: '',
     Направление: '',
-    Пассажиров: totalPerDayRoutes.passengers,
+    Пассажиров: totalPerDayRoutes.count,
     Карта: totalPerDayRoutes.card,
     Наличные: totalPerDayRoutes.cash,
     Офис: totalPerDayRoutes.office,
     Корректировка: totalPerDayRoutes.correction,
-    Всего: totalPerDayRoutes.tripSum,
-    Начислено: totalPerDayRoutes.toDriver,
-    Выдача: totalPerDayRoutes.giveToDriver,
+    Всего: totalPerDayRoutes.total,
+    Начислено: totalPerDayRoutes.earned,
+    Выдача: totalPerDayRoutes.pay,
     Фирма: totalPerDayRoutes.firm
   });
   cargos.map(cargo => {
@@ -319,7 +323,8 @@ function TableContent(props) {
       totalPerDayPackages.firm += +currentPackage.firm;
       dataArray.push({
         Тип: 'Посылка',
-        Номер_машины: '',
+        Номер_машины: cargo.carNumber,
+        Время_рейса: new Date(cargo.dateTime).toLocaleString(),
         Владелец: ownerStr,
         Водитель: senderStr,
         Направление: `${citiesName[cargo.fromCityId]} - ${citiesName[cargo.toCityId]}`,
@@ -331,7 +336,9 @@ function TableContent(props) {
         Всего: cargo.total,
         Начислено: cargo.earned,
         Выдача: cargo.pay,
-        Фирма: cargo.firm
+        Фирма: cargo.firm,
+        startRouteId: cargo.routeId,
+        packageId: cargo.packageId
       });
       localDataParcels.push({
         dateTimeStr: dateTimeStr,
@@ -377,11 +384,12 @@ function TableContent(props) {
       totalPerDayPackages.firm += +cargo.firm;
       dataArray.push({
         Тип: 'Посылка',
-        Номер_машины: '',
+        Время_рейса: new Date(cargo.dateTime).toLocaleString(),
+        Номер_машины: cargo.carNumber,
         Владелец: ownerStr,
         Водитель: senderStr,
         Направление: `${citiesName[cargo.fromCityId]} - ${citiesName[cargo.toCityId]}`,
-        Пассажиров: cargo.dateTime,
+        Пассажиров: 1,
         Карта: cargo.card,
         Наличные: cargo.cash,
         Офис: cargo.office,
@@ -389,7 +397,9 @@ function TableContent(props) {
         Всего: cargo.total,
         Начислено: cargo.earned,
         Выдача: cargo.pay,
-        Фирма: cargo.firm
+        Фирма: cargo.firm,
+        startRouteId: cargo.routeId,
+        packageId: cargo.packageId
       })
       localDataParcels.push({
         dateTimeStr: dateTimeStr,
@@ -418,6 +428,7 @@ function TableContent(props) {
   })
   dataArray.push({
     Тип: 'Итоги для посылок',
+    НужнаЕщеСтрока: '',
     Номер_машины: '',
     Владелец: '',
     Водитель: '',
@@ -433,16 +444,17 @@ function TableContent(props) {
     Фирма: totalPerDayPackages.firm
   })
   daySum.count += +totalPerDayRoutes.count + +cargos.length;
-  daySum.card += +totalPerDayRoutes.card;
+  daySum.card += +totalPerDayRoutes.card + +totalPerDayPackages.card;
   daySum.cash += +totalPerDayRoutes.cash + +totalPerDayPackages.cash;
-  daySum.office += +totalPerDayRoutes.office;
-  daySum.correction += +totalPerDayRoutes.correction;
-  daySum.total += +totalPerDayRoutes.total;
+  daySum.office += +totalPerDayRoutes.office + +totalPerDayPackages.office;
+  daySum.correction += +totalPerDayRoutes.correction + +totalPerDayPackages.correction;
+  daySum.total += +totalPerDayRoutes.total + +totalPerDayPackages.total;
   daySum.earned += +totalPerDayRoutes.earned + +totalPerDayPackages.earned;
   daySum.pay += +totalPerDayRoutes.pay + +totalPerDayPackages.pay;
   daySum.firm += +totalPerDayRoutes.firm + +totalPerDayPackages.firm;
   dataArray.push({
     Тип: 'Итоги за день',
+    НужнаЕщеСтрока: '',
     Номер_машины: '',
     Владелец: '',
     Водитель: '',
@@ -451,7 +463,7 @@ function TableContent(props) {
     Карта: daySum.card,
     Наличные: daySum.cash,
     Офис: daySum.office,
-    Корректировка: '',
+    Корректировка: daySum.correction,
     Всего: daySum.total,
     Начислено: daySum.earned,
     Выдача: daySum.pay,
@@ -459,7 +471,7 @@ function TableContent(props) {
   });
   useEffect(() => {
     setExportData(dataArray);
-  }, [])
+  }, [dataArray])
   return (
     <Grid container spacing={1}>
       {localDataRoutes.map((row, i) => 
@@ -472,11 +484,18 @@ function TableContent(props) {
           carOwner={row.carOwner}
           currentCorrection={row.currentCorrection}
           direction={row.direction}
+          exportData={exportData}
+          isSingleRoute={row.isSingleRoute}
           totalPassengers={row.totalPassengers}
           payToDriver={row.payToDriver}
+          finances={finances}
+          fromTime={row.fromTime}
+          setExportData={setExportData}
+          setFinances={setFinances}
+          startRouteId={row.startRouteId}
           key={i}
           office={row.office}
-          
+          toCityId={row.toCityId}
           fromCityId={row.fromCityId}
         />
       )}
@@ -486,10 +505,12 @@ function TableContent(props) {
         correction={totalPerDayRoutes.correction}
         count={totalPerDayRoutes.count}
         earned={totalPerDayRoutes.earned}
+        exportData={exportData}
         firm={totalPerDayRoutes.firm}
         message="Итоги по рейсам"
         office={totalPerDayRoutes.office}
         pay={totalPerDayRoutes.pay}
+        setExportData={setExportData}
         total={totalPerDayRoutes.total}
       />
       {localDataParcels.map((parcel, i) => 
@@ -498,9 +519,11 @@ function TableContent(props) {
           checkState={checkState}
           dateTimeStr={parcel.dateTimeStr}
           directionStr={parcel.directionStr}
+          exportData={exportData}
           index={i}
           ownerStr={parcel.ownerStr}
           senderStr={parcel.senderStr}
+          setExportData={setExportData}
           parcels={parcels}
           setParcels={setParcels}
         />
@@ -511,10 +534,12 @@ function TableContent(props) {
         correction={totalPerDayPackages.correction}
         count={totalPerDayPackages.count}
         earned={totalPerDayPackages.earned}
+        exportData={exportData}
         firm={totalPerDayPackages.firm}
         message="Итоги для посылок"
         office={totalPerDayPackages.office}
         pay={totalPerDayPackages.pay}
+        setExportData={setExportData}
         total={totalPerDayPackages.total}
       />
       <Summary 
@@ -523,10 +548,12 @@ function TableContent(props) {
         correction={daySum.correction}
         count={daySum.count}
         earned={daySum.earned}
+        exportData={exportData}
         firm={daySum.firm}
         message="Итоги за день"
         office={daySum.office}
         pay={daySum.pay}
+        setExportData={setExportData}
         total={daySum.total}
       />
     </Grid>

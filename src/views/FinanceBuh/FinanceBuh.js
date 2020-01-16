@@ -40,7 +40,6 @@ function WeekFinance() {
     checkedProfit: false,
     checkedAll: true
   });
-  let routesIds = [];
 
   useEffect(() => {
     api
@@ -49,7 +48,6 @@ function WeekFinance() {
         endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
       )
       .then(res => {
-        routesIds = res.data.map(({ id }) => id);
         setRoutes(res.data);
         const params = {
           ids: res.data.map(({ id }) => id)
