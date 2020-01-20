@@ -27,10 +27,16 @@ const WeekFinanceTable = ({
   loading,
   selectedWeekStart,
   checkState,
-  selectedDay
+  selectedDay,
+  exportData,
+  setExportData,
+  localDataRoutes,
+  localDataParcels,
+  totalPerDayRoutes,
+  totalPerDayPackages,
+  daySum
 }) => {
   const classes = useStyles();
-  const [exportData, setExportData] = useState([]);
   return loading ? (
     <CircularProgress />
   ) : (
@@ -58,8 +64,11 @@ const WeekFinanceTable = ({
       >
         <TableContent
           checkState={checkState}
+          daySum={daySum}
           exportData={exportData}
           finances={finances}
+          localDataParcels={localDataParcels}
+          localDataRoutes={localDataRoutes}
           parcels={parcels}
           routes={routes}
           selectedDay={selectedDay}
@@ -67,6 +76,8 @@ const WeekFinanceTable = ({
           setExportData={setExportData}
           setFinances={setFinances}
           setParcels={setParcels}
+          totalPerDayPackages={totalPerDayPackages}
+          totalPerDayRoutes={totalPerDayRoutes}
         />
       </Grid>
     </Grid>
