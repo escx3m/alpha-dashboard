@@ -1,7 +1,6 @@
 import React from 'react';
 import { Grid, Card, Tooltip, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import xlsExport  from 'xlsexport'
 import {
   DirectionsCar,
   AirlineSeatReclineExtra,
@@ -44,9 +43,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function TableHeader(props) {
-  const { checkState, exportData } = props;
+  const { checkState, exportToExcel } = props;
   const classes = useStyles();
-  const xls = new xlsExport(exportData, 'test.xls');
 
   return (
     <Grid
@@ -56,14 +54,9 @@ function TableHeader(props) {
       item
       spacing={1}
       wrap="nowrap"
-      xs="auto"
-    >
+      xs="auto">
       {(checkState.checkedAll || checkState.checkedCar) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           {' '}
           <Card className={classes.card}>
             <Tooltip title="Авт, г/н">
@@ -73,11 +66,7 @@ function TableHeader(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedOwner) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           <Card className={classes.card}>
             <Tooltip title="Владелец">
               <AccountBox />
@@ -86,11 +75,7 @@ function TableHeader(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedDriver) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           <Card className={classes.card}>
             <Tooltip title="Водитель">
               <AirlineSeatReclineExtra />
@@ -99,11 +84,7 @@ function TableHeader(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedDirection) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           <Card className={classes.card}>
             <Tooltip title="Направление">
               <CompareArrows />
@@ -112,11 +93,7 @@ function TableHeader(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedPassengers) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           <Card className={classes.card}>
             <Tooltip title="Пассажиров">
               <AirlineSeatReclineNormal />
@@ -125,11 +102,7 @@ function TableHeader(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedCard) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           <Card className={classes.card}>
             <Tooltip title="Картой">
               <Payment />
@@ -138,11 +111,7 @@ function TableHeader(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedCash) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           <Card className={classes.card}>
             <Tooltip title="Наличные">
               <Money />
@@ -151,11 +120,7 @@ function TableHeader(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedOffice) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           <Card className={classes.card}>
             <Tooltip title="Офис">
               <Business />
@@ -164,11 +129,7 @@ function TableHeader(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedCorrection) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           <Card className={classes.card}>
             <Tooltip title="Корректировка">
               <Edit />
@@ -177,11 +138,7 @@ function TableHeader(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedSum) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           <Card className={classes.card}>
             <Tooltip title="Всего">
               <Poll />
@@ -190,11 +147,7 @@ function TableHeader(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedAccrued) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           <Card className={classes.card}>
             <Tooltip title="Начислено">
               <AssignmentTurnedIn />
@@ -203,11 +156,7 @@ function TableHeader(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedPayment) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           <Card className={classes.card}>
             <Tooltip title="Выдача">
               <AssignmentReturned />
@@ -216,11 +165,7 @@ function TableHeader(props) {
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedProfit) && (
-        <Grid
-          className={classes.borderCard}
-          item
-          xs={1}
-        >
+        <Grid className={classes.borderCard} item xs={1}>
           <Card className={classes.card}>
             <Tooltip title="Фирма">
               <AccountBalance />
@@ -228,18 +173,13 @@ function TableHeader(props) {
           </Card>
         </Grid>
       )}
-      <Grid
-        className={classes.borderCard}
-        item
-        xs={1}
-      >
+      <Grid className={classes.borderCard} item xs={1}>
         <Card className={classes.card}>
           <Button
             className={classes.btnSave}
             color="primary"
-            onClick={() => xls.exportToXLS(`export${new Date().toLocaleDateString()}.xls`)}
-            variant="contained"
-          >
+            onClick={exportToExcel}
+            variant="contained">
             Экспорт
           </Button>{' '}
         </Card>

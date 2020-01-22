@@ -34,34 +34,22 @@ const WeekFinanceTable = ({
   localDataParcels,
   totalPerDayRoutes,
   totalPerDayPackages,
-  daySum
+  daySum,
+  exportToExcel
 }) => {
   const classes = useStyles();
   return loading ? (
     <CircularProgress />
   ) : (
-    <Grid
-      className={classes.gridWindow}
-      container
-      direction="row"
-    >
-      <Grid
-        className={classes.gridHeader}
-        container
-        item
-        xs={12}
-      >
+    <Grid className={classes.gridWindow} container direction="row">
+      <Grid className={classes.gridHeader} container item xs={12}>
         <TableHeader
           checkState={checkState}
-          exportData={exportData}
+          exportToExcel={exportToExcel}
           selectedWeekStart={selectedWeekStart}
         />
       </Grid>
-      <Grid
-        container
-        item
-        xs={12}
-      >
+      <Grid container item xs={12}>
         <TableContent
           checkState={checkState}
           daySum={daySum}
