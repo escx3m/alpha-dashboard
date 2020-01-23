@@ -7,11 +7,7 @@ import { makeJSDateObject } from '../../helpers/helpers';
 import { ApiContext } from '../../Routes';
 import { calculateFinance } from './calc/calcFinance';
 import xlsExport from 'xlsexport';
-// const comp = () => {
-//   useEffect(() =>
-//     makeApiCall().then(() => setState(calc(2333)))
-//   )
-// }
+
 const useStyles = makeStyles(theme => ({ gridMargin: { marginTop: '30px' } }));
 
 function WeekFinance() {
