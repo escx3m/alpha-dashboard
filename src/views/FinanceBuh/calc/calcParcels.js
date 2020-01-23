@@ -1,4 +1,4 @@
-import { cities, citiesName } from '../../helpers/constants';
+import { cities, citiesName } from '../../../helpers/constants';
 
 export function calculateParcels(cargos, packagesIds, parcels) {
   let localData = [];

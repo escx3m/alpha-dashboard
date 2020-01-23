@@ -5,167 +5,14 @@ import { Grid, makeStyles } from '@material-ui/core';
 import { startOfWeek, endOfWeek, isSameDay } from 'date-fns';
 import { makeJSDateObject } from '../../helpers/helpers';
 import { ApiContext } from '../../Routes';
-import { calculateRoutes } from './calcRoutes';
-import { calculateFinance } from './calculateFinance';
-import { calculateParcels } from './calcParcels';
-import xlsExport  from 'xlsexport';
-
-function calculateFinance() {
-  let dataArray = [];
-  const financesIds = new Set(finances.map(({ startRouteId }) => startRouteId));
-  const currentRoutes = routes.filter(route =>
-    isSameDay(new Date(route.fromTime), selectedDay)
-  );
-  const cargos = currentRoutes.reduce((acc, route) => {
-    route.passengers.forEach(passenger => {
-      if (passenger.type === isCargo && passenger.state === delivered) {
-        acc.push({
-          ...passenger,
-          carNumber: route.car.number,
-          packageId: passenger.id,
-          routeId: passenger.route_id,
-          dateTime: route.fromTime,
-          ownerId: route.car.owner.id,
-          owner: route.car.owner,
-          phone: passenger.phone,
-          phone_2: passenger.phone_2,
-          cash: passenger.price_status === payCash ? +passenger.price : 0,
-          office: passenger.price_status === payOffice ? +passenger.price : 0,
-          card: passenger.price_status === payCard ? +passenger.price : 0,
-          firm: +passenger.price > 599 ? 100 : +passenger.price > 149 ? 50 : 0,
-          earned: 0,
-          fromCityId: route.fromCityId,
-          toCityId: route.toCityId
-        });
-      }
-    });
-    return acc;
-  }, []);
-
-  const cars = currentRoutes.reduce((acc, route) => {
-    if (route.carId && !acc.includes(route.carId)) {
-      acc.push(route.carId);
-    }
-    return acc;
-  }, []);
-
-  const packagesIds = new Set(parcels.map(({ packageId }) => packageId));
-  console.log('packagesIds =====  ', packagesIds);
-  console.log('parcels =====  ', parcels);
-
-  const daySum = {
-    count: 0,
-    card: 0,
-    cash: 0,
-    office: 0,
-    correction: 0,
-    total: 0,
-    earned: 0,
-    pay: 0,
-    firm: 0
-  };
-
-  const  = calculateRoutes(
-    cars,
-    cities,
-    citiesName,
-    currentRoutes,
-    dataArray,
-    finances,
-    financesIds,
-    notStandard,
-    ownersId,
-    payCard,
-    payCash,
-    payOffice,
-    payNot,
-    payToDrivers,
-    selectedDay,
-    totalPerDayRoutes
-  );
-
-  dataArray.push(...dataArray, calculatedRoutes);
-
-  dataArray.push({
-    Тип: 'Итоги по рейсам',
-    НужнаЕщеСтрока: '',
-    Номер_машины: '',
-    Владелец: '',
-    Водитель: '',
-    Направление: '',
-    Пассажиров: totalPerDayRoutes.count,
-    Карта: totalPerDayRoutes.card,
-    Наличные: totalPerDayRoutes.cash,
-    Офис: totalPerDayRoutes.office,
-    Корректировка: totalPerDayRoutes.correction,
-    Всего: totalPerDayRoutes.total,
-    Начислено: totalPerDayRoutes.earned,
-    Выдача: totalPerDayRoutes.pay,
-    Фирма: totalPerDayRoutes.firm
-  });
-
-  //посылки
-  const calulatedParcels = calculateParcels();
-  dataArray.push();
-  dataArray.push({
-    Тип: 'Итоги для посылок',
-    НужнаЕщеСтрока: '',
-    Номер_машины: '',
-    Владелец: '',
-    Водитель: '',
-    Направление: '',
-    Пассажиров: cargos.length,
-    Карта: totalPerDayPackages.card,
-    Наличные: totalPerDayPackages.cash,
-    Офис: totalPerDayPackages.office,
-    Корректировка: '',
-    Всего: totalPerDayPackages.total,
-    Начислено: totalPerDayPackages.earned,
-    Выдача: totalPerDayPackages.pay,
-    Фирма: totalPerDayPackages.firm
-  });
-  daySum.count += +totalPerDayRoutes.count + +cargos.length;
-  daySum.card += +totalPerDayRoutes.card + +totalPerDayPackages.card;
-  daySum.cash += +totalPerDayRoutes.cash + +totalPerDayPackages.cash;
-  daySum.office += +totalPerDayRoutes.office + +totalPerDayPackages.office;
-  daySum.correction +=
-    +totalPerDayRoutes.correction + +totalPerDayPackages.correction;
-  daySum.total += +totalPerDayRoutes.total + +totalPerDayPackages.total;
-  daySum.earned += +totalPerDayRoutes.earned + +totalPerDayPackages.earned;
-  daySum.pay += +totalPerDayRoutes.pay + +totalPerDayPackages.pay;
-  daySum.firm += +totalPerDayRoutes.firm + +totalPerDayPackages.firm;
-  dataArray.push({
-    Тип: 'Итоги за день',
-    НужнаЕщеСтрока: '',
-    Номер_машины: '',
-    Владелец: '',
-    Водитель: '',
-    Направление: '',
-    Пассажиров: daySum.count,
-    Карта: daySum.card,
-    Наличные: daySum.cash,
-    Офис: daySum.office,
-    Корректировка: daySum.correction,
-    Всего: daySum.total,
-    Начислено: daySum.earned,
-    Выдача: daySum.pay,
-    Фирма: daySum.firm
-  });
-  return dataArray;
-}
+import { calculateFinance } from './calc/calcFinance';
+import xlsExport from 'xlsexport';
 // const comp = () => {
 //   useEffect(() =>
 //     makeApiCall().then(() => setState(calc(2333)))
 //   )
-//   return (
-//     <div></div>
-//   )
 // }
-const useStyles = makeStyles(theme => ({
-  gridMargin: {
-    marginTop: '30px'
-  }
-}));
+const useStyles = makeStyles(theme => ({ gridMargin: { marginTop: '30px' } }));
 
 function WeekFinance() {
   const { api } = useContext(ApiContext);
@@ -178,7 +25,7 @@ function WeekFinance() {
   const [finances, setFinances] = useState([]);
   const [parcels, setParcels] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [exportData, setExportData] = useState([]);
+  const [exportData, setExportData] = useState({});
   const classes = useStyles();
   const [checkState, setCheckState] = React.useState({
     checkedCar: false,
@@ -198,44 +45,54 @@ function WeekFinance() {
   });
 
   useEffect(() => {
-    api
-      .getRoutes(
-        selectedWeekStart,
-        endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
+    Promise.all([
+      api
+        .getRoutes(
+          selectedWeekStart,
+          endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
+        )
+        .then(res => {
+          console.log('getRoutes');
+          setRoutes(res.data);
+          const params = {
+            ids: res.data.map(({ id }) => id)
+          };
+          api
+            .getFinances(params)
+            .then(res => {
+              console.log('getFinances');
+              const { finances } = res.data;
+              setFinances(finances);
+            })
+            .catch(e => console.log(JSON.stringify(e)));
+        })
+        .catch(e => console.log(JSON.stringify(e))),
+      api
+        .getPackages(
+          selectedWeekStart,
+          endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
+        )
+        .then(res => {
+          console.log('getPackages');
+          setParcels(res.data.packages);
+        })
+        .catch(e => console.log(JSON.stringify(e)))
+    ])
+      .then(results =>
+        results.forEach(result => console.log(' promise all result= ', result))
       )
-      .then(res => {
-        console.log('getRoutes');
-        setRoutes(res.data);
-        const params = {
-          ids: res.data.map(({ id }) => id)
-        };
-        api
-          .getFinances(params)
-          .then(res => {
-            console.log('getFinances');
-            const { finances } = res.data;
-            setFinances(finances);
-          })
-          .catch(e => console.log(JSON.stringify(e)));
-      })
-      .catch(e => console.log(JSON.stringify(e)));
-    api
-      .getPackages(
-        selectedWeekStart,
-        endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
-      )
-      .then(res => {
-        console.log('getPackages');
-        setParcels(res.data.packages);
-      })
-      .catch(e => console.log(JSON.stringify(e)));
-
-    setExportData(calculateFinance());
+      .catch(error => console.log(error));
   }, [selectedWeekStart]);
 
+  useEffect(() => {
+    setExportData(calculateFinance(finances, routes, selectedDay, parcels));
+  }, [finances, routes, parcels]);
   console.log('export data', exportData);
-  const xls = new xlsExport(exportData, 'test.xls');
-
+  console.log('routes == ', routes);
+  console.log('finances == ', finances);
+  console.log('parcels == ', parcels);
+  const exportToExcel = () =>
+    new xlsExport(exportData.dataToExport || [], 'test.xls') || [];
 
   return (
     <Grid className={classes.gridMargin} container direction="row">
@@ -254,12 +111,13 @@ function WeekFinance() {
       <Grid className={classes.gridMargin} item xs={12}>
         <WeekFinanceTable
           checkState={checkState}
-          daySum={daySum}
+          daySum={exportData.dayResult}
           exportToExcel={exportToExcel}
+          exportData={exportData}
           finances={finances}
           loading={loading}
-          localDataParcels={localDataParcels}
-          localDataRoutes={localDataRoutes}
+          localDataParcels={exportData.parcelsData}
+          localDataRoutes={exportData.routesData}
           parcels={parcels}
           routes={routes}
           selectedDay={selectedDay}
@@ -268,8 +126,8 @@ function WeekFinance() {
           setFinances={setFinances}
           setParcels={setParcels}
           setSelectedWeekStart={setSelectedWeekStart}
-          totalPerDayPackages={totalPerDayPackages}
-          totalPerDayRoutes={totalPerDayRoutes}
+          totalPerDayPackages={exportData.parcelsResult}
+          totalPerDayRoutes={exportData.routesResult}
         />
       </Grid>
     </Grid>

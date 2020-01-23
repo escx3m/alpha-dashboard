@@ -10,7 +10,7 @@ import {
   payToDrivers,
   notStandard,
   delivered
-} from '../../helpers/constants';
+} from '../../../helpers/constants';
 
 export function calculateRoutes(
   cars,
