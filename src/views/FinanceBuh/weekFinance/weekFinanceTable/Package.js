@@ -59,8 +59,7 @@ const PackageRow = props => {
 
   const totalPay = +sendEarned - +cargo.cash;
   const totalSum = +cargo.card + +cargo.cash + +cargo.office;
-  const totalFirm = +cargo.total - +cargo.cash - +cargo.pay;
-
+  const totalFirm = +totalSum - +cargo.cash - +totalPay;
   const currentPackage = {
     packageId: cargo.packageId,
     carNumber: cargo.carNumber,

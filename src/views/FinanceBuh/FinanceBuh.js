@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import WeekFinanceTable from './weekFinance/WeekFinanceTable';
 import WeekFinanceHeader from './weekFinance/WeekFinanceHeader';
 import { Grid, makeStyles } from '@material-ui/core';
-import { startOfWeek, endOfWeek, isSameDay } from 'date-fns';
+import { startOfWeek, endOfWeek } from 'date-fns';
 import { makeJSDateObject } from '../../helpers/helpers';
 import { ApiContext } from '../../Routes';
 import { calculateFinance } from './calc/calcFinance';
@@ -48,7 +48,6 @@ function WeekFinance() {
           endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
         )
         .then(res => {
-          console.log('getRoutes');
           setRoutes(res.data);
           const params = {
             ids: res.data.map(({ id }) => id)
@@ -56,7 +55,6 @@ function WeekFinance() {
           api
             .getFinances(params)
             .then(res => {
-              console.log('getFinances');
               const { finances } = res.data;
               setFinances(finances);
             })
@@ -69,7 +67,6 @@ function WeekFinance() {
           endOfWeek(selectedWeekStart, { weekStartsOn: 1 })
         )
         .then(res => {
-          console.log('getPackages');
           setParcels(res.data.packages);
         })
         .catch(e => console.log(JSON.stringify(e)))
