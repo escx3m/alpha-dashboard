@@ -95,7 +95,29 @@ function Row(props) {
     firm: +totalFirm || 0,
     isSingleRoute: isSingleRoute
   };
-
+  console.log('row exportData.dayResult = ', exportData.dayResult)
+  const currentRoutesResult = {
+    count: exportData.routesResult.count + +currentFinance.count,
+    card: exportData.routesResult.card + +currentFinance.card,
+    cash: exportData.routesResult.cash + +currentFinance.cash,
+    office: exportData.routesResult.office + +currentFinance.office,
+    correction: exportData.routesResult.correction + +currentFinance.correction,
+    total: exportData.routesResult.total + +currentFinance.total,
+    earned: exportData.routesResult.earned + +currentFinance.earned,
+    pay: exportData.routesResult.pay + +currentFinance.pay,
+    firm: exportData.routesResult.firm + +currentFinance.firm
+  }
+  const currentDayResult = {
+    count: exportData.dayResult.count + +currentFinance.count,
+    card: exportData.dayResult.card + +currentFinance.card,
+    cash: exportData.dayResult.cash + +currentFinance.cash,
+    office: exportData.dayResult.office + +currentFinance.office,
+    correction: exportData.dayResult.correction + +currentFinance.correction,
+    total: exportData.dayResult.total + +currentFinance.total,
+    earned: exportData.dayResult.earned + +currentFinance.earned,
+    pay: exportData.dayResult.pay + +currentFinance.pay,
+    firm: exportData.dayResult.firm + +currentFinance.firm
+  }
   return (
     <Grid
       className={classes.overAll}
@@ -153,7 +175,20 @@ function Row(props) {
           <Card className={classes.cardInfo}>
             <TextField
               inputProps={{ style: { textAlign: 'center', width: '40px' } }}
-              onChange={e => setSendCorrection(e.target.value)}
+              onChange={e => {
+                setSendCorrection(e.target.value)
+                setExportData({ 
+                  ...exportData,
+                  routesResult: {
+                    ...exportData.routesResult,
+                    currentRoutesResult
+                  },
+                  dayResult: {
+                    ...exportData.dayResult,
+                    currentDayResult
+                  }
+                })
+              }}
               value={sendCorrection}
             />
           </Card>
@@ -169,7 +204,20 @@ function Row(props) {
           <Card className={classes.cardInfo}>
             <TextField
               inputProps={{ style: { textAlign: 'center', width: '40px' } }}
-              onChange={e => setSendEarned(e.target.value)}
+              onChange={e => { 
+                setSendEarned(e.target.value)
+                setExportData({ 
+                  ...exportData,
+                  routesResult: {
+                    ...exportData.routesResult,
+                    currentRoutesResult
+                  },
+                  dayResult: {
+                    ...exportData.dayResult,
+                    currentDayResult
+                  }
+                })
+              }}
               value={sendEarned}
             />
           </Card>
