@@ -81,6 +81,9 @@ const PackageRow = props => {
     pay: +totalPay || 0,
     firm: +totalFirm || 0
   };
+  useEffect(() => {
+    setParcels([...parcels, currentPackage])
+  }, [sendEarned])
 
   return (
     <Grid
@@ -151,7 +154,10 @@ const PackageRow = props => {
           <Card className={classes.cardInfo}>
             <TextField
               inputProps={{ style: { textAlign: 'center', width: '40px' } }}
-              onChange={e => setSendEarned(e.target.value)}
+              onChange={e => {
+                setSendEarned(e.target.value)
+
+              }}
               value={sendEarned}
             />
           </Card>
@@ -204,7 +210,6 @@ const PackageRow = props => {
                   parcelsData: [...exportCopy, currentPackageToExport]
                 };
               });
-              console.log('currentPackage == ', currentPackage);
               api.addPackages(currentPackage);
               e.currentTarget.style.backgroundColor = 'green';
             }}

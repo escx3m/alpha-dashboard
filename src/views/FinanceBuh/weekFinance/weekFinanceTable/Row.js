@@ -95,29 +95,15 @@ function Row(props) {
     firm: +totalFirm || 0,
     isSingleRoute: isSingleRoute
   };
-  console.log('row exportData.dayResult = ', exportData.dayResult)
-  const currentRoutesResult = {
-    count: exportData.routesResult.count + +currentFinance.count,
-    card: exportData.routesResult.card + +currentFinance.card,
-    cash: exportData.routesResult.cash + +currentFinance.cash,
-    office: exportData.routesResult.office + +currentFinance.office,
-    correction: exportData.routesResult.correction + +currentFinance.correction,
-    total: exportData.routesResult.total + +currentFinance.total,
-    earned: exportData.routesResult.earned + +currentFinance.earned,
-    pay: exportData.routesResult.pay + +currentFinance.pay,
-    firm: exportData.routesResult.firm + +currentFinance.firm
-  }
-  const currentDayResult = {
-    count: exportData.dayResult.count + +currentFinance.count,
-    card: exportData.dayResult.card + +currentFinance.card,
-    cash: exportData.dayResult.cash + +currentFinance.cash,
-    office: exportData.dayResult.office + +currentFinance.office,
-    correction: exportData.dayResult.correction + +currentFinance.correction,
-    total: exportData.dayResult.total + +currentFinance.total,
-    earned: exportData.dayResult.earned + +currentFinance.earned,
-    pay: exportData.dayResult.pay + +currentFinance.pay,
-    firm: exportData.dayResult.firm + +currentFinance.firm
-  }
+
+  useEffect(() => {
+    setFinances([...finances, currentFinance]);
+  }, [sendCorrection, sendEarned])
+
+  //useEffect(() => {
+    //setFinances([...finances, currentFinance]);
+  //}, [])
+
   return (
     <Grid
       className={classes.overAll}
@@ -176,18 +162,7 @@ function Row(props) {
             <TextField
               inputProps={{ style: { textAlign: 'center', width: '40px' } }}
               onChange={e => {
-                setSendCorrection(e.target.value)
-                setExportData({ 
-                  ...exportData,
-                  routesResult: {
-                    ...exportData.routesResult,
-                    currentRoutesResult
-                  },
-                  dayResult: {
-                    ...exportData.dayResult,
-                    currentDayResult
-                  }
-                })
+                setSendCorrection(e.target.value);
               }}
               value={sendCorrection}
             />
@@ -204,19 +179,8 @@ function Row(props) {
           <Card className={classes.cardInfo}>
             <TextField
               inputProps={{ style: { textAlign: 'center', width: '40px' } }}
-              onChange={e => { 
-                setSendEarned(e.target.value)
-                setExportData({ 
-                  ...exportData,
-                  routesResult: {
-                    ...exportData.routesResult,
-                    currentRoutesResult
-                  },
-                  dayResult: {
-                    ...exportData.dayResult,
-                    currentDayResult
-                  }
-                })
+              onChange={e => {
+                setSendEarned(e.target.value);
               }}
               value={sendEarned}
             />
@@ -266,7 +230,10 @@ function Row(props) {
                 };
                 return {
                   ...exportData,
-                  dataToExport: [...exportData.dataToExport, currentFinanceToExport]
+                  dataToExport: [
+                    ...exportData.dataToExport,
+                    currentFinanceToExport
+                  ]
                 };
               });
               api.addFinances(currentFinance);
