@@ -59,8 +59,7 @@ const PackageRow = props => {
 
   const totalPay = +sendEarned - +cargo.cash;
   const totalSum = +cargo.card + +cargo.cash + +cargo.office;
-  const totalFirm = +cargo.total - +cargo.cash - +cargo.pay;
-
+  const totalFirm = +totalSum - +cargo.cash - +totalPay;
   const currentPackage = {
     packageId: cargo.packageId,
     carNumber: cargo.carNumber,
@@ -69,19 +68,22 @@ const PackageRow = props => {
     ownerStr: ownerStr,
     dateTime: cargo.dateTime,
     directionStr: directionStr,
-    card: cargo.card || 0,
-    cash: cargo.cash || 0,
+    card: +cargo.card || 0,
+    cash: +cargo.cash || 0,
     office: cargo.office || 0,
     senderStr: senderStr,
     fromCityId: cargo.fromCityId,
     phone: cargo.phone,
     phone_2: cargo.phone_2,
     toCityId: cargo.toCityId,
-    total: totalSum || 0,
+    total: +totalSum || 0,
     earned: +sendEarned || 0,
     pay: +totalPay || 0,
     firm: +totalFirm || 0
   };
+  useEffect(() => {
+    setParcels([...parcels, currentPackage])
+  }, [sendEarned])
 
   return (
     <Grid
@@ -92,154 +94,86 @@ const PackageRow = props => {
       key={`pkg${index}`}
       spacing={1}
       wrap="nowrap"
-      xs="auto"
-    >
+      xs="auto">
       {(checkState.checkedAll || checkState.checkedCar) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}1`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}1`} xs={1}>
           <Card className={classes.cardInfo}>
             <strong>Посылка</strong>
           </Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedOwner) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}2`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}2`} xs={1}>
           <Card className={classes.cardInfo}>{currentPackage.ownerStr}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedDriver) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}3`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}3`} xs={1}>
           <Card className={classes.cardInfo}>{currentPackage.senderStr}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedDirection) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}4`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}4`} xs={1}>
           <Card className={classes.cardInfo}>
             {currentPackage.directionStr}
           </Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedPassengers) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}5`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}5`} xs={1}>
           <Card className={classes.cardInfo}>{dateTimeStr}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedCard) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}6`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}6`} xs={1}>
           <Card className={classes.cardInfo}>{currentPackage.card}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedCash) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}7`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}7`} xs={1}>
           <Card className={classes.cardInfo}>{currentPackage.cash}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedOffice) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}8`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}8`} xs={1}>
           <Card className={classes.cardInfo}>{currentPackage.office}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedCorrection) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}9`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}9`} xs={1}>
           <Card className={classes.cardInfo}>{currentPackage.correction}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedSum) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}10`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}10`} xs={1}>
           <Card className={classes.cardInfo}>{currentPackage.total}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedAccrued) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}11`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}11`} xs={1}>
           <Card className={classes.cardInfo}>
             <TextField
               inputProps={{ style: { textAlign: 'center', width: '40px' } }}
-              onChange={e => setSendEarned(e.target.value)}
-              value={sendEarned}
+              onChange={e => {
+                setSendEarned(e.target.value)
+
+              }}
+              value={+sendEarned}
             />
           </Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedPayment) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}12`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}12`} xs={1}>
           <Card className={classes.cardInfo}>{currentPackage.pay}</Card>
         </Grid>
       )}
       {(checkState.checkedAll || checkState.checkedProfit) && (
-        <Grid
-          className={classes.gridBorder}
-          item
-          key={`${index}13`}
-          xs={1}
-        >
+        <Grid className={classes.gridBorder} item key={`${index}13`} xs={1}>
           <Card className={classes.cardInfo}>{currentPackage.firm}</Card>
         </Grid>
       )}
-      <Grid
-        className={classes.gridBorder}
-        item
-        key={`${index}14`}
-        xs={1}
-      >
+      <Grid className={classes.gridBorder} item key={`${index}14`} xs={1}>
         <Card className={classes.cardInfo}>
           <Button
             className={classes.btnSave}
@@ -247,10 +181,14 @@ const PackageRow = props => {
             onClick={e => {
               setParcels([...parcels, currentPackage]);
               setExportData(() => {
-                const exportCopy = exportData.filter(data => data.packageId !== currentPackage.packageId)
+                const exportCopy = exportData.parcelsData.filter(
+                  data => data.packageId !== currentPackage.packageId
+                );
                 const currentPackageToExport = {
                   Тип: 'Посылка',
-                  Время_рейса: new Date(currentPackage.dateTime).toLocaleString(),
+                  Время_рейса: new Date(
+                    currentPackage.dateTime
+                  ).toLocaleString(),
                   Номер_машины: currentPackage.carNumber,
                   Владелец: currentPackage.ownerStr,
                   Водитель: currentPackage.senderStr,
@@ -266,15 +204,16 @@ const PackageRow = props => {
                   Фирма: currentPackage.firm,
                   startRouteId: currentPackage.routeId,
                   packageId: currentPackage.packageId
-                }
-                return [...exportCopy, currentPackageToExport]
-              })
-              console.log('currentPackage == ', currentPackage)
+                };
+                return {
+                  ...exportData,
+                  parcelsData: [...exportCopy, currentPackageToExport]
+                };
+              });
               api.addPackages(currentPackage);
               e.currentTarget.style.backgroundColor = 'green';
             }}
-            variant="contained"
-          >
+            variant="contained">
             Сохранить
           </Button>
         </Card>

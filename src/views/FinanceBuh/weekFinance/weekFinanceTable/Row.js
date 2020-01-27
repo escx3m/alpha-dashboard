@@ -96,6 +96,10 @@ function Row(props) {
     isSingleRoute: isSingleRoute
   };
 
+  useEffect(() => {
+    setFinances([...finances, currentFinance]);
+  }, [sendCorrection, sendEarned])
+
   return (
     <Grid
       className={classes.overAll}
@@ -153,8 +157,10 @@ function Row(props) {
           <Card className={classes.cardInfo}>
             <TextField
               inputProps={{ style: { textAlign: 'center', width: '40px' } }}
-              onChange={e => setSendCorrection(e.target.value)}
-              value={sendCorrection}
+              onChange={e => {
+                setSendCorrection(e.target.value);
+              }}
+              value={+sendCorrection}
             />
           </Card>
         </Grid>
@@ -169,8 +175,10 @@ function Row(props) {
           <Card className={classes.cardInfo}>
             <TextField
               inputProps={{ style: { textAlign: 'center', width: '40px' } }}
-              onChange={e => setSendEarned(e.target.value)}
-              value={sendEarned}
+              onChange={e => {
+                setSendEarned(e.target.value);
+              }}
+              value={+sendEarned}
             />
           </Card>
         </Grid>
@@ -193,7 +201,7 @@ function Row(props) {
             onClick={e => {
               setFinances([...finances, currentFinance]);
               setExportData(() => {
-                const exportCopy = exportData.filter(
+                const exportCopy = exportData.dataToExport.filter(
                   data => data.startRouteId !== currentFinance.startRouteId
                 );
                 const currentFinanceToExport = {
@@ -216,7 +224,13 @@ function Row(props) {
                   Фирма: currentFinance.firm,
                   startRouteId: currentFinance.startRouteId
                 };
-                return [...exportCopy, currentFinanceToExport];
+                return {
+                  ...exportData,
+                  dataToExport: [
+                    ...exportData.dataToExport,
+                    currentFinanceToExport
+                  ]
+                };
               });
               api.addFinances(currentFinance);
               e.currentTarget.style.backgroundColor = 'green';
