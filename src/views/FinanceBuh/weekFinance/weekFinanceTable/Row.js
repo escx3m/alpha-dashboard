@@ -100,10 +100,6 @@ function Row(props) {
     setFinances([...finances, currentFinance]);
   }, [sendCorrection, sendEarned])
 
-  //useEffect(() => {
-    //setFinances([...finances, currentFinance]);
-  //}, [])
-
   return (
     <Grid
       className={classes.overAll}
@@ -164,7 +160,7 @@ function Row(props) {
               onChange={e => {
                 setSendCorrection(e.target.value);
               }}
-              value={sendCorrection}
+              value={+sendCorrection}
             />
           </Card>
         </Grid>
@@ -182,7 +178,7 @@ function Row(props) {
               onChange={e => {
                 setSendEarned(e.target.value);
               }}
-              value={sendEarned}
+              value={+sendEarned}
             />
           </Card>
         </Grid>

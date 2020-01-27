@@ -68,15 +68,15 @@ const PackageRow = props => {
     ownerStr: ownerStr,
     dateTime: cargo.dateTime,
     directionStr: directionStr,
-    card: cargo.card || 0,
-    cash: cargo.cash || 0,
+    card: +cargo.card || 0,
+    cash: +cargo.cash || 0,
     office: cargo.office || 0,
     senderStr: senderStr,
     fromCityId: cargo.fromCityId,
     phone: cargo.phone,
     phone_2: cargo.phone_2,
     toCityId: cargo.toCityId,
-    total: totalSum || 0,
+    total: +totalSum || 0,
     earned: +sendEarned || 0,
     pay: +totalPay || 0,
     firm: +totalFirm || 0
@@ -158,7 +158,7 @@ const PackageRow = props => {
                 setSendEarned(e.target.value)
 
               }}
-              value={sendEarned}
+              value={+sendEarned}
             />
           </Card>
         </Grid>
